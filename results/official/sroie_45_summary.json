@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "artifact": "ocr_vlm_aggregate_evaluation",
+  "generated_by": "scripts/export_official_results.py",
+  "dataset": {
+    "id": "sroie_test_seed42_45",
+    "display_name": "SROIE 真實英文收據",
+    "n_documents": 45,
+    "items_scored": false,
+    "provenance": {
+      "kind": "sampled_public_benchmark",
+      "dataset": "rth/sroie-2019-v2",
+      "split": "test",
+      "seed": 42
+    }
+  },
+  "evaluation": {
+    "scalar_fields": [
+      "doc_type",
+      "seller_name",
+      "date",
+      "invoice_number",
+      "seller_tax_id",
+      "buyer_tax_id",
+      "total_amount"
+    ],
+    "configurations": [
+      "pipeline_a_with_preprocess",
+      "pipeline_a_no_preprocess",
+      "pipeline_b_qwen3-vl-8b-local",
+      "pipeline_b_qwen3-vl-8b-local_with_ocr_hint",
+      "pipeline_b_gpt-5.4-nano",
+      "pipeline_b_gpt-5.4-nano_with_ocr_hint"
+    ],
+    "source_summary_sha256": "57ffb39d04552fa18c19a313afc586ce5004d5caea49989c63b017c7b83a9b31"
+  },
+  "headline_metrics": {
+    "pipeline_a_with_preprocess": {
+      "avg_exact": 0.390476,
+      "latency_warm_p50_s": 19.886,
+      "est_cost_per_100_docs_usd": null
+    },
+    "pipeline_a_no_preprocess": {
+      "avg_exact": 0.415873,
+      "latency_warm_p50_s": 19.295,
+      "est_cost_per_100_docs_usd": null
+    },
+    "pipeline_b_qwen3-vl-8b-local": {
+      "avg_exact": 0.828571,
+      "latency_warm_p50_s": 55.176,
+      "est_cost_per_100_docs_usd": null
+    },
+    "pipeline_b_qwen3-vl-8b-local_with_ocr_hint": {
+      "avg_exact": 0.803175,
+      "latency_warm_p50_s": 52.704,
+      "est_cost_per_100_docs_usd": null
+    },
+    "pipeline_b_gpt-5.4-nano": {
+      "avg_exact": 0.857143,
+      "latency_warm_p50_s": 3.555,
+      "est_cost_per_100_docs_usd": 0.101303
+    },
+    "pipeline_b_gpt-5.4-nano_with_ocr_hint": {
+      "avg_exact": 0.857143,
+      "latency_warm_p50_s": 3.574,
+      "est_cost_per_100_docs_usd": 0.105358
+    }
+  },
+  "results": {
+    "pipeline_a_with_preprocess": {
+      "config": "pipeline_a_with_preprocess",
+      "n": 45,
+      "doc_type_exact": 0.6222222222222222,
+      "doc_type_fuzzy": 0.6222222222222222,
+      "seller_name_exact": 0.2,
+      "seller_name_fuzzy": 0.37777777777777777,
+      "date_exact": 0.6,
+      "date_fuzzy": 0.6666666666666666,
+      "invoice_number_exact": 0.6222222222222222,
+      "invoice_number_fuzzy": 0.6222222222222222,
+      "seller_tax_id_exact": 0.044444444444444446,
+      "seller_tax_id_fuzzy": 0.044444444444444446,
+      "buyer_tax_id_exact": 0.17777777777777778,
+      "buyer_tax_id_fuzzy": 0.17777777777777778,
+      "total_amount_exact": 0.4666666666666667,
+      "total_amount_fuzzy": 0.5111111111111111,
+      "items_precision": null,
+      "items_recall": null,
+      "items_f1": null,
+      "items_name_exact_rate": null,
+      "latency_cold_s": 16.366744499999186,
+      "latency_warm": {
+        "n": 44,
+        "p50": 19.88598694999928,
+        "p95": 74.43554815000225,
+        "mean": 26.686222377272728
+      },
+      "est_cost_per_100_docs_usd": null
+    },
+    "pipeline_a_no_preprocess": {
+      "config": "pipeline_a_no_preprocess",
+      "n": 45,
+      "doc_type_exact": 0.6666666666666666,
+      "doc_type_fuzzy": 0.6666666666666666,
+      "seller_name_exact": 0.2222222222222222,
+      "seller_name_fuzzy": 0.3111111111111111,
+      "date_exact": 0.6888888888888889,
+      "date_fuzzy": 0.7555555555555555,
+      "invoice_number_exact": 0.6666666666666666,
+      "invoice_number_fuzzy": 0.6666666666666666,
+      "seller_tax_id_exact": 0.022222222222222223,
+      "seller_tax_id_fuzzy": 0.022222222222222223,
+      "buyer_tax_id_exact": 0.15555555555555556,
+      "buyer_tax_id_fuzzy": 0.15555555555555556,
+      "total_amount_exact": 0.4888888888888889,
+      "total_amount_fuzzy": 0.5555555555555556,
+      "items_precision": null,
+      "items_recall": null,
+      "items_f1": null,
+      "items_name_exact_rate": null,
+      "latency_cold_s": 16.035531100002117,
+      "latency_warm": {
+        "n": 44,
+        "p50": 19.295354649999354,
+        "p95": 69.61533100499983,
+        "mean": 26.008115718181877
+      },
+      "est_cost_per_100_docs_usd": null
+    },
+    "pipeline_b_qwen3-vl-8b-local": {
+      "config": "pipeline_b_qwen3-vl-8b-local",
+      "n": 45,
+      "doc_type_exact": 0.4888888888888889,
+      "doc_type_fuzzy": 0.4888888888888889,
+      "seller_name_exact": 0.8222222222222222,
+      "seller_name_fuzzy": 0.8666666666666667,
+      "date_exact": 0.8222222222222222,
+      "date_fuzzy": 0.9333333333333333,
+      "invoice_number_exact": 0.8888888888888888,
+      "invoice_number_fuzzy": 0.8888888888888888,
+      "seller_tax_id_exact": 1,
+      "seller_tax_id_fuzzy": 1,
+      "buyer_tax_id_exact": 1,
+      "buyer_tax_id_fuzzy": 1,
+      "total_amount_exact": 0.7777777777777778,
+      "total_amount_fuzzy": 0.7777777777777778,
+      "items_precision": null,
+      "items_recall": null,
+      "items_f1": null,
+      "items_name_exact_rate": null,
+      "latency_cold_s": 42.343311299999186,
+      "latency_warm": {
+        "n": 44,
+        "p50": 55.175575450000906,
+        "p95": 148.6184302149996,
+        "mean": 62.73072627954604
+      },
+      "est_cost_per_100_docs_usd": null,
+      "json_validity_rate": 0.9555555555555556
+    },
+    "pipeline_b_qwen3-vl-8b-local_with_ocr_hint": {
+      "config": "pipeline_b_qwen3-vl-8b-local_with_ocr_hint",
+      "n": 45,
+      "doc_type_exact": 0.5111111111111111,
+      "doc_type_fuzzy": 0.5111111111111111,
+      "seller_name_exact": 0.8666666666666667,
+      "seller_name_fuzzy": 0.8888888888888888,
+      "date_exact": 0.8666666666666667,
+      "date_fuzzy": 0.9777777777777777,
+      "invoice_number_exact": 0.8444444444444444,
+      "invoice_number_fuzzy": 0.8444444444444444,
+      "seller_tax_id_exact": 0.9555555555555556,
+      "seller_tax_id_fuzzy": 0.9555555555555556,
+      "buyer_tax_id_exact": 1,
+      "buyer_tax_id_fuzzy": 1,
+      "total_amount_exact": 0.5777777777777777,
+      "total_amount_fuzzy": 0.5777777777777777,
+      "items_precision": null,
+      "items_recall": null,
+      "items_f1": null,
+      "items_name_exact_rate": null,
+      "latency_cold_s": 56.663416600000346,
+      "latency_warm": {
+        "n": 44,
+        "p50": 52.70385629999873,
+        "p95": 96.58292621499787,
+        "mean": 56.19101362727286
+      },
+      "est_cost_per_100_docs_usd": null,
+      "json_validity_rate": 1
+    },
+    "pipeline_b_gpt-5.4-nano": {
+      "config": "pipeline_b_gpt-5.4-nano",
+      "n": 45,
+      "doc_type_exact": 0.9555555555555556,
+      "doc_type_fuzzy": 0.9555555555555556,
+      "seller_name_exact": 0.5777777777777777,
+      "seller_name_fuzzy": 0.7777777777777778,
+      "date_exact": 0.6,
+      "date_fuzzy": 0.7555555555555555,
+      "invoice_number_exact": 1,
+      "invoice_number_fuzzy": 1,
+      "seller_tax_id_exact": 0.9777777777777777,
+      "seller_tax_id_fuzzy": 0.9777777777777777,
+      "buyer_tax_id_exact": 1,
+      "buyer_tax_id_fuzzy": 1,
+      "total_amount_exact": 0.8888888888888888,
+      "total_amount_fuzzy": 0.8888888888888888,
+      "items_precision": null,
+      "items_recall": null,
+      "items_f1": null,
+      "items_name_exact_rate": null,
+      "latency_cold_s": 6.252232999999251,
+      "latency_warm": {
+        "n": 44,
+        "p50": 3.554703400001017,
+        "p95": 6.579711224996936,
+        "mean": 4.217448115909395
+      },
+      "est_cost_per_100_docs_usd": 0.10130255555555556,
+      "json_validity_rate": 1
+    },
+    "pipeline_b_gpt-5.4-nano_with_ocr_hint": {
+      "config": "pipeline_b_gpt-5.4-nano_with_ocr_hint",
+      "n": 45,
+      "doc_type_exact": 0.6222222222222222,
+      "doc_type_fuzzy": 0.6222222222222222,
+      "seller_name_exact": 0.7555555555555555,
+      "seller_name_fuzzy": 0.8,
+      "date_exact": 0.7777777777777778,
+      "date_fuzzy": 0.9333333333333333,
+      "invoice_number_exact": 0.9555555555555556,
+      "invoice_number_fuzzy": 0.9555555555555556,
+      "seller_tax_id_exact": 0.9777777777777777,
+      "seller_tax_id_fuzzy": 0.9777777777777777,
+      "buyer_tax_id_exact": 1,
+      "buyer_tax_id_fuzzy": 1,
+      "total_amount_exact": 0.9111111111111111,
+      "total_amount_fuzzy": 0.9111111111111111,
+      "items_precision": null,
+      "items_recall": null,
+      "items_f1": null,
+      "items_name_exact_rate": null,
+      "latency_cold_s": 9.513826799993694,
+      "latency_warm": {
+        "n": 44,
+        "p50": 3.5742102499971224,
+        "p95": 6.66123257499894,
+        "mean": 3.8200713022731425
+      },
+      "est_cost_per_100_docs_usd": 0.1053581111111111,
+      "json_validity_rate": 0.9555555555555556
+    }
+  }
+}

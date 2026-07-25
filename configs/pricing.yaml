@@ -1,0 +1,16 @@
+# Phase 4 成本估算假設。查證日期：2026-07-06（見 EVAL_REPORT.md 需揭露此假設與日期，
+# 之後任一家調價，只改這個檔案，不用碰 src/eval/cost.py）。
+
+api:
+  gemini-3.5-flash:
+    input_per_million_usd: 1.50
+    output_per_million_usd: 9.00
+  gpt-5.4-nano:
+    input_per_million_usd: 0.20
+    output_per_million_usd: 1.25
+
+local_gpu:
+  usd_per_hour: 0.40   # 雲端等效租用價（RunPod RTX 4090 級距），非本機實際電費
+  note: "本機為自有 GPU；此數字是若改租雲端 GPU 的等效成本，用來讓本地/API 兩條線可以放進同一張成本表比較"
+
+usd_to_twd: 32.5

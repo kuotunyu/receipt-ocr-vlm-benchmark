@@ -1,0 +1,19 @@
+{
+  "doc_type": "receipt",
+  "seller_name": "小美冰淇淋",
+  "date": "2025-01-20",
+  "invoice_number": null,
+  "seller_tax_id": "87654321",
+  "buyer_tax_id": null,
+  "total_amount": 200,
+  "items": [
+    {
+      "name": "芒果冰",
+      "amount": 120
+    },
+    {
+      "name": "紅豆湯",
+      "amount": 80
+    }
+  ]
+}

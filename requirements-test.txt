@@ -1,0 +1,8 @@
+# 離線單元測試的最小依賴；不安裝 PaddleOCR、模型 SDK 或資料集下載工具。
+pytest>=8.0
+jsonschema>=4.21
+pyyaml>=6.0
+fastapi>=0.110
+opencv-python-headless>=4.9
+numpy>=1.26
+rapidfuzz>=3.6

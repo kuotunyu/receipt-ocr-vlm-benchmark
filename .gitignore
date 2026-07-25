@@ -1,0 +1,35 @@
+# 環境
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.claude/
+HOW_TO_RESUME.md
+INTERVIEW_PREP.md
+
+# 資料（原始照片含個資，不進 repo；遮罩後示例圖放 docs/examples/）
+data/raw/*
+!data/raw/.gitkeep
+# 標註工具產生的 ground truth 可能含真實商家／發票資訊，不預設公開
+data/labels/*
+!data/labels/.gitkeep
+data/splits.json
+# 合成資料集與 SROIE 皆可由腳本重新產生/下載（make_synthetic_dataset.py / download_sroie.py）
+data/synthetic/
+data/sroie/
+
+# 實驗輸出（逐張 raw 留在本機；僅提交去識別化 aggregate summary）
+results/*
+!results/.gitkeep
+!results/official/
+results/official/*
+!results/official/README.md
+!results/official/synthetic_45_summary.json
+!results/official/sroie_45_summary.json
+
+# IDE / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

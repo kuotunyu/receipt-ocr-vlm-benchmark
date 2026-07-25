@@ -1,0 +1,19 @@
+{
+  "doc_type": "e_invoice",
+  "seller_name": "全家便利商店",
+  "date": "2024-05-12",
+  "invoice_number": "AB12345678",
+  "seller_tax_id": "22555003",
+  "buyer_tax_id": null,
+  "total_amount": 95,
+  "items": [
+    {
+      "name": "拿鐵咖啡",
+      "amount": 60
+    },
+    {
+      "name": "御飯糰-鮪魚",
+      "amount": 35
+    }
+  ]
+}

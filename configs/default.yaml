@@ -1,0 +1,11 @@
+# 全域設定：路徑與資料切分。管線/評估專屬設定於各 Phase 加入。
+paths:
+  raw_images: data/raw
+  labels: data/labels
+  splits: data/splits.json
+  results: results
+
+schema: schema/invoice_schema.json
+
+# Phase 4 成本估算假設另外放在 configs/pricing.yaml（獨立維護，之後調價不用碰這裡）
+pricing: configs/pricing.yaml

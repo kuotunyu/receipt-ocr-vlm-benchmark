@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>繁中發票/收據標註工具</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<header id="topbar">
+  <h1>繁中發票/收據標註工具</h1>
+  <div id="progress-wrap">
+    <div id="progress-bar"><div id="progress-fill"></div></div>
+    <span id="progress-text">0 / 0</span>
+  </div>
+  <nav id="nav-controls">
+    <button id="btn-prev" title="上一張 (←)">← 上一張</button>
+    <select id="image-select"></select>
+    <button id="btn-next" title="下一張 (→)">下一張 →</button>
+  </nav>
+</header>
+
+<main id="workspace">
+  <section id="viewer-pane">
+    <div id="viewer-toolbar">
+      <button id="btn-zoom-out" title="縮小">－</button>
+      <span id="zoom-level">100%</span>
+      <button id="btn-zoom-in" title="放大">＋</button>
+      <button id="btn-zoom-reset" title="重設縮放">重設</button>
+      <button id="btn-rotate" title="旋轉檢視（僅供檢視，不影響原圖）">↻ 旋轉</button>
+    </div>
+    <div id="viewer-container">
+      <img id="viewer-image" alt="文件影像" draggable="false" />
+    </div>
+  </section>
+
+  <section id="form-pane">
+    <div id="ocr-box">
+      <div id="ocr-header">
+        <button id="btn-ocr-prefill">OCR 預填建議</button>
+        <span id="ocr-status"></span>
+      </div>
+      <details id="ocr-raw-details">
+        <summary>OCR 原始辨識文字</summary>
+        <pre id="ocr-raw-text"></pre>
+      </details>
+    </div>
+
+    <form id="label-form">
+      <label>
+        文件類型
+        <select id="f-doc_type" name="doc_type">
+          <option value="e_invoice">電子發票證明聯</option>
+          <option value="receipt">傳統收據</option>
+        </select>
+      </label>
+
+      <label>
+        賣方名稱（店家）
+        <input id="f-seller_name" name="seller_name" type="text" autocomplete="off" />
+      </label>
+
+      <label>
+        日期
+        <input id="f-date" name="date" type="date" />
+      </label>
+
+      <label>
+        發票號碼
+        <input id="f-invoice_number" name="invoice_number" type="text" placeholder="AB12345678" autocomplete="off" />
+      </label>
+
+      <label>
+        賣方統一編號
+        <input id="f-seller_tax_id" name="seller_tax_id" type="text" placeholder="8 碼數字" autocomplete="off" />
+      </label>
+
+      <label>
+        買方統一編號
+        <input id="f-buyer_tax_id" name="buyer_tax_id" type="text" placeholder="8 碼數字（多數為空）" autocomplete="off" />
+      </label>
+
+      <label>
+        總計金額
+        <input id="f-total_amount" name="total_amount" type="number" step="1" />
+      </label>
+
+      <div id="items-section">
+        <div id="items-header">
+          <span>品項清單</span>
+          <button type="button" id="btn-add-item">+ 新增品項</button>
+        </div>
+        <div id="items-list"></div>
+      </div>
+
+      <div id="form-actions">
+        <button type="submit" id="btn-save">儲存標註 (Ctrl+S)</button>
+        <span id="save-status"></span>
+      </div>
+    </form>
+  </section>
+</main>
+
+<template id="item-row-template">
+  <div class="item-row">
+    <input type="text" class="item-name" placeholder="品項名稱" />
+    <input type="number" class="item-amount" placeholder="金額" step="1" />
+    <button type="button" class="btn-remove-item" title="刪除此品項">✕</button>
+  </div>
+</template>
+
+<script src="/app.js"></script>
+</body>
+</html>

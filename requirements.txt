@@ -1,0 +1,30 @@
+# Python 3.10（PaddleOCR 相容性最佳）
+# Phase 0 — 核心
+jsonschema>=4.21
+pyyaml>=6.0
+python-dotenv>=1.0
+pytest>=8.0
+
+# Phase 1 — 標註工具
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+pillow>=10.0
+paddlepaddle==3.3.1       # CPU 版；OCR 推論須搭配 enable_mkldnn=False，見 annotator/ocr_prefill.py
+paddleocr==3.7.0          # 3.x API 與 2.x 不相容（.predict() 取代 .ocr()，回傳格式也不同）
+
+# Phase 2 — Pipeline A
+opencv-python>=4.9
+numpy>=1.26
+matplotlib>=3.8          # smoke test 視覺化；中文標題需系統裝有 CJK 字型（Windows 內建 Microsoft JhengHei 即可）
+ollama>=0.3              # qwen3:4b 品項補漏；本機需另外安裝 Ollama 應用程式 + `ollama pull qwen3:4b`
+
+# Phase 3 — Pipeline B
+google-genai>=1.0          # Gemini（需 .env 的 GOOGLE_API_KEY）
+openai>=1.50               # OpenAI（需 .env 的 OPENAI_API_KEY）
+
+# Phase 4 — 評估
+rapidfuzz>=3.6             # 編輯距離
+
+# 資料集（SROIE 下載）
+datasets>=3.0              # HuggingFace datasets，scripts/download_sroie.py 用

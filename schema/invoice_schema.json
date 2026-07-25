@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "taiwan-receipt-extraction-v1",
+  "title": "台灣發票/收據關鍵欄位抽取結果",
+  "description": "兩條管線的輸出與 ground truth 標註共用此 schema。所有值先經 src/common/normalize.py 正規化後才驗證與比對。",
+  "type": "object",
+  "properties": {
+    "doc_type": {
+      "description": "文件類型：電子發票證明聯或傳統收據",
+      "type": "string",
+      "enum": ["e_invoice", "receipt"]
+    },
+    "seller_name": {
+      "description": "賣方（店家）名稱，通常為文件上最大或最醒目的文字，常為 logo 特殊字體",
+      "type": ["string", "null"]
+    },
+    "date": {
+      "description": "交易日期，西元 ISO 格式；無法辨識時為 null",
+      "type": ["string", "null"],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "invoice_number": {
+      "description": "統一發票號碼（2 大寫字母 + 8 碼數字）；傳統收據通常為 null",
+      "type": ["string", "null"],
+      "pattern": "^[A-Z]{2}\\d{8}$"
+    },
+    "seller_tax_id": {
+      "description": "賣方統一編號（8 碼數字）",
+      "type": ["string", "null"],
+      "pattern": "^\\d{8}$"
+    },
+    "buyer_tax_id": {
+      "description": "買方統一編號（8 碼數字），多數消費發票為 null",
+      "type": ["string", "null"],
+      "pattern": "^\\d{8}$"
+    },
+    "total_amount": {
+      "description": "總計金額（新台幣，數值）",
+      "type": ["number", "null"]
+    },
+    "items": {
+      "description": "品項清單；無法辨識任何品項時為空陣列",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "amount": { "type": ["number", "null"] }
+        },
+        "required": ["name", "amount"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "doc_type",
+    "seller_name",
+    "date",
+    "invoice_number",
+    "seller_tax_id",
+    "buyer_tax_id",
+    "total_amount",
+    "items"
+  ],
+  "additionalProperties": false
+}
