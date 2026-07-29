@@ -33,3 +33,24 @@ results/official/*
 .idea/
 Thumbs.db
 .DS_Store
+
+# Complex-document benchmark: public PDFs are download-only.  Parser artifacts
+# are reproducible but can be large and may contain rendered source pages.
+data/complex_document/raw/
+data/complex_document/holdout/raw/
+artifacts/complex_document/
+results/complex_document/runs/
+
+# Keep the compact, reproducible complex-document benchmark definitions/results.
+!data/complex_document/manifest.json
+!data/complex_document/gold/
+!data/complex_document/gold/**
+!data/complex_document/questions.json
+!data/complex_document/holdout/
+!data/complex_document/holdout/manifest.json
+!data/complex_document/holdout/gold/
+!data/complex_document/holdout/gold/**
+!results/complex_document/
+!results/complex_document/README.md
+!results/complex_document/benchmark_summary.json
+!results/complex_document/table_router_holdout.json

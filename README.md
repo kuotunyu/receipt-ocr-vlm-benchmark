@@ -11,6 +11,21 @@
 > 授權範圍：根目錄的 MIT License 僅適用於本專案原創程式碼；SROIE 資料與衍生範例圖片沿用
 > 上游條款。來源、授權標示、修改內容與論文引用見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
+本 repository 現在有兩條**互相獨立**的研究軌：
+
+1. 原有 receipt benchmark：本頁下方的傳統 OCR vs 端到端 VLM 收據欄位抽取實驗。
+2. 新增 complex-document track：5 份繁中公開文件、26 個精選難頁、37 個人工 hard cases，
+   量測 parsing error 如何傳到 chunking、retrieval 與答案。它不是 ChatPDF，也沒有改 repository 名稱。
+   v0.3 的 hybrid table-region router 將 answer/citation 提高到 0.917，但 MRR 尚未回到 baseline；
+   v0.5 的 Qwen parser 與 caption-and-index 也完成正式 GPU 評測但未通過 promotion gates。
+   v0.6 再加入 PaddleOCR 正式 row、15 題外部 QA holdout 與 late-max MRR recovery：
+   ranker 可進 Hybrid 研究分支，但完整 Hybrid promotion 仍未通過 citation gate。
+   v0.7 完成外部 Qwen、3 張圖／4 題 caption gold 與 native-signal targeted VLM：
+   targeted + fixed 在外部診斷四項指標都改善，但因這個 fixed factor 是看過 structure MRR
+   下滑後才補的 post-hoc analysis，只能列為 promising、必須用新 holdout 重驗。
+   因此全域替換、正式 structure routing、VLM parser 與 caption promotion 都維持 NO-GO；設計與限制見
+   [docs/COMPLEX_DOCUMENT_BENCHMARK.md](docs/COMPLEX_DOCUMENT_BENCHMARK.md)。
+
 ## 結果摘要
 
 **核心發現：可移植性崩跌**——Pipeline A 從合成繁中的 0.92~0.97 掉到 SROIE 真實英文收據只剩
@@ -143,6 +158,54 @@ copy .env.example .env
 .venv\Scripts\python -m uvicorn annotator.main:app --port 8010
 ```
 
+### Complex-document track
+
+```powershell
+# 本機 parser extra；LlamaParse 不在預設安裝內
+.venv\Scripts\python -m pip install -e ".[complex-document,test]"
+
+# 只下載 manifest 指定且 checksum 固定的公開 PDF；原始檔受 .gitignore 保護
+.venv\Scripts\python scripts\download_complex_documents.py
+
+# 一頁 integration smoke；加 --paddle 才跑較慢的 CPU PaddleOCR
+.venv\Scripts\python scripts\smoke_test_complex_document.py
+
+# 從 raw PDF 產生 parser-native output、Spatial IR 與 factor table
+.venv\Scripts\python scripts\run_complex_benchmark.py
+.venv\Scripts\python scripts\verify_complex_results.py
+
+# v0.4 外部 blind router holdout；沿用同一下載器，但資料與 artifacts 完全分開
+.venv\Scripts\python scripts\download_complex_documents.py --manifest data/complex_document/holdout/manifest.json --output-dir data/complex_document/holdout/raw
+.venv\Scripts\python scripts\run_table_router_holdout.py
+.venv\Scripts\python scripts\verify_table_router_holdout.py
+
+# v0.6/v0.7 外部 15 題 end-to-end QA holdout
+.venv\Scripts\python scripts\run_external_qa_holdout.py
+# GPU 空閒且 qwen3-vl:8b 已安裝時，加入 full + targeted VLM
+.venv\Scripts\python scripts\run_external_qa_holdout.py --reuse-ir --include-qwen
+.venv\Scripts\python scripts\verify_external_qa_holdout.py
+
+# 保留 atomic table 的 late-max MRR recovery
+.venv\Scripts\python scripts\run_mrr_recovery.py
+.venv\Scripts\python scripts\verify_mrr_recovery.py
+
+# 重現同一案例的原始缺失與 table reconstruction partial recovery
+.venv\Scripts\python scripts\visualize_parsing_failure.py
+.venv\Scripts\python scripts\visualize_parsing_failure.py --parser liteparse-table --output artifacts/complex_document/failures/arc-05-liteparse-table.png
+
+# qwen3-vl:8b 已安裝時才執行；完整 run 為 3 張圖／4 題，
+# caption 只索引，回答仍取原始 crop
+.venv\Scripts\python scripts\generate_chart_captions.py
+.venv\Scripts\python scripts\generate_chart_captions.py --smoke
+```
+
+LlamaParse 是隔離的 optional extra：`.venv\Scripts\python -m pip install -e ".[llamaparse]"`。
+沒有 `LLAMA_CLOUD_API_KEY` 時 adapter 會明確 skip，不會讓測試或本地可重現路徑失敗。
+
+Qwen parser / caption 呼叫固定 `think=false`、temperature 0 與 JSON Schema output，避免文件轉錄
+浪費 thinking tokens。每頁及每次 caption 呼叫前也會檢查 Ollama：若其他模型正在 GPU 執行，
+本次工作會顯示 `SKIP` / `PAUSE`，不會載入、卸載或停止對方模型。
+
 只要查核不會呼叫模型或 API 的單元測試時，可改安裝 `requirements-test.txt`；GitHub Actions
 也使用這組輕量依賴，不會在 CI 下載 PaddleOCR 權重或執行任何模型。
 
@@ -160,6 +223,8 @@ Pipeline A 的 OCR 引擎（PaddleOCR）與品項補漏 LLM（`ollama pull qwen3
 - [EVAL_REPORT.md](EVAL_REPORT.md) — 完整對比表、錯誤類型分析、場景結論
 - [docs/DATA_COLLECTION_GUIDE.md](docs/DATA_COLLECTION_GUIDE.md) — 拍攝指引與 diversity matrix
 - [results/official/README.md](results/official/README.md) — 去識別化正式評估摘要與重建方式
+- [docs/COMPLEX_DOCUMENT_BENCHMARK.md](docs/COMPLEX_DOCUMENT_BENCHMARK.md) — 複雜文件 IR、人工 gold、normalization audit、parser/chunk/RAG 評估與凍結門檻
+- [results/complex_document/README.md](results/complex_document/README.md) — factor-at-a-time、外部 holdouts v0.4/v0.6/v0.7 與 artifact 重建方式
 - [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) — SROIE 來源、授權標示、修改與引用
 
 ## 目前狀態
@@ -170,3 +235,8 @@ Pipeline A 的 OCR 引擎（PaddleOCR）與品項補漏 LLM（`ollama pull qwen3
 - [x] Phase 3：Pipeline B（本地 qwen3-vl:8b / Gemini 3.5 Flash / gpt-5.4-nano 三個 backend 皆驗證）
 - [x] Phase 4：評估框架 + 雙軌 45×2 張正式評估（合成繁中 + SROIE 真實英文收據）已完成
 - [x] Phase 5：全部公開文件（本頁、DESIGN、EVAL_REPORT）已用正式雙軌結果撰寫完成
+- [x] Complex-document v0.3：共同 Spatial IR、table-region router、37 個 parser cases、26 個 routing labels 與固定變因 RAG
+- [x] Complex-document v0.4：2 份外部官方文件、12 個先標後測 blind routing labels；固定門檻 precision/recall 1.000
+- [x] Complex-document v0.5：Qwen3-VL 26 頁 parser 與 caption factor 4/5 完成；兩者依人工 gold 均為 NO-GO
+- [x] Complex-document v0.6 CPU stage：PaddleOCR 26 頁正式 row、15 題外部 QA 與 late-max MRR recovery 完成
+- [x] Complex-document v0.7 GPU stage：外部 full/targeted Qwen、3 張圖 4 題 caption 與 post-hoc fixed diagnostic 完成；正式 promotion 仍為 NO-GO

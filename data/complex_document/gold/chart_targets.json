@@ -1,0 +1,29 @@
+{
+  "annotation_method": "Human-verified chart/diagram crop boxes in normalized page coordinates.",
+  "targets": [
+    {
+      "figure_id": "archives-digitization-flow-p2",
+      "document_id": "archives_digitization_2004",
+      "page": 2,
+      "bbox_normalized": [0.15, 0.43, 0.85, 0.65],
+      "generic_prompt": "用一句繁體中文描述這張流程圖的主題，不要列出所有節點。",
+      "question_ids": ["q13", "q14"]
+    },
+    {
+      "figure_id": "cbc-current-account-p33",
+      "document_id": "cbc_2023_annual",
+      "page": 33,
+      "bbox_normalized": [0.54, 0.06, 0.91, 0.39],
+      "generic_prompt": "用一句繁體中文描述這張圖是什麼，不要抄錄所有數值。",
+      "question_ids": ["q06"]
+    },
+    {
+      "figure_id": "ndc-policy-system-p6",
+      "document_id": "ndc_sdg_policy_2022",
+      "page": 6,
+      "bbox_normalized": [0.12, 0.20, 0.88, 0.55],
+      "generic_prompt": "用一句繁體中文描述這張圖是什麼，不要抄錄所有節點。",
+      "question_ids": ["q07"]
+    }
+  ]
+}

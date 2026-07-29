@@ -1,0 +1,131 @@
+{
+  "benchmark_version": "0.6.0",
+  "annotation_method": "Manual visual verification against 120 DPI renders; no LLM judge and no downstream predictions inspected before freezing.",
+  "annotated_at": "2026-07-30",
+  "question_count": 15,
+  "questions": [
+    {
+      "question_id": "qh01",
+      "type": "table_cell",
+      "question": "113年底桃園分局轄區內現住人口是多少人？",
+      "answers": ["475798"],
+      "answer_regex": "桃園分局[\\s\\S]{0,100}?(?P<answer>475[,]?798)",
+      "evidence": [{"document_id": "taoyuan_police_2024", "page": 8, "text_contains": ["桃園分局", "475,798"]}]
+    },
+    {
+      "question_id": "qh02",
+      "type": "table_cell",
+      "question": "113年底大園分局的警民比是多少？",
+      "answers": ["619"],
+      "answer_regex": "大園分局[\\s\\S]{0,140}?(?P<answer>619)",
+      "evidence": [{"document_id": "taoyuan_police_2024", "page": 8, "text_contains": ["大園分局", "619"]}]
+    },
+    {
+      "question_id": "qh03",
+      "type": "chart_value",
+      "question": "桃園市113年道路交通事故肇事件數是多少件？",
+      "answers": ["45219"],
+      "answer_regex": "113[\\s\\S]{0,80}?(?P<answer>45[,]?219)",
+      "evidence": [{"document_id": "taoyuan_police_2024", "page": 21, "text_contains": ["113", "45,219"]}]
+    },
+    {
+      "question_id": "qh04",
+      "type": "single_text_fact",
+      "question": "桃園市113年道路交通事故中，駕駛過失有多少件？",
+      "answers": ["44576"],
+      "answer_regex": "駕駛過失\\s*(?P<answer>44[,]?576)",
+      "evidence": [{"document_id": "taoyuan_police_2024", "page": 21, "text_contains": ["駕駛過失", "44,576"]}]
+    },
+    {
+      "question_id": "qh05",
+      "type": "table_cell",
+      "question": "2024年桃園市刑事案件發生數是多少？",
+      "answers": ["5090"],
+      "answer_regex": "2024[\\s\\S]{0,80}?(?P<answer>5[,]?090)",
+      "evidence": [{"document_id": "taoyuan_police_2024", "page": 54, "text_contains": ["2024", "5,090"]}]
+    },
+    {
+      "question_id": "qh06",
+      "type": "table_cell",
+      "question": "桃園分局的刑事案件發生數是多少？",
+      "answers": ["1261"],
+      "answer_regex": "桃園分局[\\s\\S]{0,80}?(?P<answer>1[,]?261)",
+      "evidence": [{"document_id": "taoyuan_police_2024", "page": 54, "text_contains": ["桃園分局", "1,261"]}]
+    },
+    {
+      "question_id": "qh07",
+      "type": "cross_page",
+      "question": "2024年桃園市第二級毒品破獲數是多少？",
+      "answers": ["3599"],
+      "answer_regex": "(?P<answer>3[,]?599)",
+      "evidence": [{"document_id": "taoyuan_police_2024", "pages": [54, 55], "text_contains": ["2024", "第二級毒品", "3,599"]}]
+    },
+    {
+      "question_id": "qh08",
+      "type": "table_cell",
+      "question": "113年12月桃園機場入出國境人數是多少？",
+      "answers": ["3416816"],
+      "answer_regex": "12月[\\s\\S]{0,120}?(?P<answer>3[,]?416[,]?816)",
+      "evidence": [{"document_id": "nia_2024_annual", "page": 158, "text_contains": ["12月", "3,416,816"]}]
+    },
+    {
+      "question_id": "qh09",
+      "type": "table_aggregation",
+      "question": "113年花蓮機場與馬公機場入出國境總人數合計是多少？",
+      "answers": ["9660"],
+      "answer_regex": "(?P<answer>8[,]?032|1[,]?628)",
+      "operation": "sum",
+      "evidence": [{"document_id": "nia_2024_annual", "page": 158, "text_contains": ["花蓮機場", "馬公機場", "8,032", "1,628"]}]
+    },
+    {
+      "question_id": "qh10",
+      "type": "table_cell",
+      "question": "113年12月自動查驗通關系統總通關人數是多少？",
+      "answers": ["2636972"],
+      "answer_regex": "12月[\\s\\S]{0,100}?(?:135[,]?077\\s*)?(?P<answer>2[,]?636[,]?972)",
+      "evidence": [{"document_id": "nia_2024_annual", "page": 160, "text_contains": ["12月", "2,636,972"]}]
+    },
+    {
+      "question_id": "qh11",
+      "type": "table_aggregation",
+      "question": "113年金門水頭商港、高雄機場及松山機場的自動查驗註冊人數合計是多少？",
+      "answers": ["412616"],
+      "answer_regex": "(?P<answer>56[,]?303|288[,]?700|67[,]?613)",
+      "operation": "sum",
+      "evidence": [{"document_id": "nia_2024_annual", "page": 160, "text_contains": ["金門水頭商港", "高雄機場", "松山機場", "56,303", "288,700", "67,613"]}]
+    },
+    {
+      "question_id": "qh12",
+      "type": "table_cell",
+      "question": "113年11月司法警察機關查緝人口販運案件合計多少件？",
+      "answers": ["21"],
+      "answer_regex": "11月[\\s\\S]{0,50}?(?P<answer>21)",
+      "evidence": [{"document_id": "nia_2024_annual", "page": 172, "text_contains": ["11月", "21"]}]
+    },
+    {
+      "question_id": "qh13",
+      "type": "table_aggregation",
+      "question": "113年人口販運案件中的勞力剝削、性剝削與器官摘除合計多少件？",
+      "answers": ["125"],
+      "answer_regex": "(?P<answer>41|83|1)",
+      "operation": "sum",
+      "evidence": [{"document_id": "nia_2024_annual", "page": 172, "text_contains": ["勞力剝削", "性剝削", "器官摘除", "41", "83", "1"]}]
+    },
+    {
+      "question_id": "qh14",
+      "type": "unanswerable",
+      "question": "桃園市114年道路交通事故肇事件數預測值是多少？",
+      "answers": [],
+      "unanswerable": true,
+      "evidence": []
+    },
+    {
+      "question_id": "qh15",
+      "type": "unanswerable",
+      "question": "113年新竹機場入出國境人數是多少？",
+      "answers": [],
+      "unanswerable": true,
+      "evidence": []
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "benchmark_version": "0.3.0",
+  "generator_policy": "The same deterministic extractive generator is used for every parser/chunker factor.",
+  "questions": [
+    {
+      "question_id": "q01",
+      "type": "single_text_fact",
+      "question": "臺灣歷史創新科技體驗建置計畫的計畫編號是多少？",
+      "answers": ["1060473"],
+      "answer_regex": "計畫編號\\s*(?P<answer>1060473)",
+      "evidence": [{"document_id":"moc_history_technology_review_2017","page":1,"text_contains":["計畫編號","1060473"]}]
+    },
+    {
+      "question_id": "q02",
+      "type": "single_text_fact",
+      "question": "該文化部計畫的計畫總經費為多少千元？",
+      "answers": ["157917"],
+      "answer_regex": "計畫總經費\\s*(?P<answer>157[,，]?917)",
+      "evidence": [{"document_id":"moc_history_technology_review_2017","page":1,"text_contains":["計畫總經費","157,917"]}]
+    },
+    {
+      "question_id": "q03",
+      "type": "table_cell",
+      "question": "常見備份媒體表中，DVD 光碟的單位容量是多少 GB？",
+      "answers": ["4.7"],
+      "answer_regex": "DVD光碟\\s*(?P<answer>4[.]7)",
+      "evidence": [{"document_id":"archives_digitization_2004","page":5,"text_contains":["DVD光碟","4.7"]}]
+    },
+    {
+      "question_id": "q04",
+      "type": "table_cell",
+      "question": "112 年平均每人國內生產毛額（新台幣）是多少？",
+      "answers": ["1007936"],
+      "answer_regex": "112\\s*年[^\\n]{0,120}?(?P<answer>1[,，]007[,，]936)",
+      "evidence": [{"document_id":"cbc_2023_annual","page":29,"text_contains":["112 年","1,007,936"]}]
+    },
+    {
+      "question_id": "q05",
+      "type": "table_aggregation",
+      "question": "CD 光碟與 DVD 光碟備份 10TB 的備份成本合計多少元？",
+      "answers": ["374150"],
+      "answer_regex": "(?P<answer>146[,，]350|227[,，]800)",
+      "operation": "sum",
+      "evidence": [{"document_id":"archives_digitization_2004","page":5,"text_contains":["CD光碟","146,350","DVD光碟","227,800"]}]
+    },
+    {
+      "question_id": "q06",
+      "type": "chart_value",
+      "question": "中央銀行年報經常帳圖中，112 年經常帳為多少億美元？",
+      "answers": ["1053.29"],
+      "answer_regex": "112\\s*年\\s*經常帳順差\\s*(?P<answer>1[,，]053[.]29)",
+      "evidence": [{"document_id":"cbc_2023_annual","page":33,"text_contains":["112 年","經常帳","1,053.29"]}]
+    },
+    {
+      "question_id": "q07",
+      "type": "chart_value",
+      "question": "中央政府施政計畫體制圖中，核心政策連到哪一項上位計畫？",
+      "answers": ["國家發展計畫"],
+      "answer_regex": "核心政策\\s*(?P<answer>國家發展計畫)",
+      "evidence": [{"document_id":"ndc_sdg_policy_2022","page":6,"text_contains":["核心政策","國家發展計畫"]}]
+    },
+    {
+      "question_id": "q08",
+      "type": "cross_page",
+      "question": "跨頁關鍵績效指標表中，新化學物質登錄項目接續列出的指標是什麼？",
+      "answers": ["輔導訪視家數"],
+      "answer_regex": "(?P<answer>輔導訪視家數)",
+      "evidence": [{"document_id":"moenv_whitepaper_2024","page":18,"text_contains":["輔導訪視家數"]}]
+    },
+    {
+      "question_id": "q09",
+      "type": "table_cell",
+      "question": "國際永續發展里程碑表中，巴黎協定是哪一年？",
+      "answers": ["2015"],
+      "answer_regex": "(?P<answer>2015)\\s*「?巴黎協定",
+      "evidence": [{"document_id":"ndc_sdg_policy_2022","page":2,"text_contains":["2015","巴黎協定"]}]
+    },
+    {
+      "question_id": "q10",
+      "type": "single_text_fact",
+      "question": "國際永續發展政策趨勢的敘述從哪個年代開始？",
+      "answers": ["1970"],
+      "answer_regex": "自\\s*(?P<answer>1970)\\s*年代",
+      "evidence": [{"document_id":"ndc_sdg_policy_2022","page":2,"text_contains":["1970 年代"]}]
+    },
+    {
+      "question_id": "q11",
+      "type": "unanswerable",
+      "question": "這些文件是否記載 2035 年臺灣人口總數？",
+      "answers": [],
+      "unanswerable": true,
+      "evidence": []
+    },
+    {
+      "question_id": "q12",
+      "type": "unanswerable",
+      "question": "文化部計畫主持人的手機號碼是多少？",
+      "answers": [],
+      "unanswerable": true,
+      "evidence": []
+    },
+    {
+      "question_id": "q13",
+      "type": "chart_value",
+      "question": "檔案掃描流程圖中，「檔案整理」之後的主要階段是什麼？",
+      "answers": ["影像掃描"],
+      "answer_regex": "檔案整理[\\s\\S]{0,40}?(?P<answer>影像掃描)",
+      "evidence": [{"document_id":"archives_digitization_2004","page":2,"text_contains":["檔案整理","影像掃描"]}]
+    },
+    {
+      "question_id": "q14",
+      "type": "chart_value",
+      "question": "檔案掃描流程圖中，「影像掃描」階段首先要做哪項作業？",
+      "answers": ["訂定規格"],
+      "answer_regex": "影像掃描[\\s\\S]{0,80}?(?P<answer>訂定規格)",
+      "evidence": [{"document_id":"archives_digitization_2004","page":2,"text_contains":["影像掃描","訂定規格"]}]
+    }
+  ]
+}

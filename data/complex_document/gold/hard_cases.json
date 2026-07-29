@@ -1,0 +1,49 @@
+{
+  "benchmark_version": "0.3.0",
+  "annotation_method": "Human visual verification against rendered source pages; no LLM judge.",
+  "annotated_at": "2026-07-29",
+  "case_count": 37,
+  "cases": [
+    {"case_id":"arc-01","document_id":"archives_digitization_2004","dimension":"text_completeness","pages":[2],"expected_terms":["影像數位化模式有幾種選擇","人工方式重新輸入","OCR辨識","圖檔方式儲存"]},
+    {"case_id":"arc-02","document_id":"archives_digitization_2004","dimension":"reading_order","pages":[2],"ordered_terms":["影像數位化模式","檔案掃描方式","檔案整理","影像掃描","系統建置","開放使用","影像規格的製訂"]},
+    {"case_id":"arc-03","document_id":"archives_digitization_2004","dimension":"chart_data","pages":[2],"expected_terms":["檔案整理","影像掃描","系統建置","開放使用","訂定METADATA"]},
+    {"case_id":"arc-04","document_id":"archives_digitization_2004","dimension":"heading_list_style","pages":[2],"expected_elements":[{"text":"影像規格的製訂","type":"heading"},{"text":"影像數位化模式有幾種選擇","type":"list"}]},
+    {"case_id":"arc-05","document_id":"archives_digitization_2004","dimension":"table_structure","pages":[5],"anchor":"常見備份媒體性質比較","bbox_normalized":[0.15,0.35,0.85,0.55],"minimum_rows":6,"minimum_columns":7,"expected_cells":["CD光碟","DVD光碟","磁帶","硬碟","130,000"]},
+    {"case_id":"arc-06","document_id":"archives_digitization_2004","dimension":"table_structure","pages":[5],"anchor":"不同媒體備份 10TB成本估算","minimum_rows":6,"minimum_columns":6,"expected_cells":["146,350","227,800","450,000","2,500,000"]},
+    {"case_id":"arc-07","document_id":"archives_digitization_2004","dimension":"bbox_grounding","pages":[5],"target_text":"常見備份媒體性質比較","bbox_normalized":[0.40,0.31,0.70,0.35],"iou_threshold":0.35},
+    {"case_id":"arc-08","document_id":"archives_digitization_2004","dimension":"header_footer_contamination","pages":[1,2,5,6,15],"repeated_text":"檔案數位影像製作之流程與管理","max_occurrences":1},
+
+    {"case_id":"cbc-01","document_id":"cbc_2023_annual","dimension":"table_structure","pages":[29],"anchor":"國內生產毛額","minimum_rows":10,"minimum_columns":7,"expected_cells":["1,007,936","32,327","8.72","4.93"]},
+    {"case_id":"cbc-02","document_id":"cbc_2023_annual","dimension":"text_completeness","pages":[29],"expected_terms":["112 年平均每人國內生產毛額","100 萬 7,936 元","3 萬 2,327 美元","較上年減少 298 美元"]},
+    {"case_id":"cbc-03","document_id":"cbc_2023_annual","dimension":"reading_order","pages":[29],"ordered_terms":["國民所得毛額成長 2.63%","平均每人國內生產毛額","國內生產毛額之處分","民間消費成長率為 8.32%","民間消費成長 6.41%"]},
+    {"case_id":"cbc-04","document_id":"cbc_2023_annual","dimension":"chart_data","pages":[33],"expected_terms":["經常帳","億美元","103","112 年","1,053.29"]},
+    {"case_id":"cbc-05","document_id":"cbc_2023_annual","dimension":"table_structure","pages":[33],"anchor":"國際收支","minimum_rows":20,"minimum_columns":4,"expected_cells":["經常帳","1,053.29","1,009.26","44.03","金融帳"]},
+    {"case_id":"cbc-06","document_id":"cbc_2023_annual","dimension":"bbox_grounding","pages":[29],"target_text":"國內生產毛額、國民所得毛額年增率與平均每人國內生產毛額","bbox_normalized":[0.23,0.11,0.79,0.15],"iou_threshold":0.45},
+    {"case_id":"cbc-07","document_id":"cbc_2023_annual","dimension":"header_footer_contamination","pages":[12,29,31],"repeated_text":"貳、國內經濟篇","max_occurrences":0},
+
+    {"case_id":"moc-01","document_id":"moc_history_technology_review_2017","dimension":"table_structure","pages":[1],"anchor":"計畫名稱","minimum_rows":8,"minimum_columns":2,"expected_cells":["1060473","106/1/1~109/12/31","文化部","157,917"]},
+    {"case_id":"moc-02","document_id":"moc_history_technology_review_2017","dimension":"text_completeness","pages":[1],"expected_terms":["本年度預定進度目標：15.65%","本年度可支用預算數：24,717 千元","臺灣歷史博物館","計畫總經費"]},
+    {"case_id":"moc-03","document_id":"moc_history_technology_review_2017","dimension":"heading_list_style","pages":[1],"expected_elements":[{"text":"壹、基本資料","type":"heading"},{"text":"一、打開歷史廣角","type":"list"},{"text":"二、打開歷史透視鏡","type":"list"}]},
+    {"case_id":"moc-04","document_id":"moc_history_technology_review_2017","dimension":"reading_order","pages":[1],"ordered_terms":["計畫名稱","計畫類別","計畫編號","計畫期程","年度目標","主管機關","主辦機關","計畫總經費","年度工作摘要"]},
+    {"case_id":"moc-05","document_id":"moc_history_technology_review_2017","dimension":"table_structure","pages":[3],"anchor":"經費運用","minimum_rows":4,"minimum_columns":4,"expected_cells":["15.00","14.45","14.30","24,717","24,711","99"]},
+    {"case_id":"moc-06","document_id":"moc_history_technology_review_2017","dimension":"bbox_grounding","pages":[1],"target_text":"壹、基本資料","bbox_normalized":[0.04,0.105,0.22,0.135],"iou_threshold":0.35},
+
+    {"case_id":"env-01","document_id":"moenv_whitepaper_2024","dimension":"heading_list_style","pages":[15],"expected_elements":[{"text":"第三節 權責分工與績效指標","type":"heading"},{"text":"一、評核指標","type":"heading"},{"text":"（一）配合近、中、長程規劃","type":"list"}]},
+    {"case_id":"env-02","document_id":"moenv_whitepaper_2024","dimension":"text_completeness","pages":[15],"expected_terms":["國家環境保護計畫","關鍵績效指標","滾動式管理","定期修正檢討執行策略"]},
+    {"case_id":"env-03","document_id":"moenv_whitepaper_2024","dimension":"table_structure","pages":[16],"anchor":"國家環境保護計畫","minimum_rows":14,"minimum_columns":3,"expected_cells":["氣候變遷因應","治山防災管理","海洋保育","環境教育","社會參與"]},
+    {"case_id":"env-04","document_id":"moenv_whitepaper_2024","dimension":"table_structure","pages":[17],"anchor":"關鍵績效指標","minimum_rows":8,"minimum_columns":4,"expected_cells":["溫室氣體總排放量","AQI≦100","整體污水處理率","自來水水質合格率"]},
+    {"case_id":"env-05","document_id":"moenv_whitepaper_2024","dimension":"cross_page_continuity","pages":[17,18],"left_term":"新化學物質登錄資訊收集掌握及登錄許可案件數","right_term":"輔導訪視家數","requires_link":true},
+    {"case_id":"env-06","document_id":"moenv_whitepaper_2024","dimension":"text_completeness","pages":[18],"expected_terms":["森林覆蓋率","綠色保育生產面積","平均海洋酸鹼值(pH)","清除海底垃圾量"]},
+    {"case_id":"env-07","document_id":"moenv_whitepaper_2024","dimension":"bbox_grounding","pages":[15],"target_text":"第三節 權責分工與績效指標","bbox_normalized":[0.25,0.14,0.75,0.20],"iou_threshold":0.4},
+    {"case_id":"env-08","document_id":"moenv_whitepaper_2024","dimension":"header_footer_contamination","pages":[15,16,17,18],"repeated_text":"第一篇","max_occurrences":0},
+    {"case_id":"env-09","document_id":"moenv_whitepaper_2024","dimension":"visual_element","pages":[1],"expected_type":"figure","minimum_count":1,"require_bbox":true},
+
+    {"case_id":"ndc-01","document_id":"ndc_sdg_policy_2022","dimension":"heading_list_style","pages":[2],"expected_elements":[{"text":"貳、國際永續發展進程與作法","type":"heading"},{"text":"一、國際永續發展政策趨勢","type":"heading"}]},
+    {"case_id":"ndc-02","document_id":"ndc_sdg_policy_2022","dimension":"table_structure","pages":[2],"anchor":"國際永續發展政策趨勢里程碑","minimum_rows":8,"minimum_columns":3,"expected_cells":["1987","1992","巴黎協定","2030 永續發展議程"]},
+    {"case_id":"ndc-03","document_id":"ndc_sdg_policy_2022","dimension":"reading_order","pages":[2],"ordered_terms":["本研究以擴大 SDGs","貳、國際永續發展進程與作法","自 1970 年代","表 1","由國際永續發展關注議題分析"]},
+    {"case_id":"ndc-04","document_id":"ndc_sdg_policy_2022","dimension":"chart_data","pages":[6],"expected_terms":["核心政策","國家發展計畫","中程施政計畫","年度施政計畫及概算","中程資源分配方針"]},
+    {"case_id":"ndc-05","document_id":"ndc_sdg_policy_2022","dimension":"footnote_anchor","pages":[6],"anchor":"我國中央政府施政計畫體制及其關係如下圖","footnote":"國發會，2017"},
+    {"case_id":"ndc-06","document_id":"ndc_sdg_policy_2022","dimension":"bbox_grounding","pages":[6],"target_text":"圖 2 中央政府施政計畫體制","bbox_normalized":[0.37,0.56,0.67,0.60],"iou_threshold":0.35},
+    {"case_id":"ndc-07","document_id":"ndc_sdg_policy_2022","dimension":"header_footer_contamination","pages":[1,2,6,9,10],"repeated_text":"特別企劃","max_occurrences":0}
+  ]
+}

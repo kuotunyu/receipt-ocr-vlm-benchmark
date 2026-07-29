@@ -1,0 +1,77 @@
+{
+  "benchmark_version": "0.3.0",
+  "language": "zh-Hant",
+  "distribution_policy": "download-only",
+  "notes": [
+    "Repository stores URLs, checksums, selected pages, and human annotations only.",
+    "Original PDFs and rendered pages are ignored because redistribution terms differ by publisher.",
+    "Checksums pin the exact files used for the reported run."
+  ],
+  "documents": [
+    {
+      "document_id": "archives_digitization_2004",
+      "title": "檔案數位影像製作之流程與管理",
+      "publisher": "國家發展委員會檔案管理局",
+      "url": "https://www.archives.gov.tw/wSite/public/Attachment/0/f1726728677543.pdf",
+      "sha256": "7f1122c3a699ad6247f80857445a7be18eec8f812e52b528810201f822c0859f",
+      "filename": "archives_digitization_2004.pdf",
+      "bytes": 697954,
+      "page_count": 16,
+      "selected_pages": [1, 2, 5, 6, 15],
+      "challenges": ["legacy-font", "diagram", "footnote-anchor", "dense-table", "header-footer"],
+      "license_note": "Official public download; redistribution permission not asserted, so download-only."
+    },
+    {
+      "document_id": "cbc_2023_annual",
+      "title": "中華民國中央銀行年報 2023",
+      "publisher": "中央銀行",
+      "url": "https://www.cbc.gov.tw/dl-204862-55a13588b79742a7be9de53d95b89d0e.html",
+      "sha256": "48ae9a217301c56828de7cc8d4fc7dbdc0babad5a843b3f19403e719e383446e",
+      "filename": "cbc_2023_annual.pdf",
+      "bytes": 10296172,
+      "page_count": 134,
+      "selected_pages": [4, 12, 29, 31, 33],
+      "challenges": ["multi-column", "dense-table", "chart", "header-footer", "reading-order"],
+      "license_note": "Source page states copyright restrictions; raw PDF must not be committed."
+    },
+    {
+      "document_id": "moc_history_technology_review_2017",
+      "title": "臺灣歷史創新科技體驗建置計畫評核報告",
+      "publisher": "文化部",
+      "url": "https://file.moc.gov.tw/Download.ashx?icon=.pdf&n=MzI2MzI5ZGMtM2M2Yi00MjYwLTk0ZTctZDNlNWE4MTBiNTljLnBkZg%3D%3D&u=LzAwMS9VcGxvYWQvT2xkRmlsZXMvQWRtaW5VcGxvYWRzL2ZpbGVzLzIwMTgwNC8zMjYzMjlkYy0zYzZiLTQyNjAtOTRlNy1kM2U1YTgxMGI1OWMucGRm",
+      "sha256": "1e1ba27bab22d505c296e234a2f89bbb4079820c2676d6234d23857e38c23462",
+      "filename": "moc_history_technology_review_2017.pdf",
+      "bytes": 437705,
+      "page_count": 11,
+      "selected_pages": [1, 3, 5],
+      "challenges": ["full-page-table", "merged-cells", "hierarchical-list", "style"],
+      "license_note": "Official public download; redistribution permission not asserted, so download-only."
+    },
+    {
+      "document_id": "moenv_whitepaper_2024",
+      "title": "國家環境保護計畫／環境白皮書資料",
+      "publisher": "環境部",
+      "url": "https://service.moenv.gov.tw/File/get/6A344F28E4621A91",
+      "sha256": "3acbe6b2f6255521ac346077219c8ddf55c1258bf61ef318b7c42979eac3efe3",
+      "filename": "moenv_whitepaper_2024.pdf",
+      "bytes": 28010018,
+      "page_count": 351,
+      "selected_pages": [1, 4, 13, 14, 15, 16, 17, 18],
+      "challenges": ["scanned-cover", "table-of-contents", "chart", "cross-page-table", "header-footer"],
+      "license_note": "Official public download; redistribution permission not asserted, so download-only."
+    },
+    {
+      "document_id": "ndc_sdg_policy_2022",
+      "title": "SDGs 與行政機關政策規劃制度",
+      "publisher": "國家發展委員會",
+      "url": "https://ws.ndc.gov.tw/Download.ashx?icon=.pdf&n=MjAyMue2k%2Ba%2Fn%2BirluihoV8yMC0zXzUtMS7nibnliKXkvIHlioNf6IGv5ZCI5ZyL5rC457qM55m85bGV55uu5qiZ77yIU0RHc%2B%2B8ieiIh%2BaUv%2Betluimj%2BWKg%2BS5i%2BeglOepti5wZGY%3D&u=LzAwMS9hZG1pbmlzdHJhdG9yLzEwL3JlbGZpbGUvMC8xNDk4NC8xMmQxMGJlZC1kYzk4LTQ5MDItYTYyMi1kZmFmYTRmYTU2MWIucGRm",
+      "sha256": "38fa0cec93f14b81cf51b553cc888c81c39b7d9ec20c9ce727836c319a06606e",
+      "filename": "ndc_sdg_policy_2022.pdf",
+      "bytes": 502064,
+      "page_count": 10,
+      "selected_pages": [1, 2, 6, 9, 10],
+      "challenges": ["multi-column", "table", "flow-chart", "footnote-anchor", "vertical-sidebar"],
+      "license_note": "Official public download; redistribution permission not asserted, so download-only."
+    }
+  ]
+}

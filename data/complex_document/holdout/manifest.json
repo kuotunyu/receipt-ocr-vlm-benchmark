@@ -1,0 +1,77 @@
+{
+  "benchmark_version": "0.4.0",
+  "language": "zh-Hant",
+  "role": "blind-router-holdout",
+  "distribution_policy": "download-only",
+  "router_frozen": {
+    "version": "vector-grid-router-1",
+    "threshold": 0.62,
+    "frozen_from_benchmark_version": "0.3.0",
+    "retuning_allowed": false
+  },
+  "notes": [
+    "These documents were not part of the five-document v0.3 development benchmark.",
+    "The selected pages and human routing labels were frozen before router predictions were generated.",
+    "Repository stores URLs, checksums, selected pages, and human annotations only; downloaded PDFs are git-ignored."
+  ],
+  "documents": [
+    {
+      "document_id": "taoyuan_police_2024",
+      "title": "中華民國113年桃園市警政統計年報",
+      "publisher": "桃園市政府警察局",
+      "source_page": "https://www.typd.gov.tw/index.php?action=view&catid=325&cid=0&id=1&pg=1",
+      "url": "https://www.typd.gov.tw/uploads/files/tyhp100/113%E5%B9%B4%E5%A0%B1v1.pdf",
+      "license_url": "https://www.typd.gov.tw/index.php?catid=277&id=3",
+      "license_note": "Official website materials are offered for public reuse without charge under the agency's open-data declaration, with source attribution and stated exclusions.",
+      "sha256": "18bd90b11303d84d3dfab89758917068b5523f07954b60d162159688f9906477",
+      "filename": "taoyuan_police_2024.pdf",
+      "bytes": 4290277,
+      "page_count": 193,
+      "selected_pages": [
+        1,
+        5,
+        8,
+        21,
+        54,
+        55
+      ],
+      "challenges": [
+        "cover",
+        "table-of-contents",
+        "chart",
+        "dense-table",
+        "cross-page-table",
+        "partial-ruling"
+      ]
+    },
+    {
+      "document_id": "nia_2024_annual",
+      "title": "內政部移民署113年年報",
+      "publisher": "內政部移民署",
+      "source_page": "https://www.immigration.gov.tw/5385/7353/7359/401712/cp_news",
+      "url": "https://www.immigration.gov.tw/media/115919/%E5%85%A7%E6%94%BF%E9%83%A8%E7%A7%BB%E6%B0%91%E7%BD%B2113%E5%B9%B4%E5%B9%B4%E5%A0%B1.pdf",
+      "license_url": "https://www.immigration.gov.tw/6614/6673/15856/",
+      "license_note": "Website materials within copyright scope use Taiwan Government Data Open License 1.0 with source attribution, subject to the agency's stated exclusions.",
+      "sha256": "edee9f3cda232125e9ec339fa675a85ffb22a854d1680d9a2dbc3f58ab93d2ba",
+      "filename": "nia_2024_annual.pdf",
+      "bytes": 8409617,
+      "page_count": 178,
+      "selected_pages": [
+        1,
+        6,
+        11,
+        158,
+        160,
+        172
+      ],
+      "challenges": [
+        "cover",
+        "table-of-contents",
+        "decorative-lines",
+        "dense-table",
+        "merged-header-cells",
+        "bilingual-table"
+      ]
+    }
+  ]
+}

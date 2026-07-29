@@ -1,0 +1,84 @@
+{
+  "benchmark_version": "0.4.0",
+  "annotation_method": "Manual visual review of all 12 page renders at 120 DPI; no LLM judge and no router predictions were inspected before labels were frozen.",
+  "label_definition": "Route only pages containing a vector ruled/grid table that the local geometry reconstruction can use. Raster tables, charts, diagrams, prose, covers, and contents pages stay on the PyMuPDF fallback.",
+  "frozen_router": {
+    "version": "vector-grid-router-1",
+    "threshold": 0.62,
+    "retuning_allowed": false
+  },
+  "pages": [
+    {
+      "document_id": "taoyuan_police_2024",
+      "page": 1,
+      "should_route": false,
+      "reason": "Cover page with an emblem and title; no table."
+    },
+    {
+      "document_id": "taoyuan_police_2024",
+      "page": 5,
+      "should_route": false,
+      "reason": "Table of contents with dotted leaders, not a data table."
+    },
+    {
+      "document_id": "taoyuan_police_2024",
+      "page": 8,
+      "should_route": true,
+      "reason": "Ruled demographic table with merged header cells, colored rows, and a caption."
+    },
+    {
+      "document_id": "taoyuan_police_2024",
+      "page": 21,
+      "should_route": false,
+      "reason": "Bar chart followed by prose; no grid table."
+    },
+    {
+      "document_id": "taoyuan_police_2024",
+      "page": 54,
+      "should_route": true,
+      "reason": "Dense statistical table with ruled multi-level headers and aligned numeric rows."
+    },
+    {
+      "document_id": "taoyuan_police_2024",
+      "page": 55,
+      "should_route": true,
+      "reason": "Cross-page continuation table with an explicit ruled header and aligned numeric body."
+    },
+    {
+      "document_id": "nia_2024_annual",
+      "page": 1,
+      "should_route": false,
+      "reason": "Graphic cover; the decorative polygons are not a table."
+    },
+    {
+      "document_id": "nia_2024_annual",
+      "page": 6,
+      "should_route": false,
+      "reason": "Table of contents with dotted leaders and section rules, not a data table."
+    },
+    {
+      "document_id": "nia_2024_annual",
+      "page": 11,
+      "should_route": false,
+      "reason": "Prose overview with colored heading separators; no data table."
+    },
+    {
+      "document_id": "nia_2024_annual",
+      "page": 158,
+      "should_route": true,
+      "reason": "Fully ruled bilingual monthly airport statistics table."
+    },
+    {
+      "document_id": "nia_2024_annual",
+      "page": 160,
+      "should_route": true,
+      "reason": "Fully ruled bilingual e-Gate table with grouped and merged header cells."
+    },
+    {
+      "document_id": "nia_2024_annual",
+      "page": 172,
+      "should_route": true,
+      "reason": "Fully ruled bilingual trafficking-cases table with two-level grouped headers."
+    }
+  ]
+}

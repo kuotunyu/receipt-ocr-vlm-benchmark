@@ -1,0 +1,294 @@
+{
+  "benchmark_version": "0.4.0",
+  "generated_at": "2026-07-29T16:37:16.307820+00:00",
+  "environment": {
+    "python": "3.10.9",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "device_policy": "CPU only; no GPU model or external API used"
+  },
+  "dataset": {
+    "documents": 2,
+    "selected_pages": 12,
+    "positive_pages": 6,
+    "negative_pages": 6,
+    "development_document_overlap": 0
+  },
+  "source_verification": {
+    "taoyuan_police_2024": {
+      "status": "verified",
+      "filename": "taoyuan_police_2024.pdf",
+      "bytes": 4290277,
+      "sha256": "18bd90b11303d84d3dfab89758917068b5523f07954b60d162159688f9906477"
+    },
+    "nia_2024_annual": {
+      "status": "verified",
+      "filename": "nia_2024_annual.pdf",
+      "bytes": 8409617,
+      "sha256": "edee9f3cda232125e9ec339fa675a85ffb22a854d1680d9a2dbc3f58ab93d2ba"
+    }
+  },
+  "parser": {
+    "name": "pymupdf",
+    "version": "1.26.3",
+    "render_dpi": 144,
+    "detect_tables": true,
+    "per_document_seconds": {
+      "taoyuan_police_2024": 0.859717,
+      "nia_2024_annual": 0.839817
+    },
+    "total_seconds": 1.699548
+  },
+  "evaluation": {
+    "protocol": {
+      "primary_threshold": 0.62,
+      "router": "vector-grid-router-1",
+      "retuning_allowed": false,
+      "sensitivity_is_descriptive_only": true
+    },
+    "primary": {
+      "router": "vector-grid-router-1",
+      "threshold": 0.62,
+      "page_count": 12,
+      "positive_pages": 6,
+      "predicted_positive_pages": 6,
+      "true_positive": 6,
+      "false_positive": 0,
+      "false_negative": 0,
+      "true_negative": 6,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "accuracy": 1.0,
+      "cases": [
+        {
+          "document_id": "taoyuan_police_2024",
+          "page": 1,
+          "expected_route": false,
+          "predicted_route": false,
+          "correct": true,
+          "max_confidence": 0.0,
+          "reason": "Cover page with an emblem and title; no table."
+        },
+        {
+          "document_id": "taoyuan_police_2024",
+          "page": 5,
+          "expected_route": false,
+          "predicted_route": false,
+          "correct": true,
+          "max_confidence": 0.0,
+          "reason": "Table of contents with dotted leaders, not a data table."
+        },
+        {
+          "document_id": "taoyuan_police_2024",
+          "page": 8,
+          "expected_route": true,
+          "predicted_route": true,
+          "correct": true,
+          "max_confidence": 0.887143,
+          "reason": "Ruled demographic table with merged header cells, colored rows, and a caption."
+        },
+        {
+          "document_id": "taoyuan_police_2024",
+          "page": 21,
+          "expected_route": false,
+          "predicted_route": false,
+          "correct": true,
+          "max_confidence": 0.0,
+          "reason": "Bar chart followed by prose; no grid table."
+        },
+        {
+          "document_id": "taoyuan_police_2024",
+          "page": 54,
+          "expected_route": true,
+          "predicted_route": true,
+          "correct": true,
+          "max_confidence": 0.916667,
+          "reason": "Dense statistical table with ruled multi-level headers and aligned numeric rows."
+        },
+        {
+          "document_id": "taoyuan_police_2024",
+          "page": 55,
+          "expected_route": true,
+          "predicted_route": true,
+          "correct": true,
+          "max_confidence": 0.816667,
+          "reason": "Cross-page continuation table with an explicit ruled header and aligned numeric body."
+        },
+        {
+          "document_id": "nia_2024_annual",
+          "page": 1,
+          "expected_route": false,
+          "predicted_route": false,
+          "correct": true,
+          "max_confidence": 0.0,
+          "reason": "Graphic cover; the decorative polygons are not a table."
+        },
+        {
+          "document_id": "nia_2024_annual",
+          "page": 6,
+          "expected_route": false,
+          "predicted_route": false,
+          "correct": true,
+          "max_confidence": 0.0,
+          "reason": "Table of contents with dotted leaders and section rules, not a data table."
+        },
+        {
+          "document_id": "nia_2024_annual",
+          "page": 11,
+          "expected_route": false,
+          "predicted_route": false,
+          "correct": true,
+          "max_confidence": 0.0,
+          "reason": "Prose overview with colored heading separators; no data table."
+        },
+        {
+          "document_id": "nia_2024_annual",
+          "page": 158,
+          "expected_route": true,
+          "predicted_route": true,
+          "correct": true,
+          "max_confidence": 0.9,
+          "reason": "Fully ruled bilingual monthly airport statistics table."
+        },
+        {
+          "document_id": "nia_2024_annual",
+          "page": 160,
+          "expected_route": true,
+          "predicted_route": true,
+          "correct": true,
+          "max_confidence": 0.9,
+          "reason": "Fully ruled bilingual e-Gate table with grouped and merged header cells."
+        },
+        {
+          "document_id": "nia_2024_annual",
+          "page": 172,
+          "expected_route": true,
+          "predicted_route": true,
+          "correct": true,
+          "max_confidence": 0.9,
+          "reason": "Fully ruled bilingual trafficking-cases table with two-level grouped headers."
+        }
+      ]
+    },
+    "per_document": {
+      "nia_2024_annual": {
+        "router": "vector-grid-router-1",
+        "threshold": 0.62,
+        "page_count": 6,
+        "positive_pages": 3,
+        "predicted_positive_pages": 3,
+        "true_positive": 3,
+        "false_positive": 0,
+        "false_negative": 0,
+        "true_negative": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "accuracy": 1.0
+      },
+      "taoyuan_police_2024": {
+        "router": "vector-grid-router-1",
+        "threshold": 0.62,
+        "page_count": 6,
+        "positive_pages": 3,
+        "predicted_positive_pages": 3,
+        "true_positive": 3,
+        "false_positive": 0,
+        "false_negative": 0,
+        "true_negative": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "accuracy": 1.0
+      }
+    },
+    "sensitivity": [
+      {
+        "router": "vector-grid-router-1",
+        "threshold": 0.5,
+        "page_count": 12,
+        "positive_pages": 6,
+        "predicted_positive_pages": 6,
+        "true_positive": 6,
+        "false_positive": 0,
+        "false_negative": 0,
+        "true_negative": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "accuracy": 1.0
+      },
+      {
+        "router": "vector-grid-router-1",
+        "threshold": 0.56,
+        "page_count": 12,
+        "positive_pages": 6,
+        "predicted_positive_pages": 6,
+        "true_positive": 6,
+        "false_positive": 0,
+        "false_negative": 0,
+        "true_negative": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "accuracy": 1.0
+      },
+      {
+        "router": "vector-grid-router-1",
+        "threshold": 0.62,
+        "page_count": 12,
+        "positive_pages": 6,
+        "predicted_positive_pages": 6,
+        "true_positive": 6,
+        "false_positive": 0,
+        "false_negative": 0,
+        "true_negative": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "accuracy": 1.0
+      },
+      {
+        "router": "vector-grid-router-1",
+        "threshold": 0.68,
+        "page_count": 12,
+        "positive_pages": 6,
+        "predicted_positive_pages": 6,
+        "true_positive": 6,
+        "false_positive": 0,
+        "false_negative": 0,
+        "true_negative": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "accuracy": 1.0
+      },
+      {
+        "router": "vector-grid-router-1",
+        "threshold": 0.74,
+        "page_count": 12,
+        "positive_pages": 6,
+        "predicted_positive_pages": 6,
+        "true_positive": 6,
+        "false_positive": 0,
+        "false_negative": 0,
+        "true_negative": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "accuracy": 1.0
+      }
+    ],
+    "validation": {
+      "recommendation": "PASS",
+      "minimum": 0.9,
+      "gates": {
+        "precision_at_least_0_90": true,
+        "recall_at_least_0_90": true,
+        "accuracy_at_least_0_90": true
+      },
+      "scope": "Router generalization only. This result does not override the downstream MRR promotion gate."
+    }
+  },
+  "receipt_benchmark_untouched": true
+}

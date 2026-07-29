@@ -1,0 +1,163 @@
+{
+  "benchmark_version": "0.3.0",
+  "annotation_method": "Manual visual review of all 26 selected-page renders; no LLM judge.",
+  "label_definition": "Route only pages containing a vector ruled/grid table that the local geometry reconstruction can use. Raster tables, charts, diagrams, prose, covers, and contents pages stay on the PyMuPDF fallback.",
+  "pages": [
+    {
+      "document_id": "archives_digitization_2004",
+      "page": 1,
+      "should_route": false,
+      "reason": "Cover and prose; no vector grid table."
+    },
+    {
+      "document_id": "archives_digitization_2004",
+      "page": 2,
+      "should_route": false,
+      "reason": "Inset raster/form illustration is not recoverable from PDF vector grid geometry."
+    },
+    {
+      "document_id": "archives_digitization_2004",
+      "page": 5,
+      "should_route": true,
+      "reason": "Two vector ruled tables with distinct captions."
+    },
+    {
+      "document_id": "archives_digitization_2004",
+      "page": 6,
+      "should_route": false,
+      "reason": "Prose page without a vector grid table."
+    },
+    {
+      "document_id": "archives_digitization_2004",
+      "page": 15,
+      "should_route": true,
+      "reason": "Vector ruled comparison table embedded in the upper panel."
+    },
+    {
+      "document_id": "cbc_2023_annual",
+      "page": 4,
+      "should_route": false,
+      "reason": "Contents page."
+    },
+    {
+      "document_id": "cbc_2023_annual",
+      "page": 12,
+      "should_route": false,
+      "reason": "Charts and prose without a ruled table."
+    },
+    {
+      "document_id": "cbc_2023_annual",
+      "page": 29,
+      "should_route": true,
+      "reason": "Vector economic statistics table."
+    },
+    {
+      "document_id": "cbc_2023_annual",
+      "page": 31,
+      "should_route": true,
+      "reason": "Two vector economic statistics tables."
+    },
+    {
+      "document_id": "cbc_2023_annual",
+      "page": 33,
+      "should_route": true,
+      "reason": "Vector international-balance table below a chart."
+    },
+    {
+      "document_id": "moc_history_technology_review_2017",
+      "page": 1,
+      "should_route": true,
+      "reason": "Full-page vector evaluation form table."
+    },
+    {
+      "document_id": "moc_history_technology_review_2017",
+      "page": 3,
+      "should_route": true,
+      "reason": "Full-page vector evaluation form tables."
+    },
+    {
+      "document_id": "moc_history_technology_review_2017",
+      "page": 5,
+      "should_route": true,
+      "reason": "Full-page vector evaluation form tables."
+    },
+    {
+      "document_id": "moenv_whitepaper_2024",
+      "page": 1,
+      "should_route": false,
+      "reason": "Cover illustration."
+    },
+    {
+      "document_id": "moenv_whitepaper_2024",
+      "page": 4,
+      "should_route": false,
+      "reason": "Contents page."
+    },
+    {
+      "document_id": "moenv_whitepaper_2024",
+      "page": 13,
+      "should_route": false,
+      "reason": "Process diagram and prose, not a grid table."
+    },
+    {
+      "document_id": "moenv_whitepaper_2024",
+      "page": 14,
+      "should_route": true,
+      "reason": "Vector schedule table."
+    },
+    {
+      "document_id": "moenv_whitepaper_2024",
+      "page": 15,
+      "should_route": false,
+      "reason": "Section opener and prose."
+    },
+    {
+      "document_id": "moenv_whitepaper_2024",
+      "page": 16,
+      "should_route": true,
+      "reason": "Vector responsibility table."
+    },
+    {
+      "document_id": "moenv_whitepaper_2024",
+      "page": 17,
+      "should_route": true,
+      "reason": "First page of a cross-page vector KPI table."
+    },
+    {
+      "document_id": "moenv_whitepaper_2024",
+      "page": 18,
+      "should_route": true,
+      "reason": "Continuation page of a cross-page vector KPI table."
+    },
+    {
+      "document_id": "ndc_sdg_policy_2022",
+      "page": 1,
+      "should_route": false,
+      "reason": "Cover and introduction."
+    },
+    {
+      "document_id": "ndc_sdg_policy_2022",
+      "page": 2,
+      "should_route": true,
+      "reason": "Vector policy milestone table."
+    },
+    {
+      "document_id": "ndc_sdg_policy_2022",
+      "page": 6,
+      "should_route": false,
+      "reason": "Flowchart and footnote, not a grid table."
+    },
+    {
+      "document_id": "ndc_sdg_policy_2022",
+      "page": 9,
+      "should_route": false,
+      "reason": "Hierarchy diagram, not a grid table."
+    },
+    {
+      "document_id": "ndc_sdg_policy_2022",
+      "page": 10,
+      "should_route": false,
+      "reason": "Reference list."
+    }
+  ]
+}

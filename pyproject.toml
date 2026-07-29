@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "receipt-ocr-vlm-benchmark"
+version = "0.2.0"
+description = "Receipt OCR/VLM benchmark with an independent complex-document parsing track"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+  "jsonschema>=4.20,<5",
+  "numpy>=1.26,<3",
+  "opencv-python>=4.9,<6",
+  "rapidfuzz>=3.6,<4",
+]
+
+[project.optional-dependencies]
+receipt-ocr = [
+  "paddleocr>=3.0,<4",
+  "paddlepaddle>=3.0,<4",
+]
+complex-document = [
+  "PyMuPDF==1.26.3",
+  "liteparse==2.10.0",
+]
+llamaparse = [
+  "llama-cloud==2.13.0",
+]
+test = [
+  "pytest>=8,<10",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

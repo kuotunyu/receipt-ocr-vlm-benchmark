@@ -1,0 +1,570 @@
+{
+  "experiment_version": "late-max-table-retrieval-v1",
+  "generated_at": "2026-07-29T17:53:06.171710+00:00",
+  "protocol": {
+    "selection_dataset": "five-document development benchmark",
+    "selection_rule": "Among predeclared variants that preserve development answer and citation validity, choose the highest development MRR.",
+    "external_dataset": "frozen 15-question QA holdout",
+    "external_retuning_allowed": false,
+    "feature_family": "same character-bigram cosine",
+    "atomic_table_chunks_preserved": true
+  },
+  "development_variants": [
+    {
+      "retriever": "char-bigram-cosine-v1",
+      "config": {
+        "mode": "global-baseline"
+      },
+      "metrics": {
+        "question_count": 12,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 1.0,
+        "mrr": 0.680556,
+        "answer_correctness": 0.916667,
+        "citation_validity": 0.916667,
+        "error_attribution": {
+          "parsing": 0,
+          "retrieval": 0,
+          "generation": 1
+        }
+      }
+    },
+    {
+      "retriever": "char-bigram-windowed-v1:w240:o80:g0.00:c0.50",
+      "config": {
+        "window_size": 240,
+        "overlap": 80,
+        "global_weight": 0.0,
+        "coverage_weight": 0.5
+      },
+      "metrics": {
+        "question_count": 12,
+        "retriever": "char-bigram-windowed-v1:w240:o80:g0.00:c0.50",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 1.0,
+        "mrr": 0.861111,
+        "answer_correctness": 0.916667,
+        "citation_validity": 0.916667,
+        "error_attribution": {
+          "parsing": 0,
+          "retrieval": 0,
+          "generation": 1
+        }
+      }
+    },
+    {
+      "retriever": "char-bigram-windowed-v1:w240:o80:g0.25:c0.50",
+      "config": {
+        "window_size": 240,
+        "overlap": 80,
+        "global_weight": 0.25,
+        "coverage_weight": 0.5
+      },
+      "metrics": {
+        "question_count": 12,
+        "retriever": "char-bigram-windowed-v1:w240:o80:g0.25:c0.50",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 1.0,
+        "mrr": 0.791667,
+        "answer_correctness": 0.916667,
+        "citation_validity": 0.916667,
+        "error_attribution": {
+          "parsing": 0,
+          "retrieval": 0,
+          "generation": 1
+        }
+      }
+    },
+    {
+      "retriever": "char-bigram-windowed-v1:w320:o80:g0.25:c0.50",
+      "config": {
+        "window_size": 320,
+        "overlap": 80,
+        "global_weight": 0.25,
+        "coverage_weight": 0.5
+      },
+      "metrics": {
+        "question_count": 12,
+        "retriever": "char-bigram-windowed-v1:w320:o80:g0.25:c0.50",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 1.0,
+        "mrr": 0.791667,
+        "answer_correctness": 0.916667,
+        "citation_validity": 0.916667,
+        "error_attribution": {
+          "parsing": 0,
+          "retrieval": 0,
+          "generation": 1
+        }
+      }
+    },
+    {
+      "retriever": "char-bigram-windowed-v1:w480:o120:g0.50:c0.50",
+      "config": {
+        "window_size": 480,
+        "overlap": 120,
+        "global_weight": 0.5,
+        "coverage_weight": 0.5
+      },
+      "metrics": {
+        "question_count": 12,
+        "retriever": "char-bigram-windowed-v1:w480:o120:g0.50:c0.50",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 1.0,
+        "mrr": 0.708333,
+        "answer_correctness": 0.916667,
+        "citation_validity": 0.916667,
+        "error_attribution": {
+          "parsing": 0,
+          "retrieval": 0,
+          "generation": 1
+        }
+      }
+    }
+  ],
+  "selected": {
+    "retriever": "char-bigram-windowed-v1:w240:o80:g0.00:c0.50",
+    "config": {
+      "window_size": 240,
+      "overlap": 80,
+      "global_weight": 0.0,
+      "coverage_weight": 0.5
+    },
+    "metrics": {
+      "question_count": 12,
+      "retriever": "char-bigram-windowed-v1:w240:o80:g0.00:c0.50",
+      "answerer": "gold-regex-extractive-v1",
+      "k": 5,
+      "retrieval_recall_at_k": 1.0,
+      "mrr": 0.861111,
+      "answer_correctness": 0.916667,
+      "citation_validity": 0.916667,
+      "error_attribution": {
+        "parsing": 0,
+        "retrieval": 0,
+        "generation": 1
+      }
+    }
+  },
+  "external_evaluation": {
+    "question_count": 15,
+    "retriever": "char-bigram-windowed-v1:w240:o80:g0.00:c0.50",
+    "answerer": "gold-regex-extractive-v1",
+    "k": 5,
+    "retrieval_recall_at_k": 0.866667,
+    "mrr": 0.833333,
+    "answer_correctness": 0.8,
+    "citation_validity": 0.733333,
+    "error_attribution": {
+      "parsing": 1,
+      "retrieval": 0,
+      "generation": 2
+    }
+  },
+  "external_current_hybrid": {
+    "question_count": 15,
+    "retriever": "char-bigram-cosine-v1",
+    "answerer": "gold-regex-extractive-v1",
+    "k": 5,
+    "retrieval_recall_at_k": 0.866667,
+    "mrr": 0.705556,
+    "answer_correctness": 0.8,
+    "citation_validity": 0.733333,
+    "error_attribution": {
+      "parsing": 1,
+      "retrieval": 0,
+      "generation": 2
+    }
+  },
+  "external_questions": [
+    {
+      "question_id": "qh01",
+      "question_type": "table_cell",
+      "answer": "475,798",
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00002",
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "nia_2024_annual:hybrid-table-router:c00003"
+      ],
+      "retrieved_scores": [
+        0.503847,
+        0.354638,
+        0.206045,
+        0.124975,
+        0.123376
+      ]
+    },
+    {
+      "question_id": "qh02",
+      "question_type": "table_cell",
+      "answer": "619",
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "taoyuan_police_2024:hybrid-table-router:c00002",
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "nia_2024_annual:hybrid-table-router:c00003"
+      ],
+      "retrieved_scores": [
+        0.430565,
+        0.276688,
+        0.25016,
+        0.116088,
+        0.113352
+      ]
+    },
+    {
+      "question_id": "qh03",
+      "question_type": "chart_value",
+      "answer": null,
+      "correct": false,
+      "retrieval_recall_at_k": 0.0,
+      "reciprocal_rank": 0.0,
+      "citation_valid": false,
+      "error_source": "parsing",
+      "retrieved_chunk_ids": [
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00002",
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00003"
+      ],
+      "retrieved_scores": [
+        0.522778,
+        0.208223,
+        0.126492,
+        0.119611,
+        0.091403
+      ]
+    },
+    {
+      "question_id": "qh04",
+      "question_type": "single_text_fact",
+      "answer": "44,576",
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00002",
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00003"
+      ],
+      "retrieved_scores": [
+        0.41638,
+        0.193905,
+        0.116821,
+        0.110246,
+        0.085315
+      ]
+    },
+    {
+      "question_id": "qh05",
+      "question_type": "table_cell",
+      "answer": null,
+      "correct": false,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": false,
+      "error_source": "generation",
+      "retrieved_chunk_ids": [
+        "taoyuan_police_2024:hybrid-table-router:c00002",
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "nia_2024_annual:hybrid-table-router:c00002",
+        "taoyuan_police_2024:hybrid-table-router:c00001"
+      ],
+      "retrieved_scores": [
+        0.287698,
+        0.180979,
+        0.126592,
+        0.117097,
+        0.100011
+      ]
+    },
+    {
+      "question_id": "qh06",
+      "question_type": "table_cell",
+      "answer": null,
+      "correct": false,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 0.5,
+      "citation_valid": false,
+      "error_source": "generation",
+      "retrieved_chunk_ids": [
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "taoyuan_police_2024:hybrid-table-router:c00002",
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "nia_2024_annual:hybrid-table-router:c00003",
+        "nia_2024_annual:hybrid-table-router:c00001"
+      ],
+      "retrieved_scores": [
+        0.212288,
+        0.199269,
+        0.181164,
+        0.040081,
+        0.039101
+      ]
+    },
+    {
+      "question_id": "qh07",
+      "question_type": "cross_page",
+      "answer": "3,599",
+      "correct": true,
+      "retrieval_recall_at_k": 0.0,
+      "reciprocal_rank": 0.0,
+      "citation_valid": false,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "taoyuan_police_2024:hybrid-table-router:c00002",
+        "taoyuan_police_2024:hybrid-table-router:c00003",
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "nia_2024_annual:hybrid-table-router:c00002"
+      ],
+      "retrieved_scores": [
+        0.291637,
+        0.223238,
+        0.134493,
+        0.121053,
+        0.11181
+      ]
+    },
+    {
+      "question_id": "qh08",
+      "question_type": "table_cell",
+      "answer": "3,416,816",
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "taoyuan_police_2024:hybrid-table-router:c00002",
+        "nia_2024_annual:hybrid-table-router:c00002"
+      ],
+      "retrieved_scores": [
+        0.30492,
+        0.177319,
+        0.164886,
+        0.161029,
+        0.156695
+      ]
+    },
+    {
+      "question_id": "qh09",
+      "question_type": "table_aggregation",
+      "answer": "9660",
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "nia_2024_annual:hybrid-table-router:c00002",
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "nia_2024_annual:hybrid-table-router:c00003",
+        "taoyuan_police_2024:hybrid-table-router:c00001"
+      ],
+      "retrieved_scores": [
+        0.347475,
+        0.155358,
+        0.144137,
+        0.105149,
+        0.102347
+      ]
+    },
+    {
+      "question_id": "qh10",
+      "question_type": "table_cell",
+      "answer": "2,636,972",
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "nia_2024_annual:hybrid-table-router:c00002",
+        "taoyuan_police_2024:hybrid-table-router:c00003",
+        "nia_2024_annual:hybrid-table-router:c00003",
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00002"
+      ],
+      "retrieved_scores": [
+        0.379065,
+        0.133436,
+        0.131299,
+        0.131281,
+        0.115601
+      ]
+    },
+    {
+      "question_id": "qh11",
+      "question_type": "table_aggregation",
+      "answer": "412616",
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "nia_2024_annual:hybrid-table-router:c00002",
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "nia_2024_annual:hybrid-table-router:c00003",
+        "taoyuan_police_2024:hybrid-table-router:c00000"
+      ],
+      "retrieved_scores": [
+        0.375102,
+        0.232689,
+        0.080791,
+        0.080603,
+        0.080059
+      ]
+    },
+    {
+      "question_id": "qh12",
+      "question_type": "table_cell",
+      "answer": "21",
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "nia_2024_annual:hybrid-table-router:c00003",
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "nia_2024_annual:hybrid-table-router:c00002",
+        "nia_2024_annual:hybrid-table-router:c00001"
+      ],
+      "retrieved_scores": [
+        0.420767,
+        0.192612,
+        0.153942,
+        0.132825,
+        0.125705
+      ]
+    },
+    {
+      "question_id": "qh13",
+      "question_type": "table_aggregation",
+      "answer": "125",
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "nia_2024_annual:hybrid-table-router:c00003",
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "taoyuan_police_2024:hybrid-table-router:c00002",
+        "taoyuan_police_2024:hybrid-table-router:c00003"
+      ],
+      "retrieved_scores": [
+        0.375736,
+        0.122236,
+        0.107209,
+        0.07775,
+        0.068802
+      ]
+    },
+    {
+      "question_id": "qh14",
+      "question_type": "unanswerable",
+      "answer": null,
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "nia_2024_annual:hybrid-table-router:c00003",
+        "taoyuan_police_2024:hybrid-table-router:c00002",
+        "taoyuan_police_2024:hybrid-table-router:c00003"
+      ],
+      "retrieved_scores": [
+        0.459279,
+        0.117654,
+        0.091705,
+        0.091348,
+        0.087974
+      ]
+    },
+    {
+      "question_id": "qh15",
+      "question_type": "unanswerable",
+      "answer": null,
+      "correct": true,
+      "retrieval_recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_valid": true,
+      "error_source": null,
+      "retrieved_chunk_ids": [
+        "nia_2024_annual:hybrid-table-router:c00001",
+        "nia_2024_annual:hybrid-table-router:c00002",
+        "taoyuan_police_2024:hybrid-table-router:c00000",
+        "taoyuan_police_2024:hybrid-table-router:c00001",
+        "taoyuan_police_2024:hybrid-table-router:c00002"
+      ],
+      "retrieved_scores": [
+        0.281732,
+        0.180479,
+        0.148549,
+        0.141604,
+        0.119763
+      ]
+    }
+  ],
+  "decision": {
+    "ranker_for_hybrid_branch": {
+      "recommendation": "GO",
+      "rule": "Adopt the ranker in the Hybrid research branch only if external MRR strictly improves without reducing Hybrid Recall@5, answer correctness, or citation validity.",
+      "gates": {
+        "mrr_strictly_improves_hybrid": true,
+        "recall_not_lower_than_hybrid": true,
+        "answer_not_lower_than_hybrid": true,
+        "citation_not_lower_than_hybrid": true
+      }
+    },
+    "full_hybrid_promotion": {
+      "recommendation": "NO-GO",
+      "rule": "Promote the full Hybrid pipeline only if it matches or exceeds the external current-parser baseline on Recall@5, MRR, answer correctness, and citation validity.",
+      "gates": {
+        "recall_at_least_current_parser": true,
+        "mrr_at_least_current_parser": true,
+        "answer_at_least_current_parser": true,
+        "citation_at_least_current_parser": false
+      }
+    }
+  },
+  "receipt_benchmark_untouched": true
+}
