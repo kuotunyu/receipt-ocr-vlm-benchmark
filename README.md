@@ -25,8 +25,11 @@
    下滑後才補的 post-hoc analysis，只能列為 promising、必須用新 holdout 重驗。
    v0.8 已在任何新 parser prediction 前凍結第二組 promotion holdout：2 份全新官方年報、
    14 頁、26 題，以及 `PyMuPDF + fixed` 對 `targeted VLM + fixed` 的固定 gate。CPU baseline
-   為 Recall@5 0.769、MRR 0.665、answer/citation 0.731；targeted candidate 尚待 GPU 執行，
-   因此目前決策是 PENDING，不提前宣稱 GO。
+   為 Recall@5 0.769、MRR 0.665、answer/citation 0.731；targeted candidate 的 Recall、answer、
+   citation 持平，但 MRR 降到 0.626，因此依事前 gate 判定 NO-GO。另以 5 個新圖表／資訊圖
+   crop、7 題評估 caption-and-index：generic caption 可把 Recall/answer/citation 提到 0.857，
+   但 structured caption 沒有改善 retrieval，original-crop 的 crop Recall 也只有 0.857，
+   caption promotion 同樣為 NO-GO。
    因此全域替換、正式 structure routing、VLM parser 與 caption promotion 都維持 NO-GO；設計與限制見
    [docs/COMPLEX_DOCUMENT_BENCHMARK.md](docs/COMPLEX_DOCUMENT_BENCHMARK.md)。
 
@@ -256,4 +259,4 @@ Pipeline A 的 OCR 引擎（PaddleOCR）與品項補漏 LLM（`ollama pull qwen3
 - [x] Complex-document v0.6 CPU stage：PaddleOCR 26 頁正式 row、15 題外部 QA 與 late-max MRR recovery 完成
 - [x] Complex-document v0.7 GPU stage：外部 full/targeted Qwen、3 張圖 4 題 caption 與 post-hoc fixed diagnostic 完成；正式 promotion 仍為 NO-GO
 - [x] Complex-document v0.8 CPU prep：2 份全新文件、14 頁、26 題與 promotion protocol 已在 prediction 前凍結；CPU baseline 完成
-- [ ] Complex-document v0.8 GPU stage：執行 frozen targeted-VLM + fixed candidate 與 5 個新 caption crops，再依既定 gate 自動判定 GO/NO-GO
+- [x] Complex-document v0.8 GPU stage：frozen targeted-VLM + fixed 與 5 個新 caption crops 已完成；兩項均依事前 gate 自動判定 NO-GO

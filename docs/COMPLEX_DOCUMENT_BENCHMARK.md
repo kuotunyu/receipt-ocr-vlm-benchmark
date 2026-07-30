@@ -260,13 +260,19 @@ bytes、SHA-256、selected pages 與 annotation，不提交 PDF。
 - Recall@5、MRR、answer correctness、citation validity，K=5；
 - 四項不可退步且至少一項嚴格改善，否則 NO-GO。
 
-CPU baseline 為 Recall@5 0.769、MRR 0.665、answer/citation 0.731。Targeted candidate 尚未
-執行，故狀態是 PENDING。`ph24` 的 evidence 分散於第 45、47 頁，使用
+CPU baseline 為 Recall@5 0.769、MRR 0.665、answer/citation 0.731。Frozen targeted-VLM
+candidate 的 Recall@5 0.769、MRR 0.626、answer/citation 0.731；14 頁解析共 20.455 秒，
+本地 API 成本為 $0。雖然三項持平，MRR 下降 0.038 且沒有任何主要指標嚴格改善，因此依
+事前 gate 判定 **NO-GO**。`ph24` 的 evidence 分散於第 45、47 頁，使用
 `evidence_mode=all`：retrieval 必須取回兩頁的獨立 evidence，MRR 以收齊最後一份 evidence
 的 rank 計算。這避免舊的 any-evidence 邏輯高估跨頁檢索。
 
 同一批 source pages 另凍結 5 個 chart/infographic crops、7 題，搭配既有 v0.7 targets
 累計 8 個 visual targets、11 題。Caption 仍只供 retrieval；答案必須重新讀取原始 crop pixels。
+本次 17 次 Qwen3-VL 呼叫共 19.573 秒（GPU 13.595 秒）。No image indexing 的
+Recall/answer/citation 為 0.714；generic caption 提升至 0.857；structured caption 沒有提升
+retrieval，維持 0.714；structured + original crop 的 answer/citation 為 0.857，但 crop
+Recall 只有 0.857，未通過事前 1.0 gate，因此 caption-and-index 同樣判定 **NO-GO**。
 
 ## Failure visualization
 

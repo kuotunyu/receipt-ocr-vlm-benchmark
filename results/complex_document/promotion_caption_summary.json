@@ -1,6 +1,6 @@
 {
   "benchmark_version": "0.8.0",
-  "generated_at": "2026-07-30T03:12:33.192577+00:00",
+  "generated_at": "2026-07-30T03:20:32.772464+00:00",
   "definition_sha256": "47126885e530f3df1d2c5bd80d1561d3b7f6229467f9593a39765f1db623e6b7",
   "dataset": {
     "documents": 2,
@@ -8,13 +8,784 @@
     "question_links": 7
   },
   "factor": {
-    "status": "skipped",
-    "reason": "No VLM-generated caption artifact. Run scripts/generate_chart_captions.py with qwen3-vl:8b."
+    "status": "completed",
+    "caption_model": "qwen3-vl:8b",
+    "caption_generation": {
+      "call_count": 17,
+      "latency_seconds_total": 19.572712,
+      "gpu_seconds_total": 13.594868,
+      "prompt_tokens_total": 19240,
+      "output_tokens_total": 1414,
+      "thinking_chars_total": 2041
+    },
+    "modes": {
+      "no_image_indexing": {
+        "question_count": 7,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 0.714286,
+        "mrr": 0.642857,
+        "answer_correctness": 0.714286,
+        "citation_validity": 0.714286,
+        "error_attribution": {
+          "parsing": 2,
+          "retrieval": 0,
+          "generation": 0
+        },
+        "questions": [
+          {
+            "question_id": "ph01",
+            "question_type": "chart_value",
+            "answer": "7.92",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00009",
+              "mof_finance_yearbook_2024:pymupdf:c00008",
+              "wda_2024_annual:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.359254,
+              0.25279,
+              0.225576,
+              0.204956,
+              0.1919
+            ]
+          },
+          {
+            "question_id": "ph02",
+            "question_type": "chart_value",
+            "answer": "8.75",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00061",
+              "mof_finance_yearbook_2024:pymupdf:c00029",
+              "mof_finance_yearbook_2024:pymupdf:c00028",
+              "mof_finance_yearbook_2024:pymupdf:c00048"
+            ],
+            "retrieved_scores": [
+              0.178611,
+              0.088583,
+              0.081665,
+              0.080134,
+              0.079689
+            ]
+          },
+          {
+            "question_id": "ph05",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00001",
+              "wda_2024_annual:pymupdf:c00005",
+              "wda_2024_annual:pymupdf:c00002",
+              "wda_2024_annual:pymupdf:c00004",
+              "wda_2024_annual:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.164344,
+              0.15725,
+              0.146606,
+              0.085612,
+              0.043077
+            ]
+          },
+          {
+            "question_id": "ph06",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00005",
+              "wda_2024_annual:pymupdf:c00000",
+              "wda_2024_annual:pymupdf:c00002",
+              "wda_2024_annual:pymupdf:c00001",
+              "wda_2024_annual:pymupdf:c00004"
+            ],
+            "retrieved_scores": [
+              0.129403,
+              0.106902,
+              0.058548,
+              0.052016,
+              0.051097
+            ]
+          },
+          {
+            "question_id": "ph13",
+            "question_type": "chart_value",
+            "answer": "41,850",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00002",
+              "mof_finance_yearbook_2024:pymupdf:c00003",
+              "mof_finance_yearbook_2024:pymupdf:c00009"
+            ],
+            "retrieved_scores": [
+              0.398076,
+              0.296798,
+              0.216192,
+              0.21381,
+              0.166819
+            ]
+          },
+          {
+            "question_id": "ph14",
+            "question_type": "chart_value",
+            "answer": "1,108",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00009",
+              "mof_finance_yearbook_2024:pymupdf:c00008",
+              "mof_finance_yearbook_2024:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.236866,
+              0.194907,
+              0.188626,
+              0.137852,
+              0.125643
+            ]
+          },
+          {
+            "question_id": "ph18",
+            "question_type": "chart_value",
+            "answer": "69.8",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00009",
+              "mof_finance_yearbook_2024:pymupdf:c00008",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "wda_2024_annual:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00010"
+            ],
+            "retrieved_scores": [
+              0.295241,
+              0.236933,
+              0.136849,
+              0.123095,
+              0.12126
+            ]
+          }
+        ],
+        "pixel_synthesis_required": false,
+        "pixel_synthesis_executed": false,
+        "note": "Caption text is retrieval-only. The original-crop mode uses the saved answer generated from crop pixels without caption text."
+      },
+      "generic_caption": {
+        "question_count": 7,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 0.857143,
+        "mrr": 0.619048,
+        "answer_correctness": 0.857143,
+        "citation_validity": 0.857143,
+        "error_attribution": {
+          "parsing": 1,
+          "retrieval": 0,
+          "generation": 0
+        },
+        "questions": [
+          {
+            "question_id": "ph01",
+            "question_type": "chart_value",
+            "answer": "7.92",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00000:caption:generic_caption",
+              "wda_2024_annual:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00009",
+              "mof_finance_yearbook_2024:pymupdf:c00008"
+            ],
+            "retrieved_scores": [
+              0.445399,
+              0.359254,
+              0.25279,
+              0.225576,
+              0.204956
+            ]
+          },
+          {
+            "question_id": "ph02",
+            "question_type": "chart_value",
+            "answer": "8.75",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00000:caption:generic_caption",
+              "wda_2024_annual:pymupdf:c00000",
+              "wda_2024_annual:pymupdf:c00001:caption:generic_caption",
+              "mof_finance_yearbook_2024:pymupdf:c00061",
+              "mof_finance_yearbook_2024:pymupdf:c00029"
+            ],
+            "retrieved_scores": [
+              0.286251,
+              0.178611,
+              0.10679,
+              0.088583,
+              0.081665
+            ]
+          },
+          {
+            "question_id": "ph05",
+            "question_type": "single_text_fact",
+            "answer": "10萬元",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00001:caption:generic_caption",
+              "wda_2024_annual:pymupdf:c00001",
+              "wda_2024_annual:pymupdf:c00005",
+              "wda_2024_annual:pymupdf:c00002",
+              "wda_2024_annual:pymupdf:c00004"
+            ],
+            "retrieved_scores": [
+              0.235219,
+              0.164344,
+              0.15725,
+              0.146606,
+              0.085612
+            ]
+          },
+          {
+            "question_id": "ph06",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00001:caption:generic_caption",
+              "wda_2024_annual:pymupdf:c00001:caption:generic_caption",
+              "wda_2024_annual:pymupdf:c00005",
+              "wda_2024_annual:pymupdf:c00000",
+              "wda_2024_annual:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.354787,
+              0.245678,
+              0.129403,
+              0.106902,
+              0.058548
+            ]
+          },
+          {
+            "question_id": "ph13",
+            "question_type": "chart_value",
+            "answer": "41,850",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00000:caption:generic_caption",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00002",
+              "mof_finance_yearbook_2024:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.398076,
+              0.395242,
+              0.296798,
+              0.216192,
+              0.21381
+            ]
+          },
+          {
+            "question_id": "ph14",
+            "question_type": "chart_value",
+            "answer": "1,108",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00000:caption:generic_caption",
+              "mof_finance_yearbook_2024:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00009",
+              "mof_finance_yearbook_2024:pymupdf:c00008"
+            ],
+            "retrieved_scores": [
+              0.370328,
+              0.236866,
+              0.194907,
+              0.188626,
+              0.137852
+            ]
+          },
+          {
+            "question_id": "ph18",
+            "question_type": "chart_value",
+            "answer": "69.8",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00009",
+              "mof_finance_yearbook_2024:pymupdf:c00005:caption:generic_caption",
+              "mof_finance_yearbook_2024:pymupdf:c00008",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "wda_2024_annual:pymupdf:c00000:caption:generic_caption"
+            ],
+            "retrieved_scores": [
+              0.295241,
+              0.274929,
+              0.236933,
+              0.136849,
+              0.128388
+            ]
+          }
+        ],
+        "pixel_synthesis_required": false,
+        "pixel_synthesis_executed": false,
+        "note": "Caption text is retrieval-only. The original-crop mode uses the saved answer generated from crop pixels without caption text."
+      },
+      "structured_caption": {
+        "question_count": 7,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 0.714286,
+        "mrr": 0.607143,
+        "answer_correctness": 0.714286,
+        "citation_validity": 0.714286,
+        "error_attribution": {
+          "parsing": 2,
+          "retrieval": 0,
+          "generation": 0
+        },
+        "questions": [
+          {
+            "question_id": "ph01",
+            "question_type": "chart_value",
+            "answer": "7.92",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00000",
+              "wda_2024_annual:pymupdf:c00000:caption:structured_caption",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00009",
+              "mof_finance_yearbook_2024:pymupdf:c00008"
+            ],
+            "retrieved_scores": [
+              0.359254,
+              0.357784,
+              0.25279,
+              0.225576,
+              0.204956
+            ]
+          },
+          {
+            "question_id": "ph02",
+            "question_type": "chart_value",
+            "answer": "8.75",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00000:caption:structured_caption",
+              "wda_2024_annual:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00061",
+              "mof_finance_yearbook_2024:pymupdf:c00029",
+              "mof_finance_yearbook_2024:pymupdf:c00028"
+            ],
+            "retrieved_scores": [
+              0.179955,
+              0.178611,
+              0.088583,
+              0.081665,
+              0.080134
+            ]
+          },
+          {
+            "question_id": "ph05",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00001",
+              "wda_2024_annual:pymupdf:c00005",
+              "wda_2024_annual:pymupdf:c00002",
+              "wda_2024_annual:pymupdf:c00004",
+              "wda_2024_annual:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.164344,
+              0.15725,
+              0.146606,
+              0.085612,
+              0.043077
+            ]
+          },
+          {
+            "question_id": "ph06",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00001:caption:structured_caption",
+              "wda_2024_annual:pymupdf:c00005",
+              "wda_2024_annual:pymupdf:c00000",
+              "wda_2024_annual:pymupdf:c00002",
+              "wda_2024_annual:pymupdf:c00001"
+            ],
+            "retrieved_scores": [
+              0.193398,
+              0.129403,
+              0.106902,
+              0.058548,
+              0.052016
+            ]
+          },
+          {
+            "question_id": "ph13",
+            "question_type": "chart_value",
+            "answer": "41,850",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00000:caption:structured_caption",
+              "mof_finance_yearbook_2024:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00002",
+              "mof_finance_yearbook_2024:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.449934,
+              0.398076,
+              0.296798,
+              0.216192,
+              0.21381
+            ]
+          },
+          {
+            "question_id": "ph14",
+            "question_type": "chart_value",
+            "answer": "1,108",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.25,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00000:caption:structured_caption",
+              "mof_finance_yearbook_2024:pymupdf:c00000",
+              "wda_2024_annual:pymupdf:c00000:caption:structured_caption",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00009"
+            ],
+            "retrieved_scores": [
+              0.37901,
+              0.236866,
+              0.198792,
+              0.194907,
+              0.188626
+            ]
+          },
+          {
+            "question_id": "ph18",
+            "question_type": "chart_value",
+            "answer": "69.8",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00009",
+              "mof_finance_yearbook_2024:pymupdf:c00008",
+              "mof_finance_yearbook_2024:pymupdf:c00005:caption:structured_caption",
+              "wda_2024_annual:pymupdf:c00000:caption:structured_caption",
+              "mof_finance_yearbook_2024:pymupdf:c00001"
+            ],
+            "retrieved_scores": [
+              0.295241,
+              0.236933,
+              0.179917,
+              0.177867,
+              0.136849
+            ]
+          }
+        ],
+        "pixel_synthesis_required": false,
+        "pixel_synthesis_executed": false,
+        "note": "Caption text is retrieval-only. The original-crop mode uses the saved answer generated from crop pixels without caption text."
+      },
+      "structured_caption_original_crop": {
+        "question_count": 7,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "qwen3-vl-original-crop-no-caption",
+        "k": 5,
+        "retrieval_recall_at_k": 0.714286,
+        "mrr": 0.607143,
+        "answer_correctness": 0.857143,
+        "citation_validity": 0.857143,
+        "error_attribution": {
+          "parsing": 0,
+          "retrieval": 1,
+          "generation": 0
+        },
+        "questions": [
+          {
+            "question_id": "ph01",
+            "question_type": "chart_value",
+            "answer": "7.92",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00000",
+              "wda_2024_annual:pymupdf:c00000:caption:structured_caption_original_crop",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00009",
+              "mof_finance_yearbook_2024:pymupdf:c00008"
+            ],
+            "retrieved_scores": [
+              0.359254,
+              0.357784,
+              0.25279,
+              0.225576,
+              0.204956
+            ]
+          },
+          {
+            "question_id": "ph02",
+            "question_type": "chart_value",
+            "answer": "8.75",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00000:caption:structured_caption_original_crop",
+              "wda_2024_annual:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00061",
+              "mof_finance_yearbook_2024:pymupdf:c00029",
+              "mof_finance_yearbook_2024:pymupdf:c00028"
+            ],
+            "retrieved_scores": [
+              0.179955,
+              0.178611,
+              0.088583,
+              0.081665,
+              0.080134
+            ]
+          },
+          {
+            "question_id": "ph05",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00001",
+              "wda_2024_annual:pymupdf:c00005",
+              "wda_2024_annual:pymupdf:c00002",
+              "wda_2024_annual:pymupdf:c00004",
+              "wda_2024_annual:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.164344,
+              0.15725,
+              0.146606,
+              0.085612,
+              0.043077
+            ]
+          },
+          {
+            "question_id": "ph06",
+            "question_type": "single_text_fact",
+            "answer": "8,000",
+            "correct": true,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "wda_2024_annual:pymupdf:c00001:caption:structured_caption_original_crop",
+              "wda_2024_annual:pymupdf:c00005",
+              "wda_2024_annual:pymupdf:c00000",
+              "wda_2024_annual:pymupdf:c00002",
+              "wda_2024_annual:pymupdf:c00001"
+            ],
+            "retrieved_scores": [
+              0.193398,
+              0.129403,
+              0.106902,
+              0.058548,
+              0.052016
+            ]
+          },
+          {
+            "question_id": "ph13",
+            "question_type": "chart_value",
+            "answer": "41,850",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00000:caption:structured_caption_original_crop",
+              "mof_finance_yearbook_2024:pymupdf:c00000",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00002",
+              "mof_finance_yearbook_2024:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.449934,
+              0.398076,
+              0.296798,
+              0.216192,
+              0.21381
+            ]
+          },
+          {
+            "question_id": "ph14",
+            "question_type": "chart_value",
+            "answer": "1,108",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.25,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00000:caption:structured_caption_original_crop",
+              "mof_finance_yearbook_2024:pymupdf:c00000",
+              "wda_2024_annual:pymupdf:c00000:caption:structured_caption_original_crop",
+              "mof_finance_yearbook_2024:pymupdf:c00001",
+              "mof_finance_yearbook_2024:pymupdf:c00009"
+            ],
+            "retrieved_scores": [
+              0.37901,
+              0.236866,
+              0.198792,
+              0.194907,
+              0.188626
+            ]
+          },
+          {
+            "question_id": "ph18",
+            "question_type": "chart_value",
+            "answer": "69.8%",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "mof_finance_yearbook_2024:pymupdf:c00009",
+              "mof_finance_yearbook_2024:pymupdf:c00008",
+              "mof_finance_yearbook_2024:pymupdf:c00005:caption:structured_caption_original_crop",
+              "wda_2024_annual:pymupdf:c00000:caption:structured_caption_original_crop",
+              "mof_finance_yearbook_2024:pymupdf:c00001"
+            ],
+            "retrieved_scores": [
+              0.295241,
+              0.236933,
+              0.179917,
+              0.177867,
+              0.136849
+            ]
+          }
+        ],
+        "crop_recall_at_k": 0.857143,
+        "pixel_synthesis_required": true,
+        "pixel_synthesis_executed": true,
+        "note": "Caption text is retrieval-only. The original-crop mode uses the saved answer generated from crop pixels without caption text."
+      }
+    }
   },
   "decision": {
-    "recommendation": "PENDING",
-    "promotion_eligible": false,
-    "reason": "Original-crop pixel synthesis has not completed."
+    "recommendation": "NO-GO",
+    "promotion_eligible": true,
+    "retrieval_recall_delta_vs_no_image": 0.0,
+    "gates": {
+      "structured_retrieval_at_least_no_image": true,
+      "pixel_synthesis_executed": true,
+      "crop_recall_at_k": false,
+      "answer_correctness": true,
+      "citation_validity": true,
+      "frozen_question_count": true
+    }
   },
   "receipt_benchmark_untouched": true
 }

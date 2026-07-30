@@ -86,17 +86,27 @@ confound 診斷，因此只標為 **promising, not validated**，不可當 froze
 | Factor | Recall@5 | MRR | Answer | Citation | 狀態 |
 |---|---:|---:|---:|---:|---|
 | PyMuPDF + fixed | 0.769 | 0.665 | 0.731 | 0.731 | CPU baseline complete |
-| targeted VLM + fixed | - | - | - | - | GPU pending |
+| targeted VLM + fixed | 0.769 | 0.626 | 0.731 | 0.731 | complete；NO-GO |
 
 Candidate 必須四項 primary metrics 都不低於 baseline，且至少一項嚴格改善，才可 GO。
-目前只有 baseline，因此自動 decision 是 **PENDING**。跨頁題 `ph24` 使用
+Candidate 的 MRR 下降 0.038，且沒有任一 primary metric 嚴格改善，因此自動 decision 是
+**NO-GO**。Targeted parser 的 14 頁 wall-clock latency 為 20.455 秒（0.684 pages/s），
+本地 API 成本 $0。跨頁題 `ph24` 使用
 `evidence_mode=all`，分散在第 45、47 頁的兩份 evidence 都必須被取回；不再以「任一頁命中」
 冒充 cross-page Recall。
 
 `promotion_caption_summary.json` 的 5 個新 source-pixel crops 與 7 個 question links 也已
-在 caption generation 前凍結；目前 artifact 尚未產生，因此 decision 同樣是 **PENDING**。
-GPU 執行後會自動比較 no image indexing、generic caption、structured caption 與
-structured caption + original crop synthesis 四種模式。
+在 caption generation 前凍結。17 次呼叫共 19.573 秒（GPU 13.595 秒），四種模式結果如下：
+
+| Caption mode | Recall@5 | MRR | Answer | Citation | Crop Recall@5 |
+|---|---:|---:|---:|---:|---:|
+| no image indexing | 0.714 | 0.643 | 0.714 | 0.714 | - |
+| generic caption | **0.857** | 0.619 | **0.857** | **0.857** | - |
+| structured caption | 0.714 | 0.607 | 0.714 | 0.714 | - |
+| structured + original crop | 0.714 | 0.607 | **0.857** | **0.857** | 0.857 |
+
+Generic caption 有實際增益，但 structured caption 沒提升 retrieval，原圖 synthesis 也因 crop
+Recall 未達事前 1.0 gate 而判定 **NO-GO**。Caption 仍只供檢索，答案來自原始 crop pixels。
 
 2026-07-30 已在無競爭 RTX 4090 window 完成 production `think=false` A/B、26 頁 parser、
 外部 full/targeted Qwen 與三張圖／流程圖的 caption/original-crop synthesis。`benchmark_summary.json` 的 factor 4/5
