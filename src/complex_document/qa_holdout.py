@@ -75,6 +75,10 @@ def validate_qa_holdout(manifest: dict, questions_payload: dict) -> None:
         )
 
     for question in questions:
+        if question.get("evidence_mode", "any") not in {"any", "all"}:
+            raise QAHoldoutDefinitionError(
+                f"{question['question_id']} has unsupported evidence_mode"
+            )
         unanswerable = bool(question.get("unanswerable"))
         if unanswerable:
             if question.get("answers") or question.get("evidence"):

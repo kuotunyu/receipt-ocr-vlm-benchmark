@@ -1,0 +1,61 @@
+{
+  "benchmark_version": "0.8.0",
+  "language": "zh-Hant",
+  "role": "external-end-to-end-qa-holdout",
+  "holdout_name": "targeted-vlm-fixed-promotion",
+  "distribution_policy": "download-only",
+  "annotation_status": "frozen-before-downstream-evaluation",
+  "development_document_overlap": 0,
+  "notes": [
+    "Both official documents are new to the repository and disjoint from the five-document development set and the two-document v0.6 QA holdout.",
+    "Pages and gold answers were selected from official PDF pixels before any parser, retriever, or VLM prediction was inspected.",
+    "Ground truth is manually transcribed from 110 DPI page renders; no LLM judge is used.",
+    "The repository stores only URLs, checksums, selected pages, protocol, and annotations. Downloaded PDFs remain git-ignored."
+  ],
+  "documents": [
+    {
+      "document_id": "wda_2024_annual",
+      "title": "勞動部勞動力發展署113年年報",
+      "publisher": "勞動部勞動力發展署",
+      "source_page": "https://www.wda.gov.tw/News_Content.aspx?n=114&s=17693",
+      "url": "https://nws.wda.gov.tw/Download.ashx?n=5Yue5YuV6YOo5Yue5YuV5Yqb55m85bGV572yMTEz5bm05bm05aCxLnBkZg%3D%3D&u=LzAwMS9VcGxvYWQvMS9yZWxmaWxlLzEwMzU1LzE3NjkzLzc4OWY4NWMwLTc2Y2MtNDRmYy05N2M2LTJlOTM0YTlkNzRlNC5wZGY%3D",
+      "license_url": "https://www.wda.gov.tw/cp.aspx?n=158",
+      "license_note": "The agency website declaration permits free, non-exclusive, sublicensable reuse with attribution, subject to stated exclusions.",
+      "sha256": "9c49484fa1d7b4a665799bf574de04c0fc290b074b73e751c3588cd816848c53",
+      "filename": "wda_2024_annual.pdf",
+      "bytes": 15318930,
+      "page_count": 176,
+      "selected_pages": [11, 14, 17, 27, 29, 33],
+      "challenges": [
+        "legacy-encoded-native-text",
+        "multi-column",
+        "chart-value",
+        "dense-table",
+        "figure-text",
+        "header-footer"
+      ]
+    },
+    {
+      "document_id": "mof_finance_yearbook_2024",
+      "title": "中華民國113年財政統計年報",
+      "publisher": "財政部統計處",
+      "source_page": "https://www.mof.gov.tw/singlehtml/285?cntId=2440fac32b034c1ab9138b19e669ea94",
+      "url": "https://service.mof.gov.tw/public/Data/statistic/Year_Fin/113%E9%9B%BB%E5%AD%90%E6%9B%B8/htm/113%E5%B9%B4%E8%B2%A1%E6%94%BF%E7%B5%B1%E8%A8%88%E5%B9%B4%E5%A0%B1.pdf",
+      "license_url": "https://www.mof.gov.tw/singlehtml/23b4129de54f4a2b947416628c4002dc?cntId=132c02e56adf447b9aa9f8872761079c",
+      "license_note": "The Ministry of Finance website data-open declaration permits reuse with source attribution, subject to stated exclusions.",
+      "sha256": "62332a6663df26868968fee18ec6ce900f5f6d58b8d7a9b52d44cc90693eabd9",
+      "filename": "mof_finance_yearbook_2024.pdf",
+      "bytes": 8016273,
+      "page_count": 342,
+      "selected_pages": [14, 17, 22, 32, 45, 46, 47, 48],
+      "challenges": [
+        "chart-value",
+        "dense-table",
+        "merged-header-cells",
+        "footnote",
+        "bilingual-table",
+        "cross-page-table"
+      ]
+    }
+  ]
+}

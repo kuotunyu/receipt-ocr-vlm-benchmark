@@ -32,6 +32,58 @@ def _has_gold_evidence(chunk: Chunk, evidence_sets: list[dict]) -> bool:
     return any(_evidence_match(chunk, evidence) for evidence in evidence_sets)
 
 
+def _evidence_coverage(
+    chunks: list[Chunk],
+    evidence_sets: list[dict],
+    *,
+    mode: str,
+) -> bool:
+    if not evidence_sets:
+        return False
+    if mode == "all":
+        return all(
+            any(_evidence_match(chunk, evidence) for chunk in chunks)
+            for evidence in evidence_sets
+        )
+    if mode != "any":
+        raise ValueError(f"unsupported evidence_mode: {mode}")
+    return any(
+        _evidence_match(chunk, evidence)
+        for chunk in chunks
+        for evidence in evidence_sets
+    )
+
+
+def _evidence_reciprocal_rank(
+    hits: list[RetrievalHit],
+    evidence_sets: list[dict],
+    *,
+    mode: str,
+) -> float:
+    if mode == "all":
+        first_ranks = [
+            min(
+                (
+                    hit.rank
+                    for hit in hits
+                    if _evidence_match(hit.chunk, evidence)
+                ),
+                default=None,
+            )
+            for evidence in evidence_sets
+        ]
+        if not first_ranks or any(rank is None for rank in first_ranks):
+            return 0.0
+        # Rank at which the retriever has accumulated every required source.
+        return 1.0 / max(int(rank) for rank in first_ranks if rank is not None)
+    if mode != "any":
+        raise ValueError(f"unsupported evidence_mode: {mode}")
+    ranks = [
+        hit.rank for hit in hits if _has_gold_evidence(hit.chunk, evidence_sets)
+    ]
+    return 1.0 / min(ranks) if ranks else 0.0
+
+
 @dataclass(frozen=True)
 class QuestionResult:
     question_id: str
@@ -57,17 +109,22 @@ def evaluate_question(
     hits: list[RetrievalHit] = retriever.retrieve(question["question"], all_chunks, k=k)
     retrieved = [hit.chunk for hit in hits]
     evidence_sets = question.get("evidence", [])
+    evidence_mode = question.get("evidence_mode", "any")
     unanswerable = bool(question.get("unanswerable"))
 
-    evidence_in_corpus = any(
-        _has_gold_evidence(chunk, evidence_sets) for chunk in all_chunks
+    evidence_in_corpus = _evidence_coverage(
+        all_chunks, evidence_sets, mode=evidence_mode
     )
-    evidence_ranks = [
-        hit.rank for hit in hits if _has_gold_evidence(hit.chunk, evidence_sets)
-    ]
-    recall = 1.0 if (unanswerable or evidence_ranks) else 0.0
+    evidence_retrieved = _evidence_coverage(
+        retrieved, evidence_sets, mode=evidence_mode
+    )
+    recall = 1.0 if (unanswerable or evidence_retrieved) else 0.0
     reciprocal_rank = (
-        1.0 if unanswerable else (1.0 / min(evidence_ranks) if evidence_ranks else 0.0)
+        1.0
+        if unanswerable
+        else _evidence_reciprocal_rank(
+            hits, evidence_sets, mode=evidence_mode
+        )
     )
 
     answer = answerer.answer(question, retrieved)
@@ -79,13 +136,14 @@ def evaluate_question(
     else:
         citation_valid = bool(
             correct
-            and any(
-                _has_gold_evidence(chunk, evidence_sets)
-                and (
-                    _normalize(answer) in _normalize(chunk.text)
-                    or question.get("operation") == "sum"
+            and evidence_retrieved
+            and (
+                question.get("operation") == "sum"
+                or any(
+                    _has_gold_evidence(chunk, evidence_sets)
+                    and _normalize(answer) in _normalize(chunk.text)
+                    for chunk in retrieved
                 )
-                for chunk in retrieved
             )
         )
 
@@ -93,7 +151,7 @@ def evaluate_question(
     if not correct:
         if not evidence_in_corpus:
             error_source = "parsing"
-        elif not evidence_ranks:
+        elif not evidence_retrieved:
             error_source = "retrieval"
         else:
             error_source = "generation"

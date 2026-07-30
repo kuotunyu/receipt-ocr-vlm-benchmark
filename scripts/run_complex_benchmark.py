@@ -249,8 +249,15 @@ def _caption_ablation(
         for item in payload["captions"]
     ]
     modes = {}
+    target_question_ids = {
+        question_id
+        for item in payload["captions"]
+        for question_id in item.get("question_ids", [])
+    }
     chart_questions = [
-        question for question in questions if question["type"] == "chart_value"
+        question
+        for question in questions
+        if question["question_id"] in target_question_ids
     ]
     for mode in (
         "no_image_indexing",

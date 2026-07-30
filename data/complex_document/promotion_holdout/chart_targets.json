@@ -1,0 +1,56 @@
+{
+  "benchmark_version": "0.8.0",
+  "annotation_method": "Manually verified crop boxes in normalized page coordinates, frozen from source pixels before caption generation.",
+  "freeze_status": "frozen-before-caption-generation",
+  "evaluation_protocol": {
+    "retrieval_k": 5,
+    "minimum_question_count": 7,
+    "minimum_crop_recall_at_k": 0.9,
+    "minimum_answer_correctness": 0.8,
+    "minimum_citation_validity": 0.8,
+    "structured_retrieval_must_not_regress": true,
+    "pixel_synthesis_must_execute": true
+  },
+  "targets": [
+    {
+      "figure_id": "wda-youth-unemployment-p11",
+      "document_id": "wda_2024_annual",
+      "page": 11,
+      "bbox_normalized": [0.09, 0.54, 0.49, 0.75],
+      "generic_prompt": "用一句繁體中文描述這張折線圖的主題，不要抄錄所有數值。",
+      "question_ids": ["ph01", "ph02"]
+    },
+    {
+      "figure_id": "wda-industrial-talent-card-p17",
+      "document_id": "wda_2024_annual",
+      "page": 17,
+      "bbox_normalized": [0.09, 0.12, 0.51, 0.54],
+      "generic_prompt": "用一句繁體中文描述這張補助方案圖卡，不要抄錄所有細節。",
+      "question_ids": ["ph05", "ph06"]
+    },
+    {
+      "figure_id": "wda-training-award-card-p17",
+      "document_id": "wda_2024_annual",
+      "page": 17,
+      "bbox_normalized": [0.52, 0.12, 0.91, 0.54],
+      "generic_prompt": "用一句繁體中文描述這張學習獎勵金流程圖卡，不要抄錄所有細節。",
+      "question_ids": []
+    },
+    {
+      "figure_id": "mof-net-revenue-expenditure-p14",
+      "document_id": "mof_finance_yearbook_2024",
+      "page": 14,
+      "bbox_normalized": [0.06, 0.47, 0.95, 0.74],
+      "generic_prompt": "用一句繁體中文描述這張政府歲入歲出圖，不要抄錄所有數值。",
+      "question_ids": ["ph13", "ph14"]
+    },
+    {
+      "figure_id": "mof-tax-structure-p22",
+      "document_id": "mof_finance_yearbook_2024",
+      "page": 22,
+      "bbox_normalized": [0.34, 0.62, 0.98, 0.91],
+      "generic_prompt": "用一句繁體中文描述這張賦稅結構圖，不要抄錄所有比例。",
+      "question_ids": ["ph18"]
+    }
+  ]
+}

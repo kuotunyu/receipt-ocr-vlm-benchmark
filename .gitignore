@@ -3,6 +3,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+tmp/
 .env
 .claude/
 HOW_TO_RESUME.md
@@ -38,6 +39,7 @@ Thumbs.db
 # are reproducible but can be large and may contain rendered source pages.
 data/complex_document/raw/
 data/complex_document/holdout/raw/
+data/complex_document/promotion_holdout/raw/
 artifacts/complex_document/
 results/complex_document/runs/
 
@@ -50,6 +52,11 @@ results/complex_document/runs/
 !data/complex_document/holdout/manifest.json
 !data/complex_document/holdout/gold/
 !data/complex_document/holdout/gold/**
+!data/complex_document/promotion_holdout/
+!data/complex_document/promotion_holdout/manifest.json
+!data/complex_document/promotion_holdout/questions.json
+!data/complex_document/promotion_holdout/protocol.json
+!data/complex_document/promotion_holdout/chart_targets.json
 !results/complex_document/
 !results/complex_document/README.md
 !results/complex_document/benchmark_summary.json

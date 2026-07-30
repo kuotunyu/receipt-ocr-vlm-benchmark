@@ -1,0 +1,224 @@
+{
+  "benchmark_version": "0.8.0",
+  "annotation_method": "Manual visual transcription and verification against 110 DPI renders of the pinned official PDFs. No parser output, retrieval result, generator prediction, or LLM judge was used before freezing.",
+  "annotated_at": "2026-07-30",
+  "question_count": 26,
+  "questions": [
+    {
+      "question_id": "ph01",
+      "type": "chart_value",
+      "question": "勞動力發展署113年年報中，113年15至29歲青年失業率是多少？",
+      "answers": ["7.92"],
+      "answer_regex": "(?P<answer>7[.]92)",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 11, "text_contains": ["113年", "7.92"]}]
+    },
+    {
+      "question_id": "ph02",
+      "type": "chart_value",
+      "question": "同一張青年失業率折線圖中，108年的數值是多少？",
+      "answers": ["8.75"],
+      "answer_regex": "(?P<answer>8[.]75)",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 11, "text_contains": ["108年", "8.75"]}]
+    },
+    {
+      "question_id": "ph03",
+      "type": "table_cell",
+      "question": "113年度疫後改善缺工擴大方案中，旅宿業的職缺數是多少？",
+      "answers": ["1685"],
+      "answer_regex": "旅宿業[\\s\\S]{0,60}?(?P<answer>1[,]?685)",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 14, "text_contains": ["旅宿業", "1,685"]}]
+    },
+    {
+      "question_id": "ph04",
+      "type": "table_aggregation",
+      "question": "將疫後改善缺工擴大方案表中旅宿業、餐飲業與航空站地勤業的推介人數相加，合計多少人？",
+      "answers": ["32620"],
+      "answer_regex": "(?P<answer>8[,]?028|23[,]?358|1[,]?234)",
+      "operation": "sum",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 14, "text_contains": ["推介人數", "8,028", "23,358", "1,234"]}]
+    },
+    {
+      "question_id": "ph05",
+      "type": "single_text_fact",
+      "question": "產業新尖兵計畫說明圖卡標示的最高補助訓練費是多少？",
+      "answers": ["10萬元"],
+      "answer_regex": "(?P<answer>10\\s*萬元)",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 17, "text_contains": ["產業新尖兵計畫", "10萬元"]}]
+    },
+    {
+      "question_id": "ph06",
+      "type": "single_text_fact",
+      "question": "青年職前訓練學習獎勵金圖卡標示每月發給多少元？",
+      "answers": ["8000"],
+      "answer_regex": "(?P<answer>8[,]?000)",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 17, "text_contains": ["學習獎勵金", "8,000"]}]
+    },
+    {
+      "question_id": "ph07",
+      "type": "table_cell",
+      "question": "113年度在職者進修訓練計畫表中，產業人才投資方案的合計訓練人數是多少？",
+      "answers": ["120555"],
+      "answer_regex": "產業人才投資方案[\\s\\S]{0,160}?(?P<answer>120[,]?555)",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 27, "text_contains": ["產業人才投資方案", "120,555"]}]
+    },
+    {
+      "question_id": "ph08",
+      "type": "table_aggregation",
+      "question": "將北分署在職訓練、企業人力資源提升、小型企業人力提升及產業人才投資四項人數相加，合計多少人？",
+      "answers": ["76031"],
+      "answer_regex": "(?P<answer>1[,]?381|31[,]?052|4[,]?695|38[,]?903)",
+      "operation": "sum",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 27, "text_contains": ["北分署", "1,381", "31,052", "4,695", "38,903"]}]
+    },
+    {
+      "question_id": "ph09",
+      "type": "table_cell",
+      "question": "113年度充電起飛計畫中，中分署協助事業單位辦訓的人數是多少？",
+      "answers": ["5212"],
+      "answer_regex": "協助事業單位辦訓[\\s\\S]{0,100}?(?P<answer>5[,]?212)",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 29, "text_contains": ["協助事業單位辦訓", "5,212"]}]
+    },
+    {
+      "question_id": "ph10",
+      "type": "table_aggregation",
+      "question": "充電起飛計畫表中五個分署的總計人數是多少？",
+      "answers": ["33025"],
+      "answer_regex": "(?P<answer>6[,]?614|6[,]?754|9[,]?412|5[,]?001|5[,]?244)",
+      "operation": "sum",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 29, "text_contains": ["合計", "6,614", "6,754", "9,412", "5,001", "5,244"]}]
+    },
+    {
+      "question_id": "ph11",
+      "type": "table_cell",
+      "question": "113年度大專辦理就業服務補助計畫中，校園徵才活動就業機會數合計是多少？",
+      "answers": ["276030"],
+      "answer_regex": "校園徵才活動就業機會數[\\s\\S]{0,160}?(?P<answer>276[,]?030)",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 33, "text_contains": ["校園徵才活動就業機會數", "276,030"]}]
+    },
+    {
+      "question_id": "ph12",
+      "type": "table_aggregation",
+      "question": "五個分署辦理校園徵才活動的場次合計是多少？",
+      "answers": ["97"],
+      "answer_regex": "校園徵才活動辦理場次[\\s\\S]{0,120}?(?P<answer>97)",
+      "evidence": [{"document_id": "wda_2024_annual", "page": 33, "text_contains": ["校園徵才活動辦理場次", "97"]}]
+    },
+    {
+      "question_id": "ph13",
+      "type": "chart_value",
+      "question": "財政統計年報的各級政府歲入歲出淨額圖中，113年歲入淨額是多少億元？",
+      "answers": ["41850"],
+      "answer_regex": "(?P<answer>41[,]?850)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 14, "text_contains": ["113年", "41,850"]}]
+    },
+    {
+      "question_id": "ph14",
+      "type": "chart_value",
+      "question": "同一圖表中，113年歲入歲出餘絀是多少億元？",
+      "answers": ["1108"],
+      "answer_regex": "(?P<answer>1[,]?108)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 14, "text_contains": ["餘(+)", "1,108"]}]
+    },
+    {
+      "question_id": "ph15",
+      "type": "table_cell",
+      "question": "113年各級公庫收入淨額表中，營業盈餘及事業收入的金額是多少億元？",
+      "answers": ["3142"],
+      "answer_regex": "營業盈餘及事業收入[\\s\\S]{0,80}?(?P<answer>3[,]?142)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 17, "text_contains": ["營業盈餘及事業收入", "3,142"]}]
+    },
+    {
+      "question_id": "ph16",
+      "type": "table_cell",
+      "question": "113年各級公庫支出淨額表中，教育科學文化支出的金額是多少億元？",
+      "answers": ["9691"],
+      "answer_regex": "教育科學文化支出[\\s\\S]{0,80}?(?P<answer>9[,]?691)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 17, "text_contains": ["教育科學文化支出", "9,691"]}]
+    },
+    {
+      "question_id": "ph17",
+      "type": "table_cell",
+      "question": "113年全國賦稅收入表中，所得稅收入是多少億元？",
+      "answers": ["19511"],
+      "answer_regex": "113年[\\s\\S]{0,160}?(?P<answer>19[,]?511)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 22, "text_contains": ["所得稅", "19,511"]}]
+    },
+    {
+      "question_id": "ph18",
+      "type": "chart_value",
+      "question": "113年全國賦稅結構圖中，直接稅占比是多少？",
+      "answers": ["69.8"],
+      "answer_regex": "(?P<answer>69[.]8)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 22, "text_contains": ["直接稅", "69.8"]}]
+    },
+    {
+      "question_id": "ph19",
+      "type": "table_cell",
+      "question": "113年賦稅收入變動表中，證券交易稅的賦稅收入是多少億元？",
+      "answers": ["2881"],
+      "answer_regex": "證券交易稅[\\s\\S]{0,80}?(?P<answer>2[,]?881)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 32, "text_contains": ["證券交易稅", "2,881"]}]
+    },
+    {
+      "question_id": "ph20",
+      "type": "table_cell",
+      "question": "表1-1中，113年經常門歲入淨額是多少新臺幣百萬元？",
+      "answers": ["4159577"],
+      "answer_regex": "113年[\\s\\S]{0,220}?(?P<answer>4[,]?159[,]?577)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 45, "text_contains": ["經常門", "4,159,577"]}]
+    },
+    {
+      "question_id": "ph21",
+      "type": "table_cell",
+      "question": "表1-1中，113年資本門歲出淨額是多少新臺幣百萬元？",
+      "answers": ["667170"],
+      "answer_regex": "2024[\\s\\S]{0,220}?(?P<answer>667[,]?170)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 46, "text_contains": ["2024", "667,170"]}]
+    },
+    {
+      "question_id": "ph22",
+      "type": "table_cell",
+      "question": "表1-1中，113年政府融資淨收入是多少新臺幣百萬元？",
+      "answers": ["-79682"],
+      "answer_regex": "113年[\\s\\S]{0,220}?(?P<answer>-79[,]?682)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 47, "text_contains": ["政府", "-79,682"]}]
+    },
+    {
+      "question_id": "ph23",
+      "type": "table_cell",
+      "question": "表1-1中，2024年的債務償還金額是多少新臺幣百萬元？",
+      "answers": ["527233"],
+      "answer_regex": "(?P<answer>527[,]?233)",
+      "evidence": [{"document_id": "mof_finance_yearbook_2024", "page": 48, "text_contains": ["Debt Repayment", "527,233"]}]
+    },
+    {
+      "question_id": "ph24",
+      "type": "cross_page",
+      "question": "將表1-1的113年經常門歲入淨額與政府融資淨收入相加，結果是多少新臺幣百萬元？",
+      "answers": ["4079895"],
+      "answer_regex": "(?P<answer>4[,]?159[,]?577|-79[,]?682)",
+      "operation": "sum",
+      "evidence_mode": "all",
+      "evidence": [
+        {"document_id": "mof_finance_yearbook_2024", "page": 45, "text_contains": ["經常門", "4,159,577"]},
+        {"document_id": "mof_finance_yearbook_2024", "page": 47, "text_contains": ["政府", "-79,682"]}
+      ]
+    },
+    {
+      "question_id": "ph25",
+      "type": "unanswerable",
+      "question": "勞動力發展署年報所列114年15至29歲青年失業率是多少？",
+      "answers": [],
+      "unanswerable": true,
+      "evidence": []
+    },
+    {
+      "question_id": "ph26",
+      "type": "unanswerable",
+      "question": "財政統計年報所列115年全國賦稅收入是多少億元？",
+      "answers": [],
+      "unanswerable": true,
+      "evidence": []
+    }
+  ]
+}

@@ -77,6 +77,27 @@ Full Qwen 7 頁 model-call latency 為 106.303 秒；targeted router 只送 1/7 
 正式結論仍為 **NO-GO**。Fixed row 是看到 structure MRR 下降後才補的 parser/chunker
 confound 診斷，因此只標為 **promising, not validated**，不可當 frozen holdout promotion。
 
+## v0.8 untouched targeted-VLM promotion holdout
+
+`promotion_holdout_summary.json` 使用兩份全新官方年報，與開發集及 v0.6 holdout 共 7 份文件
+完全不重疊。14 個 selected pages、26 題、兩組 factor 與 gate 均在新 parser prediction 前
+凍結。比較只允許：
+
+| Factor | Recall@5 | MRR | Answer | Citation | 狀態 |
+|---|---:|---:|---:|---:|---|
+| PyMuPDF + fixed | 0.769 | 0.665 | 0.731 | 0.731 | CPU baseline complete |
+| targeted VLM + fixed | - | - | - | - | GPU pending |
+
+Candidate 必須四項 primary metrics 都不低於 baseline，且至少一項嚴格改善，才可 GO。
+目前只有 baseline，因此自動 decision 是 **PENDING**。跨頁題 `ph24` 使用
+`evidence_mode=all`，分散在第 45、47 頁的兩份 evidence 都必須被取回；不再以「任一頁命中」
+冒充 cross-page Recall。
+
+`promotion_caption_summary.json` 的 5 個新 source-pixel crops 與 7 個 question links 也已
+在 caption generation 前凍結；目前 artifact 尚未產生，因此 decision 同樣是 **PENDING**。
+GPU 執行後會自動比較 no image indexing、generic caption、structured caption 與
+structured caption + original crop synthesis 四種模式。
+
 2026-07-30 已在無競爭 RTX 4090 window 完成 production `think=false` A/B、26 頁 parser、
 外部 full/targeted Qwen 與三張圖／流程圖的 caption/original-crop synthesis。`benchmark_summary.json` 的 factor 4/5
 由 raw artifacts 與 normalized IR 自動產生；不是手動補寫。
@@ -91,6 +112,13 @@ confound 診斷，因此只標為 **promising, not validated**，不可當 froze
 .venv\Scripts\python scripts\download_complex_documents.py --manifest data/complex_document/holdout/manifest.json --output-dir data/complex_document/holdout/raw
 .venv\Scripts\python scripts\run_table_router_holdout.py
 .venv\Scripts\python scripts\verify_table_router_holdout.py
+
+.venv\Scripts\python scripts\download_complex_documents.py --manifest data/complex_document/promotion_holdout/manifest.json --output-dir data/complex_document/promotion_holdout/raw
+.venv\Scripts\python scripts\run_promotion_holdout.py
+.venv\Scripts\python scripts\run_promotion_holdout.py --reuse-ir --include-candidate
+.venv\Scripts\python scripts\verify_promotion_holdout.py
+.venv\Scripts\python scripts\run_promotion_caption_eval.py
+.venv\Scripts\python scripts\verify_promotion_caption_eval.py
 ```
 
 逐欄定義、限制與 failure visualization 見

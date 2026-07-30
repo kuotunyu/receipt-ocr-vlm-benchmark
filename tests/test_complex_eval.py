@@ -96,6 +96,76 @@ def test_cross_page_evidence_requires_one_chunk_covering_all_pages():
     assert result["citation_validity"] == 1.0
 
 
+def test_cross_page_evidence_mode_all_covers_separate_source_chunks():
+    revenue = base_chunk("113 年歲入淨額 4,159,577", chunk_id="revenue")
+    revenue.pages = [45]
+    financing = base_chunk("113 年政府融資淨收入 -79,682", chunk_id="financing")
+    financing.pages = [47]
+    question = {
+        "question_id": "multi-source",
+        "type": "cross_page",
+        "question": "113 年歲入淨額加上政府融資淨收入是多少？",
+        "answers": ["4079895"],
+        "answer_regex": "(?P<answer>4[,]?159[,]?577|-79[,]?682)",
+        "operation": "sum",
+        "evidence_mode": "all",
+        "evidence": [
+            {
+                "document_id": "doc",
+                "page": 45,
+                "text_contains": ["歲入淨額", "4,159,577"],
+            },
+            {
+                "document_id": "doc",
+                "page": 47,
+                "text_contains": ["政府融資淨收入", "-79,682"],
+            },
+        ],
+    }
+    result = evaluate_downstream(
+        [question], [revenue, financing], k=2
+    )
+    assert result["retrieval_recall_at_k"] == 1.0
+    assert result["mrr"] == 0.5
+    assert result["answer_correctness"] == 1.0
+    assert result["citation_validity"] == 1.0
+
+
+def test_cross_page_evidence_mode_all_detects_partial_retrieval():
+    revenue = base_chunk("113 年歲入淨額 4,159,577", chunk_id="revenue")
+    revenue.pages = [45]
+    financing = base_chunk("113 年政府融資淨收入 -79,682", chunk_id="financing")
+    financing.pages = [47]
+    distractor = base_chunk("其他年度政府收支", chunk_id="distractor")
+    question = {
+        "question_id": "multi-source-partial",
+        "type": "cross_page",
+        "question": "113 年歲入淨額是多少？",
+        "answers": ["4079895"],
+        "answer_regex": "(?P<answer>4[,]?159[,]?577|-79[,]?682)",
+        "operation": "sum",
+        "evidence_mode": "all",
+        "evidence": [
+            {
+                "document_id": "doc",
+                "page": 45,
+                "text_contains": ["歲入淨額", "4,159,577"],
+            },
+            {
+                "document_id": "doc",
+                "page": 47,
+                "text_contains": ["政府融資淨收入", "-79,682"],
+            },
+        ],
+    }
+    result = evaluate_downstream(
+        [question], [revenue, financing, distractor], k=1
+    )
+    assert result["retrieval_recall_at_k"] == 0.0
+    assert result["citation_validity"] == 0.0
+    assert result["error_attribution"]["retrieval"] == 1
+
+
 def test_sum_answerer_deduplicates_overlapping_chunks_without_dropping_zeroes():
     from src.complex_document.answering import DeterministicAnswerer
 

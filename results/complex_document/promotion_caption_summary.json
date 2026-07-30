@@ -1,0 +1,20 @@
+{
+  "benchmark_version": "0.8.0",
+  "generated_at": "2026-07-30T03:12:33.192577+00:00",
+  "definition_sha256": "47126885e530f3df1d2c5bd80d1561d3b7f6229467f9593a39765f1db623e6b7",
+  "dataset": {
+    "documents": 2,
+    "visual_targets": 5,
+    "question_links": 7
+  },
+  "factor": {
+    "status": "skipped",
+    "reason": "No VLM-generated caption artifact. Run scripts/generate_chart_captions.py with qwen3-vl:8b."
+  },
+  "decision": {
+    "recommendation": "PENDING",
+    "promotion_eligible": false,
+    "reason": "Original-crop pixel synthesis has not completed."
+  },
+  "receipt_benchmark_untouched": true
+}

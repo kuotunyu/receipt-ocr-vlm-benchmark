@@ -91,6 +91,20 @@
 - [x] GPU 完成後卸載 Qwen、確認 Ollama 無載入模型，將 RTX 4090 交棒給「④ RAG Attribution」。
 - [x] 201 tests；17 個主 benchmark blocks、8 個外部 QA factors、MRR recovery、router holdout 與 receipt official results 全部可重驗。
 
+## Complex-document track v0.8 untouched promotion holdout（2026-07-30）
+
+- [x] 新增勞動力發展署 113 年年報與財政部 113 年財政統計年報；官方來源、授權頁、URL、bytes 與 SHA-256 固定，原 PDF 不進 repository。
+- [x] 與既有 5 份開發文件及 2 份 v0.6 holdout 文件完全不重疊。
+- [x] 在任何新 parser／retriever／VLM prediction 前凍結 14 頁、26 題與 evidence。
+- [x] promotion protocol 鎖定 `PyMuPDF + fixed` 對 `targeted-vlm + fixed`、`native-visual-router-1`、Recall@5 / MRR / answer / citation 與 no-regression + one-improvement gate。
+- [x] 跨頁題新增 `evidence_mode=all`，允許證據分散於不同 chunks，但 Recall 與 citation 必須完整覆蓋所有 evidence。
+- [x] CPU baseline 14 頁 3.416 秒；Recall@5 0.769、MRR 0.665、answer/citation 0.731；candidate 未跑前 decision 為 PENDING。
+- [x] 新增 5 個 source-pixel chart/infographic crops、7 題；加上 v0.7 後累計 8 個 visual targets、11 題。
+- [x] 210 tests；既有 17 個主 benchmark blocks、三組舊 verifier、receipt results 與新 promotion baseline/caption PENDING result 全部通過。
+- [ ] GPU：執行 frozen targeted-VLM candidate；不得依結果修改 questions、pages、router、chunking 或 gate。
+- [ ] GPU：產生新 5 個 generic / structured captions 與 original-crop answers，並保留每次呼叫 latency/token/retry。
+- [ ] 完成後更新 compact result、成本/延遲與最終 GO/NO-GO。
+
 ## 明確限制
 
 - LlamaParse 未呼叫；沒有讀取 API key 或其他 secrets。
@@ -98,3 +112,4 @@
 - v0.4 holdout 只驗證 vector-grid page routing，不代表 borderless/raster table、cell extraction 或 downstream QA 已泛化。
 - Caption QA 已擴為 3 張圖／4 題人工 gold，仍不足以宣稱圖表 QA 已泛化。
 - v0.6 外部 QA 的 15 題與 evidence 在 GPU run 前凍結且未修改。targeted-fixed 是看過 structure MRR 退步後才補的 post-hoc diagnostic，不得冒充 untouched holdout GO。
+- v0.8 candidate 尚未執行；目前只有 frozen definition 與 CPU baseline，不能把 PENDING 寫成 GO。

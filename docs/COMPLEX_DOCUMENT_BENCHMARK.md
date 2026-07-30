@@ -245,6 +245,29 @@ Recall 0.933、MRR 0.883、answer/citation 0.867，四項都高於 current basel
 因這個 factor 是看過 structure MRR 後才新增，它只能標為 **promising, not validated**；
 必須在新文件與新問題的 untouched holdout 重驗，不能回頭宣稱本次 frozen holdout GO。
 
+## v0.8 untouched promotion protocol
+
+為正式檢驗 v0.7 的 post-hoc 訊號，v0.8 另選勞動力發展署 113 年年報與財政部 113 年
+財政統計年報。兩份文件不在既有開發集或外部 QA，repository 仍只保存官方 URL、授權頁、
+bytes、SHA-256、selected pages 與 annotation，不提交 PDF。
+
+在任何新 parser prediction 前已凍結：
+
+- 14 個 selected pages、26 題，包含文字事實、table cell、table aggregation、chart value、
+  cross-page 與 unanswerable；
+- baseline `PyMuPDF + fixed`；
+- candidate `targeted-vlm + fixed`，router 固定 `native-visual-router-1`；
+- Recall@5、MRR、answer correctness、citation validity，K=5；
+- 四項不可退步且至少一項嚴格改善，否則 NO-GO。
+
+CPU baseline 為 Recall@5 0.769、MRR 0.665、answer/citation 0.731。Targeted candidate 尚未
+執行，故狀態是 PENDING。`ph24` 的 evidence 分散於第 45、47 頁，使用
+`evidence_mode=all`：retrieval 必須取回兩頁的獨立 evidence，MRR 以收齊最後一份 evidence
+的 rank 計算。這避免舊的 any-evidence 邏輯高估跨頁檢索。
+
+同一批 source pages 另凍結 5 個 chart/infographic crops、7 題，搭配既有 v0.7 targets
+累計 8 個 visual targets、11 題。Caption 仍只供 retrieval；答案必須重新讀取原始 crop pixels。
+
 ## Failure visualization
 
 `visualize_parsing_failure.py` 可重現 `arc-05`：綠框是人工標註表格；原 LiteParse IR 沒有任何

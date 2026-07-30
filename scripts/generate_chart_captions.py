@@ -189,6 +189,16 @@ def main() -> None:
         type=Path,
         default=Path("artifacts/complex_document/chart_captions/qwen3-vl.json"),
     )
+    parser.add_argument(
+        "--raw-dir",
+        type=Path,
+        default=Path("data/complex_document/raw"),
+    )
+    parser.add_argument(
+        "--artifact-root",
+        type=Path,
+        default=Path("artifacts/complex_document"),
+    )
     args = parser.parse_args()
 
     checker = QwenVLMParserAdapter(model=args.model)
@@ -212,14 +222,14 @@ def main() -> None:
     }
     if args.smoke:
         targets = targets[:1]
-    store = ArtifactStore()
+    store = ArtifactStore(args.artifact_root)
     records = []
     raw_records = []
     all_usage = []
     for target in targets:
         checker.ensure_gpu_available()
         document = documents[target["document_id"]]
-        pdf_path = Path("data/complex_document/raw") / document["filename"]
+        pdf_path = args.raw_dir / document["filename"]
         if not pdf_path.is_file():
             raise FileNotFoundError(
                 f"{pdf_path} is missing; run download_complex_documents.py"
@@ -378,7 +388,7 @@ def main() -> None:
         ),
         encoding="utf-8",
     )
-    ArtifactStore().write_parser_raw(
+    store.write_parser_raw(
         "chart-caption-batch", "qwen3-vl-caption", {"responses": raw_records}
     )
     print(f"wrote {len(records)} captions to {args.output}")

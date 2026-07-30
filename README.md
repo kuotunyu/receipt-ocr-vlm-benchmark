@@ -23,6 +23,10 @@
    v0.7 完成外部 Qwen、3 張圖／4 題 caption gold 與 native-signal targeted VLM：
    targeted + fixed 在外部診斷四項指標都改善，但因這個 fixed factor 是看過 structure MRR
    下滑後才補的 post-hoc analysis，只能列為 promising、必須用新 holdout 重驗。
+   v0.8 已在任何新 parser prediction 前凍結第二組 promotion holdout：2 份全新官方年報、
+   14 頁、26 題，以及 `PyMuPDF + fixed` 對 `targeted VLM + fixed` 的固定 gate。CPU baseline
+   為 Recall@5 0.769、MRR 0.665、answer/citation 0.731；targeted candidate 尚待 GPU 執行，
+   因此目前決策是 PENDING，不提前宣稱 GO。
    因此全域替換、正式 structure routing、VLM parser 與 caption promotion 都維持 NO-GO；設計與限制見
    [docs/COMPLEX_DOCUMENT_BENCHMARK.md](docs/COMPLEX_DOCUMENT_BENCHMARK.md)。
 
@@ -185,6 +189,17 @@ copy .env.example .env
 .venv\Scripts\python scripts\run_external_qa_holdout.py --reuse-ir --include-qwen
 .venv\Scripts\python scripts\verify_external_qa_holdout.py
 
+# v0.8 全新 promotion holdout；先跑 CPU baseline，再於 GPU 空閒時跑 frozen candidate
+.venv\Scripts\python scripts\download_complex_documents.py --manifest data/complex_document/promotion_holdout/manifest.json --output-dir data/complex_document/promotion_holdout/raw
+.venv\Scripts\python scripts\run_promotion_holdout.py
+.venv\Scripts\python scripts\run_promotion_holdout.py --reuse-ir --include-candidate
+.venv\Scripts\python scripts\verify_promotion_holdout.py
+
+# v0.8 新增 5 個圖表／資訊圖 crop、7 題；caption 只供檢索，回答仍須讀原始 crop
+.venv\Scripts\python scripts\generate_chart_captions.py --manifest data/complex_document/promotion_holdout/manifest.json --targets data/complex_document/promotion_holdout/chart_targets.json --questions data/complex_document/promotion_holdout/questions.json --raw-dir data/complex_document/promotion_holdout/raw --artifact-root artifacts/complex_document/promotion_holdout --output artifacts/complex_document/promotion_holdout/chart_captions/qwen3-vl.json
+.venv\Scripts\python scripts\run_promotion_caption_eval.py
+.venv\Scripts\python scripts\verify_promotion_caption_eval.py
+
 # 保留 atomic table 的 late-max MRR recovery
 .venv\Scripts\python scripts\run_mrr_recovery.py
 .venv\Scripts\python scripts\verify_mrr_recovery.py
@@ -240,3 +255,5 @@ Pipeline A 的 OCR 引擎（PaddleOCR）與品項補漏 LLM（`ollama pull qwen3
 - [x] Complex-document v0.5：Qwen3-VL 26 頁 parser 與 caption factor 4/5 完成；兩者依人工 gold 均為 NO-GO
 - [x] Complex-document v0.6 CPU stage：PaddleOCR 26 頁正式 row、15 題外部 QA 與 late-max MRR recovery 完成
 - [x] Complex-document v0.7 GPU stage：外部 full/targeted Qwen、3 張圖 4 題 caption 與 post-hoc fixed diagnostic 完成；正式 promotion 仍為 NO-GO
+- [x] Complex-document v0.8 CPU prep：2 份全新文件、14 頁、26 題與 promotion protocol 已在 prediction 前凍結；CPU baseline 完成
+- [ ] Complex-document v0.8 GPU stage：執行 frozen targeted-VLM + fixed candidate 與 5 個新 caption crops，再依既定 gate 自動判定 GO/NO-GO

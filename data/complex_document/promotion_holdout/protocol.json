@@ -1,0 +1,42 @@
+{
+  "protocol_version": "1.0.0",
+  "benchmark_version": "0.8.0",
+  "role": "targeted-vlm-fixed-promotion",
+  "freeze_status": "frozen-before-predictions",
+  "frozen_at": "2026-07-30",
+  "baseline": {
+    "parser": "pymupdf",
+    "chunking": "fixed"
+  },
+  "candidate": {
+    "parser": "targeted-vlm",
+    "chunking": "fixed",
+    "router_version": "native-visual-router-1"
+  },
+  "retrieval_k": 5,
+  "primary_metrics": [
+    "retrieval_recall_at_k",
+    "mrr",
+    "answer_correctness",
+    "citation_validity"
+  ],
+  "minimum_question_count": 20,
+  "required_question_types": [
+    "single_text_fact",
+    "table_cell",
+    "table_aggregation",
+    "chart_value",
+    "cross_page",
+    "unanswerable"
+  ],
+  "promotion_rule": {
+    "all_primary_metrics_at_least_baseline": true,
+    "at_least_one_primary_metric_strictly_improves": true
+  },
+  "anti_leakage": [
+    "Do not change questions, answers, evidence, selected pages, parser configuration, chunking, retrieval K, or gates after predictions are generated.",
+    "Do not tune native-visual-router-1 thresholds on this holdout.",
+    "Report NO-GO if any primary metric regresses, even if Markdown looks better.",
+    "Report parser and end-to-end wall-clock latency separately from cached verification time."
+  ]
+}
