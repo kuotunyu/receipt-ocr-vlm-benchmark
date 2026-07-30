@@ -123,6 +123,10 @@
 
 ## 明確限制
 
+- 5 張公開繁中真實收據的四組短評估已於 2026-07-30 完成：Pipeline A 有／無前處理的
+  avg exact 為 0.486／0.400，Qwen3-VL 無／有 OCR hint 為 0.714／0.914；JSON validity
+  為 0.800／1.000。Hint 組 E2E warm p50 125.17 秒，約為純 VLM 26.77 秒的 4.7 倍。
+  結論為 GO-to-validate，不升級預設管線。
 - LlamaParse 未呼叫；沒有讀取 API key 或其他 secrets。專案擁有者已決定暫不執行商業 comparator；程式與 no-key skip 保留，但不是目前完成條件。
 - PaddleOCR 只做一頁 CPU smoke，不把慢速 smoke 當 25 頁正式效能數字。
 - v0.4 holdout 只驗證 vector-grid page routing，不代表 borderless/raster table、cell extraction 或 downstream QA 已泛化。

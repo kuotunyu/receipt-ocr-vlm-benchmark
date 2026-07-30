@@ -139,6 +139,27 @@ flowchart TD
 層級資訊（電話、員工代碼），保留店名/GST ID 等商家層級公開資訊（後者正是「Pipeline A 誤把
 GST ID 當統編」發現的示範素材）。詳見 [docs/examples/README.md](docs/examples/README.md) 的遮罩政策說明。
 
+### 公開繁中真實收據 add-on（5 張）
+
+這是授權與隱私皆逐張核對的 external failure probe，不取代上方 45+45 正式結果，也不據此宣稱
+已充分泛化。相同 5 張、相同人工 gold 的 2026-07-30 本機結果如下：
+
+| 配置 | avg exact | avg fuzzy | items F1 | JSON validity | E2E warm p50 |
+|---|---:|---:|---:|---:|---:|
+| Pipeline A－有前處理 | 0.486 | 0.543 | 0.800 | — | 115.25s |
+| Pipeline A－無前處理 | 0.400 | 0.457 | 0.787 | — | 99.06s |
+| Qwen3-VL 8B | 0.714 | 0.743 | 1.000 | 0.800 | 26.77s |
+| Qwen3-VL 8B + OCR hint | **0.914** | **0.971** | **1.000** | **1.000** | 125.17s |
+
+這批資料上 OCR hint 讓 VLM 的 avg exact 提升 0.200，並救回純 VLM 在背景干擾 QR
+收據上的無效 JSON；代價是另跑一次 CPU PaddleOCR，端到端 warm p50 約為純 VLM 的 4.7 倍。
+這是值得保留的方向，但 `n=5` 只能判為
+**GO-to-validate**，不可直接改成預設 production pipeline。Aggregate artifact 在
+[`results/official/public_zh_receipts_5_summary.json`](results/official/public_zh_receipts_5_summary.json)；
+本地 API 成本為 $0，硬體折舊與電費尚未建模。
+表中的 `items F1` 是品名相似度門檻下的配對 F1，不要求配對後的金額完全正確；5 張中另有
+2 張 gold 為空品項，因此不可把 `1.000` 解讀成逐項名稱與金額皆完全正確。
+
 ## Quickstart
 
 ```powershell
@@ -162,6 +183,7 @@ copy .env.example .env
 # 跑評估框架
 .venv\Scripts\python scripts\run_eval.py --images-dir data/synthetic/raw --labels-dir data/synthetic/labels --backends ollama,openai
 .venv\Scripts\python scripts\run_eval.py --images-dir data/sroie/raw --labels-dir data/sroie/labels --ocr-lang en --no-items --backends ollama,openai
+.venv\Scripts\python scripts\run_eval.py --images-dir data/raw --labels-dir data/public_receipt_labels --backends ollama --out results/eval_real_zh_receipts
 .venv\Scripts\python scripts\make_report.py results/eval_<timestamp>/summary.json
 .venv\Scripts\python scripts\challenge_breakdown.py results/eval_<timestamp>/raw.json data/synthetic/manifest.json
 

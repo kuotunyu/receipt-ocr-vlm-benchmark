@@ -58,9 +58,24 @@ $out = "results\eval_real_zh_receipts"
 .venv\Scripts\python scripts\run_eval.py --images-dir data\raw --labels-dir data\public_receipt_labels --backends ollama --only ollama_hint --out $out
 
 .venv\Scripts\python scripts\make_report.py "$out\summary.json"
+.venv\Scripts\python scripts\export_official_results.py --check
 ```
 
-逐張結果仍留在 ignored `results/`；公開時只提交聚合指標與 challenge counts。
+逐張結果仍留在 ignored `results/`；公開時只提交
+`results/official/public_zh_receipts_5_summary.json` 的聚合指標。
+
+2026-07-30 實測結果：
+
+| 配置 | avg exact | JSON validity | E2E warm p50 |
+|---|---:|---:|---:|
+| Pipeline A－有前處理 | 0.486 | — | 115.25s |
+| Pipeline A－無前處理 | 0.400 | — | 99.06s |
+| Qwen3-VL 8B | 0.714 | 0.800 | 26.77s |
+| Qwen3-VL 8B + OCR hint | 0.914 | 1.000 | 125.17s |
+
+小樣本結論為 GO-to-validate，不是 production promotion GO。
+`items F1` 只衡量品名是否成功配對，不包含配對後金額正確性；且 5 張中有 2 張空品項 gold。
+Hint 組的 latency 已包含每張 CPU OCR 與 VLM call；warm p50 約為純 VLM 的 4.7 倍。
 
 ### 4. 私人影像替代路徑
 

@@ -147,13 +147,16 @@ def run_pipeline_b_config(pairs, config_name: str, backend, with_ocr_hint: bool,
     for img_path, label_path in pairs:
         gt = normalize_record(read_json(label_path))
         image_bytes = load_image_bytes_for_vlm(img_path)
+        hint_started = time.perf_counter()
         hint = ocr_hint_for(img_path, ocr_lang) if with_ocr_hint else None
+        hint_latency = time.perf_counter() - hint_started if with_ocr_hint else 0.0
         try:
             result = backend.extract(image_bytes, ocr_hint=hint)
         except Exception as exc:  # noqa: BLE001 — 配額/連線層級的失敗記為該張抽取失敗，整批繼續
             print(f"  [{backend.name}] {img_path.stem} 呼叫失敗：{str(exc)[:120]}")
             per_image.append({
-                "name": img_path.stem, "record": None, "latency": 0.0,
+                "name": img_path.stem, "record": None, "latency": hint_latency,
+                "backend_latency": 0.0, "ocr_hint_latency": hint_latency,
                 "is_valid_json": False, "attempts": 0,
                 "input_tokens": None, "output_tokens": None,
                 "gpu_seconds": None, "backend_name": backend.name,
@@ -162,7 +165,10 @@ def run_pipeline_b_config(pairs, config_name: str, backend, with_ocr_hint: bool,
             })
             continue
         per_image.append({
-            "name": img_path.stem, "record": result.record, "latency": result.latency_seconds,
+            "name": img_path.stem, "record": result.record,
+            "latency": hint_latency + result.latency_seconds,
+            "backend_latency": result.latency_seconds,
+            "ocr_hint_latency": hint_latency,
             "is_valid_json": result.is_valid_json, "attempts": result.attempts,
             "input_tokens": result.input_tokens, "output_tokens": result.output_tokens,
             "gpu_seconds": result.gpu_seconds, "backend_name": backend.name,

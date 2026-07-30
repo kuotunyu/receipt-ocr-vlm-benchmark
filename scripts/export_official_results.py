@@ -1,4 +1,4 @@
-"""將本機正式評估 summary 匯出成可公開、去識別化的固定格式。
+"""將本機評估 summary 匯出成可公開、去識別化的固定格式。
 
 這支腳本只讀 JSON 並做欄位白名單、結構驗證與 deterministic serialization；
 不載入模型、不讀取 .env，也不發出網路請求。
@@ -39,6 +39,8 @@ CONFIG_ORDER = (
     "pipeline_b_gpt-5.4-nano_with_ocr_hint",
 )
 
+PUBLIC_RECEIPT_CONFIG_ORDER = CONFIG_ORDER[:4]
+
 ITEM_METRICS = (
     "items_precision",
     "items_recall",
@@ -50,6 +52,7 @@ DATASETS = {
     "synthetic": {
         "input": PROJECT_ROOT / "results" / "eval_synthetic_45" / "summary.json",
         "output": "synthetic_45_summary.json",
+        "config_order": CONFIG_ORDER,
         "metadata": {
             "id": "synthetic_zh_tw_seed42_45",
             "display_name": "合成繁體中文發票／收據",
@@ -65,6 +68,7 @@ DATASETS = {
     "sroie": {
         "input": PROJECT_ROOT / "results" / "eval_sroie_45" / "summary.json",
         "output": "sroie_45_summary.json",
+        "config_order": CONFIG_ORDER,
         "metadata": {
             "id": "sroie_test_seed42_45",
             "display_name": "SROIE 真實英文收據",
@@ -75,6 +79,24 @@ DATASETS = {
                 "dataset": "rth/sroie-2019-v2",
                 "split": "test",
                 "seed": 42,
+            },
+        },
+    },
+    "public_receipts": {
+        "input": PROJECT_ROOT / "results" / "eval_real_zh_receipts" / "summary.json",
+        "output": "public_zh_receipts_5_summary.json",
+        "config_order": PUBLIC_RECEIPT_CONFIG_ORDER,
+        "metadata": {
+            "id": "public_zh_tw_wikimedia_5",
+            "display_name": "公開繁體中文真實收據 add-on",
+            "n_documents": 5,
+            "items_scored": True,
+            "benchmark_role": "small_external_failure_probe",
+            "privacy_reviewed": True,
+            "provenance": {
+                "kind": "public_license_manifest",
+                "manifest": "data/public_receipts_manifest.json",
+                "annotation": "human_verified",
             },
         },
     },
@@ -119,7 +141,13 @@ def _rate(value: Any, label: str, *, nullable: bool = False) -> int | float | No
     return number
 
 
-def _sanitize_config(name: str, raw: Any, *, items_scored: bool) -> dict[str, Any]:
+def _sanitize_config(
+    name: str,
+    raw: Any,
+    *,
+    items_scored: bool,
+    n_documents: int,
+) -> dict[str, Any]:
     if not isinstance(raw, dict):
         raise ValueError(f"{name} 必須是 object")
 
@@ -135,10 +163,10 @@ def _sanitize_config(name: str, raw: Any, *, items_scored: bool) -> dict[str, An
         raise ValueError(f"{name} 缺少欄位：{', '.join(sorted(missing))}")
     if raw["config"] != name:
         raise ValueError(f"{name}.config 與外層 key 不一致")
-    if raw["n"] != 45:
-        raise ValueError(f"{name}.n 應為 45")
+    if raw["n"] != n_documents:
+        raise ValueError(f"{name}.n 應為 {n_documents}")
 
-    clean: dict[str, Any] = {"config": name, "n": 45}
+    clean: dict[str, Any] = {"config": name, "n": n_documents}
     for field in SCALAR_FIELDS:
         for kind in ("exact", "fuzzy"):
             key = f"{field}_{kind}"
@@ -159,9 +187,10 @@ def _sanitize_config(name: str, raw: Any, *, items_scored: bool) -> dict[str, An
     warm = raw["latency_warm"]
     if not isinstance(warm, dict) or set(warm) != {"n", "p50", "p95", "mean"}:
         raise ValueError(f"{name}.latency_warm 格式不符")
-    if warm["n"] != 44:
-        raise ValueError(f"{name}.latency_warm.n 應為 44")
-    clean_warm: dict[str, Any] = {"n": 44}
+    expected_warm_n = max(n_documents - 1, 0)
+    if warm["n"] != expected_warm_n:
+        raise ValueError(f"{name}.latency_warm.n 應為 {expected_warm_n}")
+    clean_warm: dict[str, Any] = {"n": expected_warm_n}
     for key in ("p50", "p95", "mean"):
         clean_warm[key] = _number(warm[key], f"{name}.latency_warm.{key}")
         if clean_warm[key] is not None and clean_warm[key] < 0:
@@ -184,21 +213,30 @@ def _sanitize_config(name: str, raw: Any, *, items_scored: bool) -> dict[str, An
     return clean
 
 
-def build_artifact(source: Path, metadata: dict[str, Any]) -> bytes:
+def build_artifact(
+    source: Path,
+    metadata: dict[str, Any],
+    config_order: tuple[str, ...] = CONFIG_ORDER,
+) -> bytes:
     raw, source_payload = _read_json(source)
-    if set(raw) != set(CONFIG_ORDER):
-        missing = set(CONFIG_ORDER) - set(raw)
-        extra = set(raw) - set(CONFIG_ORDER)
+    if set(raw) != set(config_order):
+        missing = set(config_order) - set(raw)
+        extra = set(raw) - set(config_order)
         details = []
         if missing:
             details.append(f"缺少 {', '.join(sorted(missing))}")
         if extra:
             details.append(f"多出 {', '.join(sorted(extra))}")
-        raise ValueError("正式配置集合不符：" + "；".join(details))
+        raise ValueError("配置集合不符：" + "；".join(details))
 
     results = {
-        name: _sanitize_config(name, raw[name], items_scored=metadata["items_scored"])
-        for name in CONFIG_ORDER
+        name: _sanitize_config(
+            name,
+            raw[name],
+            items_scored=metadata["items_scored"],
+            n_documents=metadata["n_documents"],
+        )
+        for name in config_order
     }
     headline = {}
     for name, metrics in results.items():
@@ -217,7 +255,7 @@ def build_artifact(source: Path, metadata: dict[str, Any]) -> bytes:
         "dataset": metadata,
         "evaluation": {
             "scalar_fields": list(SCALAR_FIELDS),
-            "configurations": list(CONFIG_ORDER),
+            "configurations": list(config_order),
             "source_summary_sha256": hashlib.sha256(source_payload).hexdigest(),
         },
         "headline_metrics": headline,
@@ -237,6 +275,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--synthetic-summary", type=Path, default=DATASETS["synthetic"]["input"])
     parser.add_argument("--sroie-summary", type=Path, default=DATASETS["sroie"]["input"])
+    parser.add_argument(
+        "--public-receipts-summary",
+        type=Path,
+        default=DATASETS["public_receipts"]["input"],
+    )
     parser.add_argument("--output-dir", type=Path, default=PROJECT_ROOT / "results" / "official")
     parser.add_argument("--check", action="store_true",
                         help="只比對既有 official artifacts，不寫入檔案")
@@ -245,11 +288,19 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    sources = {"synthetic": args.synthetic_summary, "sroie": args.sroie_summary}
+    sources = {
+        "synthetic": args.synthetic_summary,
+        "sroie": args.sroie_summary,
+        "public_receipts": args.public_receipts_summary,
+    }
     mismatches: list[str] = []
 
     for key, spec in DATASETS.items():
-        payload = build_artifact(sources[key], spec["metadata"])
+        payload = build_artifact(
+            sources[key],
+            spec["metadata"],
+            spec["config_order"],
+        )
         output = args.output_dir / spec["output"]
         if args.check:
             if not output.exists() or output.read_bytes() != payload:

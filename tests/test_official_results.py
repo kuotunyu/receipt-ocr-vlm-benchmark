@@ -24,9 +24,16 @@ CONFIGS = {
     "pipeline_b_gpt-5.4-nano",
     "pipeline_b_gpt-5.4-nano_with_ocr_hint",
 }
+PUBLIC_RECEIPT_CONFIGS = {
+    "pipeline_a_with_preprocess",
+    "pipeline_a_no_preprocess",
+    "pipeline_b_qwen3-vl-8b-local",
+    "pipeline_b_qwen3-vl-8b-local_with_ocr_hint",
+}
 ARTIFACTS = {
     "synthetic": OFFICIAL_DIR / "synthetic_45_summary.json",
     "sroie": OFFICIAL_DIR / "sroie_45_summary.json",
+    "public_receipts": OFFICIAL_DIR / "public_zh_receipts_5_summary.json",
 }
 EXPECTED_AVG_EXACT = {
     "synthetic": {
@@ -45,6 +52,12 @@ EXPECTED_AVG_EXACT = {
         "pipeline_b_gpt-5.4-nano": 0.857143,
         "pipeline_b_gpt-5.4-nano_with_ocr_hint": 0.857143,
     },
+    "public_receipts": {
+        "pipeline_a_with_preprocess": 0.485714,
+        "pipeline_a_no_preprocess": 0.400000,
+        "pipeline_b_qwen3-vl-8b-local": 0.714286,
+        "pipeline_b_qwen3-vl-8b-local_with_ocr_hint": 0.914286,
+    },
 }
 
 
@@ -53,26 +66,39 @@ def load_artifact(key: str) -> dict:
 
 
 @pytest.mark.parametrize(
-    ("key", "dataset_id", "items_scored"),
+    ("key", "dataset_id", "n_documents", "items_scored", "configs"),
     (
-        ("synthetic", "synthetic_zh_tw_seed42_45", True),
-        ("sroie", "sroie_test_seed42_45", False),
+        ("synthetic", "synthetic_zh_tw_seed42_45", 45, True, CONFIGS),
+        ("sroie", "sroie_test_seed42_45", 45, False, CONFIGS),
+        (
+            "public_receipts",
+            "public_zh_tw_wikimedia_5",
+            5,
+            True,
+            PUBLIC_RECEIPT_CONFIGS,
+        ),
     ),
 )
-def test_official_dataset_and_configuration_manifest(key, dataset_id, items_scored):
+def test_official_dataset_and_configuration_manifest(
+    key,
+    dataset_id,
+    n_documents,
+    items_scored,
+    configs,
+):
     artifact = load_artifact(key)
 
     assert artifact["schema_version"] == 1
     assert artifact["artifact"] == "ocr_vlm_aggregate_evaluation"
     assert artifact["dataset"]["id"] == dataset_id
-    assert artifact["dataset"]["n_documents"] == 45
+    assert artifact["dataset"]["n_documents"] == n_documents
     assert artifact["dataset"]["items_scored"] is items_scored
-    assert set(artifact["evaluation"]["configurations"]) == CONFIGS
-    assert set(artifact["results"]) == CONFIGS
+    assert set(artifact["evaluation"]["configurations"]) == configs
+    assert set(artifact["results"]) == configs
     assert re.fullmatch(r"[0-9a-f]{64}", artifact["evaluation"]["source_summary_sha256"])
 
 
-@pytest.mark.parametrize("key", ("synthetic", "sroie"))
+@pytest.mark.parametrize("key", ("synthetic", "sroie", "public_receipts"))
 def test_headline_metrics_are_derived_from_full_results(key):
     artifact = load_artifact(key)
 
@@ -85,14 +111,14 @@ def test_headline_metrics_are_derived_from_full_results(key):
         )
 
 
-@pytest.mark.parametrize("key", ("synthetic", "sroie"))
+@pytest.mark.parametrize("key", ("synthetic", "sroie", "public_receipts"))
 def test_headline_avg_exact_matches_published_report(key):
     artifact = load_artifact(key)
     actual = {name: values["avg_exact"] for name, values in artifact["headline_metrics"].items()}
     assert actual == EXPECTED_AVG_EXACT[key]
 
 
-@pytest.mark.parametrize("key", ("synthetic", "sroie"))
+@pytest.mark.parametrize("key", ("synthetic", "sroie", "public_receipts"))
 def test_official_artifacts_exclude_local_paths_credentials_and_per_document_data(key):
     text = ARTIFACTS[key].read_text(encoding="utf-8")
     forbidden_patterns = (

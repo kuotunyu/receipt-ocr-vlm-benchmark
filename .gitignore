@@ -29,6 +29,7 @@ results/official/*
 !results/official/README.md
 !results/official/synthetic_45_summary.json
 !results/official/sroie_45_summary.json
+!results/official/public_zh_receipts_5_summary.json
 
 # IDE / OS
 .vscode/
