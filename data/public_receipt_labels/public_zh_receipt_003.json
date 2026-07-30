@@ -1,0 +1,43 @@
+{
+  "doc_type": "receipt",
+  "seller_name": "台灣大創百貨股份有限公司台北站前分公司",
+  "date": "2017-01-14",
+  "invoice_number": null,
+  "seller_tax_id": "54345115",
+  "buyer_tax_id": null,
+  "total_amount": 353,
+  "items": [
+    {
+      "name": "購物袋 大",
+      "amount": 2
+    },
+    {
+      "name": "收納箱",
+      "amount": 39
+    },
+    {
+      "name": "可疊式置物盒",
+      "amount": 39
+    },
+    {
+      "name": "方型不鏽鋼保鮮盒",
+      "amount": 39
+    },
+    {
+      "name": "收納盒",
+      "amount": 39
+    },
+    {
+      "name": "門板安全扣",
+      "amount": 39
+    },
+    {
+      "name": "折紙玩具",
+      "amount": 39
+    },
+    {
+      "name": "杯子",
+      "amount": 117
+    }
+  ]
+}

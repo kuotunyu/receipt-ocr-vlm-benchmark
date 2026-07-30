@@ -4,9 +4,11 @@
 > 對比「OpenCV 前處理 + PaddleOCR + 規則/LLM 組裝」與「端到端 VLM」兩條管線，
 > 並用消融實驗回答「什麼場景該用哪條管線」。
 
-> 資料策略：因故未拍照+人工標註真實台灣發票，改採**雙軌零標註方案**——45 張合成繁體中文
-> 發票/收據 + 45 張 **SROIE**（ICDAR 2019 真實英文收據基準）。詳見 [EVAL_REPORT.md](EVAL_REPORT.md)
-> 的「資料策略」說明與 [plan.md](plan.md) 的完整 pivot 記錄。
+> 正式結果仍採**雙軌方案**——45 張合成繁體中文發票/收據 + 45 張 **SROIE**
+>（ICDAR 2019 真實英文收據基準）。另新增 5 張 Wikimedia Commons 真實臺灣繁中收據的
+> 小型人工 gold add-on，用來補測手寫、印章、熱感紙與 QR／條碼場景；來源影像採
+> metadata-only、checksum-verified 下載，不直接提交進 repository。詳見
+> [EVAL_REPORT.md](EVAL_REPORT.md) 與 [optional runbook](docs/OPTIONAL_COMPLETION_RUNBOOK.md)。
 
 > 授權範圍：根目錄的 MIT License 僅適用於本專案原創程式碼；SROIE 資料與衍生範例圖片沿用
 > 上游條款。來源、授權標示、修改內容與論文引用見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
@@ -153,6 +155,10 @@ copy .env.example .env
 .venv\Scripts\python scripts\make_synthetic_dataset.py
 .venv\Scripts\python scripts\download_sroie.py
 
+# 下載並驗證 5 張公開真實繁中收據（人工 gold 已版本化，原圖留在 ignored data/raw）
+.venv\Scripts\python scripts\download_public_receipts.py
+.venv\Scripts\python scripts\verify_real_receipt_dataset.py --manifest data\public_receipts_manifest.json --raw-dir data\raw --labels-dir data\public_receipt_labels
+
 # 跑評估框架
 .venv\Scripts\python scripts\run_eval.py --images-dir data/synthetic/raw --labels-dir data/synthetic/labels --backends ollama,openai
 .venv\Scripts\python scripts\run_eval.py --images-dir data/sroie/raw --labels-dir data/sroie/labels --ocr-lang en --no-items --backends ollama,openai
@@ -247,7 +253,7 @@ Pipeline A 的 OCR 引擎（PaddleOCR）與品項補漏 LLM（`ollama pull qwen3
 - [DESIGN.md](DESIGN.md) — 前處理/模型選型理由、結構化輸出穩定性處理
 - [EVAL_REPORT.md](EVAL_REPORT.md) — 完整對比表、錯誤類型分析、場景結論
 - [docs/DATA_COLLECTION_GUIDE.md](docs/DATA_COLLECTION_GUIDE.md) — 拍攝指引與 diversity matrix
-- [docs/OPTIONAL_COMPLETION_RUNBOOK.md](docs/OPTIONAL_COMPLETION_RUNBOOK.md) — 5–10 張真實繁中收據與 LlamaParse 安全交付流程
+- [docs/OPTIONAL_COMPLETION_RUNBOOK.md](docs/OPTIONAL_COMPLETION_RUNBOOK.md) — 公開真實繁中收據重建方式與已暫緩的 LlamaParse 參考流程
 - [results/official/README.md](results/official/README.md) — 去識別化正式評估摘要與重建方式
 - [docs/COMPLEX_DOCUMENT_BENCHMARK.md](docs/COMPLEX_DOCUMENT_BENCHMARK.md) — 複雜文件 IR、人工 gold、normalization audit、parser/chunk/RAG 評估與凍結門檻
 - [results/complex_document/README.md](results/complex_document/README.md) — factor-at-a-time、外部 holdouts v0.4/v0.6/v0.7 與 artifact 重建方式
@@ -261,6 +267,7 @@ Pipeline A 的 OCR 引擎（PaddleOCR）與品項補漏 LLM（`ollama pull qwen3
 - [x] Phase 3：Pipeline B（本地 qwen3-vl:8b / Gemini 3.5 Flash / gpt-5.4-nano 三個 backend 皆驗證）
 - [x] Phase 4：評估框架 + 雙軌 45×2 張正式評估（合成繁中 + SROIE 真實英文收據）已完成
 - [x] Phase 5：全部公開文件（本頁、DESIGN、EVAL_REPORT）已用正式雙軌結果撰寫完成
+- [x] Public real-receipt add-on：5 張真實臺灣繁中影像、逐張授權／checksum／隱私紀錄與人工 gold；影像可重建但不提交
 - [x] Complex-document v0.3：共同 Spatial IR、table-region router、37 個 parser cases、26 個 routing labels 與固定變因 RAG
 - [x] Complex-document v0.4：2 份外部官方文件、12 個先標後測 blind routing labels；固定門檻 precision/recall 1.000
 - [x] Complex-document v0.5：Qwen3-VL 26 頁 parser 與 caption factor 4/5 完成；兩者依人工 gold 均為 NO-GO

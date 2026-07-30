@@ -1,0 +1,130 @@
+{
+  "dataset_version": "1.0.0",
+  "title": "Public Traditional Chinese Real-Receipt Add-on",
+  "privacy_reviewed": true,
+  "local_processing_only": true,
+  "redistribution_policy": "metadata-only",
+  "annotation_policy": "human-verified from source pixels",
+  "items": [
+    {
+      "id": "public_zh_receipt_001",
+      "filename": "public_zh_receipt_001.jpg",
+      "label_file": "public_zh_receipt_001.json",
+      "challenge_tags": [
+        "handwriting",
+        "stamp_occlusion",
+        "fading",
+        "table_layout"
+      ],
+      "contains_personal_data": false,
+      "privacy_review_status": "human-reviewed",
+      "privacy_note": "Buyer fields are blank; only public merchant and expired transaction data are visible.",
+      "source": {
+        "page_url": "https://commons.wikimedia.org/wiki/File:San-Byte_Creative_uniform_invoice_NM20097350.jpg",
+        "download_url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/San-Byte_Creative_uniform_invoice_NM20097350.jpg",
+        "author": "Solomon203",
+        "license": "CC-BY-SA-3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+        "sha256": "04eeb9208636487d2f006aa915b6bf531371d973cb94471de06aeebe86c20250",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "id": "public_zh_receipt_002",
+      "filename": "public_zh_receipt_002.jpg",
+      "label_file": "public_zh_receipt_002.json",
+      "challenge_tags": [
+        "handwriting",
+        "stamp_occlusion",
+        "fading",
+        "table_layout"
+      ],
+      "contains_personal_data": false,
+      "privacy_review_status": "human-reviewed",
+      "privacy_note": "Buyer fields are blank; only public merchant and expired transaction data are visible.",
+      "source": {
+        "page_url": "https://commons.wikimedia.org/wiki/File:Asia_Goal_Taiwan_uniform_invoice_LB35763146.jpg",
+        "download_url": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Asia_Goal_Taiwan_uniform_invoice_LB35763146.jpg",
+        "author": "Solomon203",
+        "license": "CC-BY-SA-4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "sha256": "d7e5aac9a560cb93579ea95e8979914eab59908ec4d8281d9802913e189647b0",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "id": "public_zh_receipt_003",
+      "filename": "public_zh_receipt_003.jpg",
+      "label_file": "public_zh_receipt_003.json",
+      "challenge_tags": [
+        "stamp_occlusion",
+        "long_receipt",
+        "dense_items",
+        "rotation"
+      ],
+      "contains_personal_data": false,
+      "privacy_review_status": "human-reviewed",
+      "privacy_note": "Cash transaction with no buyer, card, membership, phone, or address data; a pseudonymous cashier code remains.",
+      "source": {
+        "page_url": "https://commons.wikimedia.org/wiki/File:Daiso_Taipei_Station_Store_paying_receipt_20170114.jpg",
+        "download_url": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Daiso_Taipei_Station_Store_paying_receipt_20170114.jpg",
+        "author": "Solomon203",
+        "license": "CC-BY-SA-4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "sha256": "8d4919e38e456e19a883c22c4f5118699979d6ff194c39894fb544964f93dd6b",
+        "width": 2100,
+        "height": 2800
+      }
+    },
+    {
+      "id": "public_zh_receipt_004",
+      "filename": "public_zh_receipt_004.jpg",
+      "label_file": "public_zh_receipt_004.json",
+      "challenge_tags": [
+        "thermal_receipt",
+        "qr_code",
+        "barcode",
+        "background_texture"
+      ],
+      "contains_personal_data": false,
+      "privacy_review_status": "human-reviewed",
+      "privacy_note": "No buyer or payment-card data; QR payload contains only invoice transaction fields.",
+      "source": {
+        "page_url": "https://commons.wikimedia.org/wiki/File:7-Eleven_Ciai_Store_e-invoice_KM14875380.jpg",
+        "download_url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/7-Eleven_Ciai_Store_e-invoice_KM14875380.jpg",
+        "author": "Solomon203",
+        "license": "CC-BY-SA-4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "sha256": "3763607eb31ad67ab393722ec63701f0fc711bfc5a563ba6f64736ac38386dd2",
+        "width": 2400,
+        "height": 1800
+      }
+    },
+    {
+      "id": "public_zh_receipt_005",
+      "filename": "public_zh_receipt_005.jpg",
+      "label_file": "public_zh_receipt_005.json",
+      "challenge_tags": [
+        "thermal_receipt",
+        "qr_code",
+        "front_back",
+        "multi_region_reading_order"
+      ],
+      "contains_personal_data": false,
+      "privacy_review_status": "human-reviewed",
+      "privacy_note": "Prize-claim fields on the back are blank; no buyer or payment-card data are present.",
+      "source": {
+        "page_url": "https://commons.wikimedia.org/wiki/File:7-Eleven_Lio-gong_Store_e-invoice_LE83622725.jpg",
+        "download_url": "https://upload.wikimedia.org/wikipedia/commons/c/ca/7-Eleven_Lio-gong_Store_e-invoice_LE83622725.jpg",
+        "author": "Solomon203",
+        "license": "CC-BY-SA-4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "sha256": "a2aa75f92dccc9fd5ea50b5cb6e8ff3ce102cff2e57e946a1f57ed90dd2be09d",
+        "width": 2000,
+        "height": 1500
+      }
+    }
+  ]
+}

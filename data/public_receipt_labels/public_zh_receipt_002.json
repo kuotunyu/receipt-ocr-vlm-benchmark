@@ -1,0 +1,15 @@
+{
+  "doc_type": "receipt",
+  "seller_name": "香港商振光玩具有限公司台灣分公司",
+  "date": "2019-02-17",
+  "invoice_number": "LB35763146",
+  "seller_tax_id": "54379932",
+  "buyer_tax_id": null,
+  "total_amount": 500,
+  "items": [
+    {
+      "name": "玩具",
+      "amount": 500
+    }
+  ]
+}

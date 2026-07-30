@@ -19,6 +19,17 @@
 
 若要重用 SROIE 圖片或衍生圖片，請自行查閱並遵守上游 dataset card 與 CC BY 2.0 的歸屬、連結及修改標示要求。
 
+## Public Traditional Chinese receipt add-on
+
+5 張真實臺灣繁中收據取自 Wikimedia Commons，由上傳者 Solomon203 以 CC BY-SA 3.0 或
+CC BY-SA 4.0 發布。repository 不收錄影像，只收錄下載 URL、作者、個別授權、SHA-256、
+像素尺寸、隱私檢查與人工 gold；完整逐張資料及原始 file page 連結見
+[`data/public_receipts_manifest.json`](data/public_receipts_manifest.json)。
+
+使用者執行 `scripts/download_public_receipts.py` 時會直接向 `upload.wikimedia.org` 下載，
+並驗證固定 checksum。若再散布影像或修改版本，必須依各檔案的 CC BY-SA 版本提供適當歸屬、
+授權連結、修改說明及相同方式分享。根目錄 MIT License 不涵蓋這些影像。
+
 ## Complex-document benchmark
 
 新 track 使用 5 份臺灣官方網站公開下載的繁體中文 PDF。由於各發布機關的再散布條款並不一致，

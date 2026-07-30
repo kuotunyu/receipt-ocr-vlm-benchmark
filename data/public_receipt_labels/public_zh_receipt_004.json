@@ -1,0 +1,10 @@
+{
+  "doc_type": "e_invoice",
+  "seller_name": "7-ELEVEN",
+  "date": "2016-10-31",
+  "invoice_number": "KM14875380",
+  "seller_tax_id": "70814438",
+  "buyer_tax_id": null,
+  "total_amount": 39,
+  "items": []
+}

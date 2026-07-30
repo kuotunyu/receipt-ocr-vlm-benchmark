@@ -117,17 +117,17 @@
 - [x] 新增 8 個圖表／政策圖 crop、9 題。Structured caption 未提升 Recall（0.333）；original crop answer/citation/crop Recall 0.667，未通過 0.8/0.8/0.9 gates，DOES-NOT-SUPPORT-CAPTION-AND-INDEX。
 - [x] Caption generator 新增 durable per-target checkpoint；一次 1,024-token length-stop 的 52.325 秒 discarded batch 明確揭露。保存的 28 calls 為 73.105 秒、GPU 63.067 秒。
 - [x] LlamaParse adapter 依 SDK 2.13.0 native page items 正規化 bbox／table／heading／figure／caption，新增 `--allow-cloud` comparator；無 key、SDK 或明確授權均自動 skip。
-- [x] 真實繁中收據新增 5–10 張 local-only manifest、隱私／schema／手寫與印章 coverage verifier，以及人工操作 runbook；實際影像仍待資料擁有者提供。
+- [x] 真實繁中收據 add-on 改採 5 張 Wikimedia Commons 公開臺灣收據：逐張固定來源、CC 授權、SHA-256、尺寸與隱私判定；2 張手寫、3 張印章遮擋，5 份人工 gold 全數通過 schema／canonical verifier。原圖仍只下載到 ignored `data/raw/`。
 - [x] GPU 完成後卸載 Qwen3-VL，確認 `ollama ps` 空白並通知 RAG Attribution task 恢復。
 - [x] 226 tests；receipt official summaries、17 個主 benchmark blocks、router/QA/MRR、v0.8 與 v0.9 parser/caption verifiers 全部通過。
 
 ## 明確限制
 
-- LlamaParse 未呼叫；沒有讀取 API key 或其他 secrets。商業 comparator 的程式與 no-key skip 已驗證，實際結果仍為 optional。
+- LlamaParse 未呼叫；沒有讀取 API key 或其他 secrets。專案擁有者已決定暫不執行商業 comparator；程式與 no-key skip 保留，但不是目前完成條件。
 - PaddleOCR 只做一頁 CPU smoke，不把慢速 smoke 當 25 頁正式效能數字。
 - v0.4 holdout 只驗證 vector-grid page routing，不代表 borderless/raster table、cell extraction 或 downstream QA 已泛化。
 - Caption QA 已擴為 3 張圖／4 題人工 gold，仍不足以宣稱圖表 QA 已泛化。
 - v0.6 外部 QA 的 15 題與 evidence 在 GPU run 前凍結且未修改。targeted-fixed 是看過 structure MRR 退步後才補的 post-hoc diagnostic，不得冒充 untouched holdout GO。
 - v0.8 已完成，但只有 2 份文件、26 題與 5 個 visual targets；兩項 promotion 均為 NO-GO，不可外推成所有繁中複雜文件或圖表 QA 的一般結論。
 - v0.9 擴到 3 份文件、39 題與 8 個 visual targets，但 source-assisted annotation 不是 blind；只能支持研究方向，不能當新 promotion GO。
-- 真實繁中手寫／印章收據尚未由資料擁有者提供，因此不能宣稱已補足 receipt benchmark 的真實繁中 external validity。
+- 公開繁中收據目前只有 5 張，足以做小型 failure probe，不足以取代既有 45+45 正式 benchmark，亦不能宣稱已完整解決繁中 external validity。

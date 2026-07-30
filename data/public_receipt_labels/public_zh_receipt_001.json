@@ -1,0 +1,15 @@
+{
+  "doc_type": "receipt",
+  "seller_name": "三貝多股份有限公司",
+  "date": "2013-08-17",
+  "invoice_number": "NM20097350",
+  "seller_tax_id": "53943211",
+  "buyer_tax_id": null,
+  "total_amount": 249,
+  "items": [
+    {
+      "name": "NA18194",
+      "amount": 249
+    }
+  ]
+}

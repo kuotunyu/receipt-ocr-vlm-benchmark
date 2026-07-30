@@ -1,0 +1,10 @@
+{
+  "doc_type": "e_invoice",
+  "seller_name": "7-ELEVEN",
+  "date": "2014-10-13",
+  "invoice_number": "LE83622725",
+  "seller_tax_id": "54377994",
+  "buyer_tax_id": null,
+  "total_amount": 39,
+  "items": []
+}
