@@ -13,7 +13,11 @@ from src.complex_document.parsers import (
     PyMuPDFAdapter,
     QwenVLMParserAdapter,
 )
-from src.complex_document.parsers.llamaparse_parser import LlamaParseAdapter
+from src.complex_document.parsers.llamaparse_parser import (
+    LlamaParseAdapter,
+    _model_dump,
+    _normalize_result,
+)
 
 
 @pytest.fixture()
@@ -191,6 +195,122 @@ def test_llamaparse_is_optional_and_missing_key_is_skip(sample_pdf, monkeypatch)
     monkeypatch.delenv("LLAMA_CLOUD_API_KEY", raising=False)
     with pytest.raises(ParserUnavailable, match="API_KEY"):
         LlamaParseAdapter().parse(ParseRequest(sample_pdf, "sample"))
+
+
+def test_llamaparse_normalizes_native_pages_items_and_bboxes(sample_pdf):
+    native = {
+        "items": {
+            "pages": [
+                {
+                    "success": True,
+                    "page_number": 2,
+                    "page_width": 600,
+                    "page_height": 800,
+                    "items": [
+                        {
+                            "type": "heading",
+                            "level": 2,
+                            "value": "研究結果",
+                            "md": "## 研究結果",
+                            "bbox": [
+                                {
+                                    "x": 20,
+                                    "y": 30,
+                                    "w": 200,
+                                    "h": 20,
+                                    "confidence": 0.9,
+                                }
+                            ],
+                        },
+                        {
+                            "type": "table",
+                            "rows": [["年份", "數值"], ["2025", 42]],
+                            "md": "|年份|數值|\n|-|-|\n|2025|42|",
+                            "csv": "年份,數值\n2025,42",
+                            "html": "<table></table>",
+                            "bbox": [
+                                {"x": 20, "y": 80, "w": 300, "h": 100}
+                            ],
+                        },
+                        {
+                            "type": "image",
+                            "caption": "圖一：年度趨勢",
+                            "md": "![圖一](image.png)",
+                            "url": "image.png",
+                            "bbox": [
+                                {"x": 30, "y": 220, "w": 400, "h": 250}
+                            ],
+                        },
+                    ],
+                }
+            ]
+        },
+        "markdown": {
+            "pages": [
+                {
+                    "success": True,
+                    "page_number": 2,
+                    "markdown": "## 研究結果",
+                }
+            ]
+        },
+        "metadata": {"pages": [{"page_number": 2, "confidence": 0.8}]},
+    }
+    result = _normalize_result(
+        native,
+        ParseRequest(sample_pdf, "sample", pages=(2,)),
+        parser_version="2.13.0",
+        parser_config={"tier": "agentic"},
+    )
+    page = result.pages[0]
+    assert page.page_number == 2
+    assert page.coordinate_space == "pdf_points"
+    assert [item.element_type for item in page.elements] == [
+        "heading",
+        "table",
+        "figure",
+        "caption",
+    ]
+    assert page.elements[1].parent_section_path == ["研究結果"]
+    assert page.elements[1].bbox.x1 == 320
+    assert page.elements[1].metadata["rows"][1] == ["2025", 42]
+    assert page.elements[-1].text == "圖一：年度趨勢"
+
+
+def test_llamaparse_uses_page_markdown_when_items_are_absent(sample_pdf):
+    native = {
+        "items": {"pages": []},
+        "markdown": {
+            "pages": [
+                {
+                    "success": True,
+                    "page_number": 3,
+                    "markdown": "只有 Markdown",
+                }
+            ]
+        },
+    }
+    result = _normalize_result(
+        native,
+        ParseRequest(sample_pdf, "sample", pages=(3,)),
+        parser_version="2.13.0",
+        parser_config={"tier": "agentic"},
+    )
+    assert result.pages[0].coordinate_space == "normalized"
+    assert result.pages[0].elements[0].metadata["fallback"] == (
+        "page-markdown-no-layout"
+    )
+
+
+def test_llamaparse_raw_model_dump_is_json_compatible():
+    class FakeModel:
+        def model_dump(self, *, mode):
+            assert mode == "json"
+            return {"pages": [{"page_number": 1}]}
+
+    assert _model_dump(FakeModel()) == {
+        "pages": [{"page_number": 1}]
+    }
 
 
 def test_liteparse_table_reconstruction_adds_atomic_table(tmp_path):

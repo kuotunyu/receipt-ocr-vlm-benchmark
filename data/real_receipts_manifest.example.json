@@ -1,0 +1,37 @@
+{
+  "dataset_version": "1.0.0",
+  "privacy_reviewed": true,
+  "local_processing_only": true,
+  "items": [
+    {
+      "id": "receipt_001",
+      "filename": "receipt_001.jpg",
+      "challenge_tags": ["handwriting"],
+      "contains_personal_data": false
+    },
+    {
+      "id": "receipt_002",
+      "filename": "receipt_002.jpg",
+      "challenge_tags": ["handwriting", "rotation"],
+      "contains_personal_data": false
+    },
+    {
+      "id": "receipt_003",
+      "filename": "receipt_003.jpg",
+      "challenge_tags": ["stamp_occlusion"],
+      "contains_personal_data": false
+    },
+    {
+      "id": "receipt_004",
+      "filename": "receipt_004.jpg",
+      "challenge_tags": ["stamp_occlusion", "fading"],
+      "contains_personal_data": false
+    },
+    {
+      "id": "receipt_005",
+      "filename": "receipt_005.jpg",
+      "challenge_tags": ["fold"],
+      "contains_personal_data": false
+    }
+  ]
+}

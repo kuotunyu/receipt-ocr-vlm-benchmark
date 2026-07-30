@@ -45,6 +45,7 @@ def _parse_or_reuse(
     store: ArtifactStore,
     *,
     reuse_ir: bool,
+    parser_config: dict | None = None,
 ) -> tuple[dict[str, SpatialDocument], dict]:
     adapter = _adapter(parser_key)
     documents = {}
@@ -103,6 +104,7 @@ def _parse_or_reuse(
                                         "benchmark_version": manifest[
                                             "benchmark_version"
                                         ],
+                                        **(parser_config or {}),
                                     },
                                 ),
                                 artifacts=None,
@@ -124,6 +126,7 @@ def _parse_or_reuse(
                     config={
                         "benchmark_role": manifest["role"],
                         "benchmark_version": manifest["benchmark_version"],
+                        **(parser_config or {}),
                     },
                 ),
                 store,
@@ -146,7 +149,15 @@ def _parse_or_reuse(
         "pages_per_second": (
             round(page_count / sum(nonzero), 6) if nonzero else None
         ),
-        "estimated_api_cost_usd": 0.0,
+        "estimated_api_cost_usd": (
+            None if adapter.name == "llamaparse-cloud" else 0.0
+        ),
+        "billing_note": (
+            "Cloud usage is billable; inspect the LlamaCloud project billing "
+            "dashboard for the authoritative charge."
+            if adapter.name == "llamaparse-cloud"
+            else "Local parser; no parser API charge."
+        ),
         "reused_documents": reused_documents,
         "latency_source": (
             "+".join(sorted(latency_sources))

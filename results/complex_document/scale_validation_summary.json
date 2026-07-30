@@ -1,0 +1,2065 @@
+{
+  "benchmark_version": "0.9.0",
+  "generated_at": "2026-07-30T04:13:03.828188+00:00",
+  "definition_sha256": "d349738ba0f8b7dc1caacdeae3747af0b33e6ca024d286f78d169834aad87aec",
+  "protocol": {
+    "protocol_version": "1.0.0",
+    "benchmark_version": "0.9.0",
+    "role": "targeted-vlm-fixed-scale-validation",
+    "freeze_status": "frozen-before-scoring",
+    "frozen_at": "2026-07-30",
+    "selection_disclosure": "Layout-stratified page selection and exact gold transcription used source-PDF pixels and the embedded source text layer. No parser score, retrieval result, candidate output, or LLM judge was inspected.",
+    "baseline": {
+      "parser": "pymupdf",
+      "chunking": "fixed"
+    },
+    "candidate": {
+      "parser": "targeted-vlm",
+      "chunking": "fixed",
+      "router_version": "native-visual-router-1"
+    },
+    "retrieval_k": 5,
+    "primary_metrics": [
+      "retrieval_recall_at_k",
+      "mrr",
+      "answer_correctness",
+      "citation_validity"
+    ],
+    "minimum_question_count": 36,
+    "required_question_types": [
+      "single_text_fact",
+      "table_cell",
+      "table_aggregation",
+      "chart_value",
+      "cross_page",
+      "unanswerable"
+    ],
+    "promotion_rule": {
+      "all_primary_metrics_at_least_baseline": true,
+      "at_least_one_primary_metric_strictly_improves": true
+    },
+    "anti_leakage": [
+      "Do not change questions, answers, evidence, selected pages, parser configuration, chunking, retrieval K, or gates after scoring starts.",
+      "Do not tune native-visual-router-1 thresholds on this set.",
+      "Report all factors, including regressions.",
+      "Do not use this source-assisted scale set to override the untouched v0.8 promotion decision.",
+      "Report parser and end-to-end wall-clock latency separately from cached verification time."
+    ]
+  },
+  "environment": {
+    "python": "3.10.9",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "device_policy": "CPU baseline plus frozen local targeted-VLM candidate"
+  },
+  "dataset": {
+    "documents": 3,
+    "selected_pages": 24,
+    "manual_questions": 39,
+    "question_types": [
+      "chart_value",
+      "cross_page",
+      "single_text_fact",
+      "table_aggregation",
+      "table_cell",
+      "unanswerable"
+    ],
+    "development_document_overlap": 0
+  },
+  "source_verification": {
+    "cwa_weather_whitepaper": {
+      "status": "verified",
+      "filename": "cwa_weather_whitepaper.pdf",
+      "bytes": 36887193,
+      "sha256": "1ff09156c938aa83281e9c9d5d691fbd9ea36915614818627f46aabdf3ae726b"
+    },
+    "moda_digital_content_yearbook_111": {
+      "status": "verified",
+      "filename": "moda_digital_content_yearbook_111.pdf",
+      "bytes": 74635110,
+      "sha256": "7b3fdb5715b8ae2200274b78cdee1adf36ecfd59c2ab23e2ca8b19636f2ccc61"
+    },
+    "namr_ocean_wind_2023": {
+      "status": "verified",
+      "filename": "namr_ocean_wind_2023.pdf",
+      "bytes": 27684599,
+      "sha256": "dc489b3712b71b89927ca53185477a6ee1686db22a988b2ea62806f8955bb408"
+    }
+  },
+  "parser_results": {
+    "pymupdf": {
+      "status": "completed",
+      "timing_and_cost": {
+        "parser_name": "pymupdf",
+        "parser_version": "1.26.3",
+        "documents": 3,
+        "pages": 24,
+        "latency_seconds_total": 11.05506,
+        "latency_seconds_median_document": 3.737566,
+        "pages_per_second": 2.170952,
+        "estimated_api_cost_usd": 0.0,
+        "billing_note": "Local parser; no parser API charge.",
+        "reused_documents": 0,
+        "latency_source": "current_run_wall_clock"
+      }
+    },
+    "targeted-vlm": {
+      "status": "completed",
+      "timing_and_cost": {
+        "parser_name": "targeted-vlm-router",
+        "parser_version": "native-visual-router-1+pymupdf-1.26.3+qwen3-vl-parser-ollama-0.6.2:qwen3-vl:8b",
+        "documents": 3,
+        "pages": 24,
+        "latency_seconds_total": 110.282452,
+        "latency_seconds_median_document": 38.920088,
+        "pages_per_second": 0.217623,
+        "estimated_api_cost_usd": 0.0,
+        "billing_note": "Local parser; no parser API charge.",
+        "reused_documents": 3,
+        "latency_source": "parser_raw_artifact+parser_raw_baseline_wall_clock"
+      }
+    }
+  },
+  "factor_at_a_time": [
+    {
+      "factor": "current_parser_fixed",
+      "parser": "pymupdf",
+      "chunking": "fixed",
+      "status": "completed",
+      "chunk_count": 103,
+      "downstream": {
+        "question_count": 39,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 0.74359,
+        "mrr": 0.512821,
+        "answer_correctness": 0.74359,
+        "citation_validity": 0.717949,
+        "error_attribution": {
+          "parsing": 7,
+          "retrieval": 2,
+          "generation": 1
+        },
+        "questions": [
+          {
+            "question_id": "sv01",
+            "question_type": "single_text_fact",
+            "answer": "10 PFlops",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00000",
+              "cwa_weather_whitepaper:pymupdf:c00008",
+              "cwa_weather_whitepaper:pymupdf:c00021",
+              "cwa_weather_whitepaper:pymupdf:c00024",
+              "cwa_weather_whitepaper:pymupdf:c00023"
+            ],
+            "retrieved_scores": [
+              0.22115,
+              0.166519,
+              0.157899,
+              0.157408,
+              0.152783
+            ]
+          },
+          {
+            "question_id": "sv02",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00037",
+              "namr_ocean_wind_2023:pymupdf:c00038",
+              "namr_ocean_wind_2023:pymupdf:c00039",
+              "namr_ocean_wind_2023:pymupdf:c00040",
+              "namr_ocean_wind_2023:pymupdf:c00041"
+            ],
+            "retrieved_scores": [
+              0.158546,
+              0.1584,
+              0.158209,
+              0.158145,
+              0.158122
+            ]
+          },
+          {
+            "question_id": "sv03",
+            "question_type": "table_cell",
+            "answer": "18",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00000",
+              "cwa_weather_whitepaper:pymupdf:c00001",
+              "cwa_weather_whitepaper:pymupdf:c00002",
+              "cwa_weather_whitepaper:pymupdf:c00003",
+              "cwa_weather_whitepaper:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.250171,
+              0.233786,
+              0.176767,
+              0.15779,
+              0.136642
+            ]
+          },
+          {
+            "question_id": "sv04",
+            "question_type": "table_cell",
+            "answer": "128",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00001",
+              "cwa_weather_whitepaper:pymupdf:c00000",
+              "cwa_weather_whitepaper:pymupdf:c00002",
+              "cwa_weather_whitepaper:pymupdf:c00010",
+              "cwa_weather_whitepaper:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.188261,
+              0.163178,
+              0.1161,
+              0.095646,
+              0.095494
+            ]
+          },
+          {
+            "question_id": "sv05",
+            "question_type": "single_text_fact",
+            "answer": "70",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00009",
+              "cwa_weather_whitepaper:pymupdf:c00021",
+              "cwa_weather_whitepaper:pymupdf:c00024",
+              "cwa_weather_whitepaper:pymupdf:c00027",
+              "cwa_weather_whitepaper:pymupdf:c00020"
+            ],
+            "retrieved_scores": [
+              0.282139,
+              0.257685,
+              0.246208,
+              0.245677,
+              0.245447
+            ]
+          },
+          {
+            "question_id": "sv06",
+            "question_type": "single_text_fact",
+            "answer": "建置大氣與電離層耦合預報系統",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00009",
+              "cwa_weather_whitepaper:pymupdf:c00000",
+              "cwa_weather_whitepaper:pymupdf:c00012",
+              "cwa_weather_whitepaper:pymupdf:c00002",
+              "cwa_weather_whitepaper:pymupdf:c00010"
+            ],
+            "retrieved_scores": [
+              0.206404,
+              0.153289,
+              0.146735,
+              0.10409,
+              0.101623
+            ]
+          },
+          {
+            "question_id": "sv07",
+            "question_type": "single_text_fact",
+            "answer": "沉浸式體驗",
+            "correct": true,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00010",
+              "cwa_weather_whitepaper:pymupdf:c00011",
+              "moda_digital_content_yearbook_111:pymupdf:c00008",
+              "cwa_weather_whitepaper:pymupdf:c00009",
+              "moda_digital_content_yearbook_111:pymupdf:c00016"
+            ],
+            "retrieved_scores": [
+              0.097263,
+              0.079605,
+              0.058427,
+              0.055551,
+              0.04856
+            ]
+          },
+          {
+            "question_id": "sv08",
+            "question_type": "single_text_fact",
+            "answer": "建置國家氣象實驗場",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.25,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00012",
+              "cwa_weather_whitepaper:pymupdf:c00009",
+              "cwa_weather_whitepaper:pymupdf:c00013",
+              "cwa_weather_whitepaper:pymupdf:c00014",
+              "cwa_weather_whitepaper:pymupdf:c00011"
+            ],
+            "retrieved_scores": [
+              0.140488,
+              0.11857,
+              0.101997,
+              0.06254,
+              0.057215
+            ]
+          },
+          {
+            "question_id": "sv09",
+            "question_type": "table_cell",
+            "answer": "28",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00026",
+              "cwa_weather_whitepaper:pymupdf:c00021",
+              "cwa_weather_whitepaper:pymupdf:c00020",
+              "cwa_weather_whitepaper:pymupdf:c00024",
+              "cwa_weather_whitepaper:pymupdf:c00027"
+            ],
+            "retrieved_scores": [
+              0.417615,
+              0.416981,
+              0.409078,
+              0.371267,
+              0.359066
+            ]
+          },
+          {
+            "question_id": "sv10",
+            "question_type": "table_aggregation",
+            "answer": "368",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00027",
+              "cwa_weather_whitepaper:pymupdf:c00026",
+              "cwa_weather_whitepaper:pymupdf:c00021",
+              "cwa_weather_whitepaper:pymupdf:c00020",
+              "cwa_weather_whitepaper:pymupdf:c00024"
+            ],
+            "retrieved_scores": [
+              0.181142,
+              0.176859,
+              0.171078,
+              0.155598,
+              0.121297
+            ]
+          },
+          {
+            "question_id": "sv11",
+            "question_type": "cross_page",
+            "answer": "402",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00026",
+              "cwa_weather_whitepaper:pymupdf:c00012",
+              "cwa_weather_whitepaper:pymupdf:c00009",
+              "cwa_weather_whitepaper:pymupdf:c00021",
+              "cwa_weather_whitepaper:pymupdf:c00020"
+            ],
+            "retrieved_scores": [
+              0.120075,
+              0.116335,
+              0.102861,
+              0.093053,
+              0.089315
+            ]
+          },
+          {
+            "question_id": "sv12",
+            "question_type": "unanswerable",
+            "answer": null,
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00027",
+              "cwa_weather_whitepaper:pymupdf:c00021",
+              "cwa_weather_whitepaper:pymupdf:c00024",
+              "cwa_weather_whitepaper:pymupdf:c00023",
+              "cwa_weather_whitepaper:pymupdf:c00022"
+            ],
+            "retrieved_scores": [
+              0.21733,
+              0.203805,
+              0.20322,
+              0.19799,
+              0.194996
+            ]
+          },
+          {
+            "question_id": "sv13",
+            "question_type": "table_cell",
+            "answer": "777,453",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00000",
+              "moda_digital_content_yearbook_111:pymupdf:c00009",
+              "moda_digital_content_yearbook_111:pymupdf:c00002",
+              "moda_digital_content_yearbook_111:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.318142,
+              0.290552,
+              0.251142,
+              0.23506,
+              0.231976
+            ]
+          },
+          {
+            "question_id": "sv14",
+            "question_type": "table_cell",
+            "answer": "159,718",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "moda_digital_content_yearbook_111:pymupdf:c00002",
+              "moda_digital_content_yearbook_111:pymupdf:c00001",
+              "moda_digital_content_yearbook_111:pymupdf:c00009"
+            ],
+            "retrieved_scores": [
+              0.287244,
+              0.221248,
+              0.210273,
+              0.168524,
+              0.162902
+            ]
+          },
+          {
+            "question_id": "sv15",
+            "question_type": "table_aggregation",
+            "answer": "79839",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00001",
+              "moda_digital_content_yearbook_111:pymupdf:c00000",
+              "moda_digital_content_yearbook_111:pymupdf:c00002",
+              "moda_digital_content_yearbook_111:pymupdf:c00012",
+              "moda_digital_content_yearbook_111:pymupdf:c00006"
+            ],
+            "retrieved_scores": [
+              0.184574,
+              0.156679,
+              0.13381,
+              0.089309,
+              0.080956
+            ]
+          },
+          {
+            "question_id": "sv16",
+            "question_type": "single_text_fact",
+            "answer": "580 億美元",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00002",
+              "moda_digital_content_yearbook_111:pymupdf:c00000",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00009",
+              "namr_ocean_wind_2023:pymupdf:c00006"
+            ],
+            "retrieved_scores": [
+              0.214096,
+              0.200201,
+              0.1849,
+              0.173762,
+              0.141598
+            ]
+          },
+          {
+            "question_id": "sv17",
+            "question_type": "single_text_fact",
+            "answer": "80",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00002",
+              "moda_digital_content_yearbook_111:pymupdf:c00001",
+              "moda_digital_content_yearbook_111:pymupdf:c00000",
+              "moda_digital_content_yearbook_111:pymupdf:c00006"
+            ],
+            "retrieved_scores": [
+              0.187233,
+              0.146301,
+              0.123828,
+              0.076558,
+              0.065474
+            ]
+          },
+          {
+            "question_id": "sv18",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": false,
+            "error_source": "generation",
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00016",
+              "moda_digital_content_yearbook_111:pymupdf:c00004",
+              "moda_digital_content_yearbook_111:pymupdf:c00006"
+            ],
+            "retrieved_scores": [
+              0.33769,
+              0.308206,
+              0.233544,
+              0.232736,
+              0.207047
+            ]
+          },
+          {
+            "question_id": "sv19",
+            "question_type": "single_text_fact",
+            "answer": "Minecraft",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00012",
+              "moda_digital_content_yearbook_111:pymupdf:c00009",
+              "moda_digital_content_yearbook_111:pymupdf:c00008",
+              "moda_digital_content_yearbook_111:pymupdf:c00016",
+              "moda_digital_content_yearbook_111:pymupdf:c00006"
+            ],
+            "retrieved_scores": [
+              0.167082,
+              0.146286,
+              0.133052,
+              0.089359,
+              0.071624
+            ]
+          },
+          {
+            "question_id": "sv20",
+            "question_type": "table_cell",
+            "answer": "41",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00009",
+              "moda_digital_content_yearbook_111:pymupdf:c00010",
+              "moda_digital_content_yearbook_111:pymupdf:c00012",
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "moda_digital_content_yearbook_111:pymupdf:c00011"
+            ],
+            "retrieved_scores": [
+              0.152215,
+              0.12756,
+              0.086927,
+              0.080396,
+              0.075406
+            ]
+          },
+          {
+            "question_id": "sv21",
+            "question_type": "table_aggregation",
+            "answer": "171",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00009",
+              "moda_digital_content_yearbook_111:pymupdf:c00010",
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "moda_digital_content_yearbook_111:pymupdf:c00012",
+              "moda_digital_content_yearbook_111:pymupdf:c00008"
+            ],
+            "retrieved_scores": [
+              0.163158,
+              0.107006,
+              0.067442,
+              0.066844,
+              0.04927
+            ]
+          },
+          {
+            "question_id": "sv22",
+            "question_type": "single_text_fact",
+            "answer": "123",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.25,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00007",
+              "moda_digital_content_yearbook_111:pymupdf:c00006",
+              "moda_digital_content_yearbook_111:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00011",
+              "moda_digital_content_yearbook_111:pymupdf:c00016"
+            ],
+            "retrieved_scores": [
+              0.174328,
+              0.130423,
+              0.12758,
+              0.123392,
+              0.101698
+            ]
+          },
+          {
+            "question_id": "sv23",
+            "question_type": "table_cell",
+            "answer": "16.2M",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00013",
+              "moda_digital_content_yearbook_111:pymupdf:c00012",
+              "moda_digital_content_yearbook_111:pymupdf:c00014",
+              "moda_digital_content_yearbook_111:pymupdf:c00008",
+              "namr_ocean_wind_2023:pymupdf:c00056"
+            ],
+            "retrieved_scores": [
+              0.218195,
+              0.212109,
+              0.157394,
+              0.15463,
+              0.111803
+            ]
+          },
+          {
+            "question_id": "sv24",
+            "question_type": "cross_page",
+            "answer": "164",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00011",
+              "moda_digital_content_yearbook_111:pymupdf:c00007",
+              "moda_digital_content_yearbook_111:pymupdf:c00006",
+              "moda_digital_content_yearbook_111:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00010"
+            ],
+            "retrieved_scores": [
+              0.171652,
+              0.128269,
+              0.098963,
+              0.096806,
+              0.093206
+            ]
+          },
+          {
+            "question_id": "sv25",
+            "question_type": "single_text_fact",
+            "answer": "數位遊戲",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00016",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00006",
+              "moda_digital_content_yearbook_111:pymupdf:c00004"
+            ],
+            "retrieved_scores": [
+              0.257927,
+              0.227612,
+              0.216368,
+              0.187676,
+              0.165678
+            ]
+          },
+          {
+            "question_id": "sv26",
+            "question_type": "unanswerable",
+            "answer": null,
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00002",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00000"
+            ],
+            "retrieved_scores": [
+              0.16334,
+              0.140112,
+              0.122628,
+              0.10046,
+              0.097997
+            ]
+          },
+          {
+            "question_id": "sv27",
+            "question_type": "table_cell",
+            "answer": "58.6",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00001",
+              "namr_ocean_wind_2023:pymupdf:c00002",
+              "namr_ocean_wind_2023:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.300498,
+              0.184111,
+              0.177544,
+              0.177273,
+              0.176983
+            ]
+          },
+          {
+            "question_id": "sv28",
+            "question_type": "table_cell",
+            "answer": "18.2",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00001",
+              "namr_ocean_wind_2023:pymupdf:c00002",
+              "namr_ocean_wind_2023:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.308306,
+              0.186234,
+              0.185003,
+              0.18472,
+              0.184419
+            ]
+          },
+          {
+            "question_id": "sv29",
+            "question_type": "table_aggregation",
+            "answer": "131.9",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00001",
+              "namr_ocean_wind_2023:pymupdf:c00002",
+              "namr_ocean_wind_2023:pymupdf:c00003",
+              "namr_ocean_wind_2023:pymupdf:c00000"
+            ],
+            "retrieved_scores": [
+              0.270338,
+              0.186345,
+              0.18606,
+              0.185757,
+              0.184468
+            ]
+          },
+          {
+            "question_id": "sv30",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.452824,
+              0.209622,
+              0.19517,
+              0.168774,
+              0.167669
+            ]
+          },
+          {
+            "question_id": "sv31",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00001",
+              "namr_ocean_wind_2023:pymupdf:c00002",
+              "namr_ocean_wind_2023:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.320401,
+              0.178965,
+              0.156766,
+              0.156527,
+              0.156271
+            ]
+          },
+          {
+            "question_id": "sv32",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.451632,
+              0.192943,
+              0.184264,
+              0.163093,
+              0.159279
+            ]
+          },
+          {
+            "question_id": "sv33",
+            "question_type": "table_cell",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00034",
+              "namr_ocean_wind_2023:pymupdf:c00035"
+            ],
+            "retrieved_scores": [
+              0.339877,
+              0.171261,
+              0.147981,
+              0.146561,
+              0.14647
+            ]
+          },
+          {
+            "question_id": "sv34",
+            "question_type": "table_cell",
+            "answer": "30.0",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00034",
+              "namr_ocean_wind_2023:pymupdf:c00035",
+              "namr_ocean_wind_2023:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.313099,
+              0.190052,
+              0.146539,
+              0.146448,
+              0.146211
+            ]
+          },
+          {
+            "question_id": "sv35",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00001"
+            ],
+            "retrieved_scores": [
+              0.31794,
+              0.216384,
+              0.175079,
+              0.160045,
+              0.156541
+            ]
+          },
+          {
+            "question_id": "sv36",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.39736,
+              0.239046,
+              0.202927,
+              0.194308,
+              0.186973
+            ]
+          },
+          {
+            "question_id": "sv37",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.418338,
+              0.254462,
+              0.185551,
+              0.174082,
+              0.17001
+            ]
+          },
+          {
+            "question_id": "sv38",
+            "question_type": "cross_page",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00001",
+              "namr_ocean_wind_2023:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.300897,
+              0.166093,
+              0.149071,
+              0.149021,
+              0.148793
+            ]
+          },
+          {
+            "question_id": "sv39",
+            "question_type": "unanswerable",
+            "answer": null,
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00002",
+              "namr_ocean_wind_2023:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.363269,
+              0.172565,
+              0.163093,
+              0.159279,
+              0.159019
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "factor": "targeted_vlm_fixed_frozen",
+      "parser": "targeted-vlm",
+      "chunking": "fixed",
+      "status": "completed",
+      "chunk_count": 112,
+      "downstream": {
+        "question_count": 39,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 0.820513,
+        "mrr": 0.603419,
+        "answer_correctness": 0.846154,
+        "citation_validity": 0.794872,
+        "error_attribution": {
+          "parsing": 1,
+          "retrieval": 4,
+          "generation": 1
+        },
+        "questions": [
+          {
+            "question_id": "sv01",
+            "question_type": "single_text_fact",
+            "answer": "10 PFlops",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00000",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00008",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00022",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00025",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00024"
+            ],
+            "retrieved_scores": [
+              0.22115,
+              0.166519,
+              0.157899,
+              0.157408,
+              0.152783
+            ]
+          },
+          {
+            "question_id": "sv02",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00038",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00039",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00040",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00041",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00042"
+            ],
+            "retrieved_scores": [
+              0.158546,
+              0.1584,
+              0.158209,
+              0.158145,
+              0.158122
+            ]
+          },
+          {
+            "question_id": "sv03",
+            "question_type": "table_cell",
+            "answer": "18",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00000",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00001",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00002",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00003",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00005"
+            ],
+            "retrieved_scores": [
+              0.250171,
+              0.233786,
+              0.176767,
+              0.15779,
+              0.136642
+            ]
+          },
+          {
+            "question_id": "sv04",
+            "question_type": "table_cell",
+            "answer": "128",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00001",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00000",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00002",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00011",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00005"
+            ],
+            "retrieved_scores": [
+              0.188261,
+              0.163178,
+              0.1161,
+              0.100642,
+              0.095494
+            ]
+          },
+          {
+            "question_id": "sv05",
+            "question_type": "single_text_fact",
+            "answer": "70",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00009",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00022",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00025",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00028",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00021"
+            ],
+            "retrieved_scores": [
+              0.303768,
+              0.257685,
+              0.246208,
+              0.245677,
+              0.245447
+            ]
+          },
+          {
+            "question_id": "sv06",
+            "question_type": "single_text_fact",
+            "answer": "建置大氣與電離層耦合預報系統",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00010",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00000",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00002",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00009",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00001"
+            ],
+            "retrieved_scores": [
+              0.168609,
+              0.153289,
+              0.10409,
+              0.100861,
+              0.09413
+            ]
+          },
+          {
+            "question_id": "sv07",
+            "question_type": "single_text_fact",
+            "answer": "沉浸式體驗",
+            "correct": true,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00012",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00011",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00013",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00010",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00009"
+            ],
+            "retrieved_scores": [
+              0.107288,
+              0.086185,
+              0.07555,
+              0.067381,
+              0.059097
+            ]
+          },
+          {
+            "question_id": "sv08",
+            "question_type": "single_text_fact",
+            "answer": "建置國家氣象實驗場",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00013",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00014",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00009",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00010",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00011"
+            ],
+            "retrieved_scores": [
+              0.135147,
+              0.121098,
+              0.076237,
+              0.064572,
+              0.058885
+            ]
+          },
+          {
+            "question_id": "sv09",
+            "question_type": "table_cell",
+            "answer": "28",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00027",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00022",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00021",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00025",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00028"
+            ],
+            "retrieved_scores": [
+              0.417615,
+              0.416981,
+              0.409078,
+              0.371267,
+              0.359066
+            ]
+          },
+          {
+            "question_id": "sv10",
+            "question_type": "table_aggregation",
+            "answer": "368",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00028",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00027",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00022",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00021",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00025"
+            ],
+            "retrieved_scores": [
+              0.181142,
+              0.176859,
+              0.171078,
+              0.155598,
+              0.121297
+            ]
+          },
+          {
+            "question_id": "sv11",
+            "question_type": "cross_page",
+            "answer": "402",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00027",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00009",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00022",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00021",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00028"
+            ],
+            "retrieved_scores": [
+              0.120075,
+              0.105218,
+              0.093053,
+              0.089315,
+              0.083853
+            ]
+          },
+          {
+            "question_id": "sv12",
+            "question_type": "unanswerable",
+            "answer": null,
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:targeted-vlm-router:c00028",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00022",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00025",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00024",
+              "cwa_weather_whitepaper:targeted-vlm-router:c00023"
+            ],
+            "retrieved_scores": [
+              0.21733,
+              0.203805,
+              0.20322,
+              0.19799,
+              0.194996
+            ]
+          },
+          {
+            "question_id": "sv13",
+            "question_type": "table_cell",
+            "answer": "777,453",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00003",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00000",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00009",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00002",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00005"
+            ],
+            "retrieved_scores": [
+              0.318142,
+              0.290552,
+              0.251142,
+              0.23506,
+              0.231976
+            ]
+          },
+          {
+            "question_id": "sv14",
+            "question_type": "table_cell",
+            "answer": "159,718",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00000",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00002",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00001",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00009",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007"
+            ],
+            "retrieved_scores": [
+              0.287244,
+              0.210273,
+              0.168524,
+              0.162902,
+              0.145092
+            ]
+          },
+          {
+            "question_id": "sv15",
+            "question_type": "table_aggregation",
+            "answer": "79839",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00001",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00000",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00002",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00012",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00006"
+            ],
+            "retrieved_scores": [
+              0.184574,
+              0.156679,
+              0.13381,
+              0.089309,
+              0.080956
+            ]
+          },
+          {
+            "question_id": "sv16",
+            "question_type": "single_text_fact",
+            "answer": "580 億美元",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00002",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00000",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00003",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00009",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006"
+            ],
+            "retrieved_scores": [
+              0.214096,
+              0.200201,
+              0.1849,
+              0.173762,
+              0.143858
+            ]
+          },
+          {
+            "question_id": "sv17",
+            "question_type": "single_text_fact",
+            "answer": "80",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00003",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00002",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00001",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00000",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00006"
+            ],
+            "retrieved_scores": [
+              0.187233,
+              0.146301,
+              0.123828,
+              0.076558,
+              0.065474
+            ]
+          },
+          {
+            "question_id": "sv18",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": false,
+            "error_source": "generation",
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00005",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00003",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00016",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00004",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00006"
+            ],
+            "retrieved_scores": [
+              0.33769,
+              0.308206,
+              0.233544,
+              0.232736,
+              0.207047
+            ]
+          },
+          {
+            "question_id": "sv19",
+            "question_type": "single_text_fact",
+            "answer": "Minecraft",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00012",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00009",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00008",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00016",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00006"
+            ],
+            "retrieved_scores": [
+              0.167082,
+              0.146286,
+              0.133052,
+              0.089359,
+              0.071624
+            ]
+          },
+          {
+            "question_id": "sv20",
+            "question_type": "table_cell",
+            "answer": "41",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00009",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00010",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00012",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00011",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00008"
+            ],
+            "retrieved_scores": [
+              0.152215,
+              0.12756,
+              0.086927,
+              0.075406,
+              0.058734
+            ]
+          },
+          {
+            "question_id": "sv21",
+            "question_type": "table_aggregation",
+            "answer": "171",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00009",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00010",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00012",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00008",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00033"
+            ],
+            "retrieved_scores": [
+              0.163158,
+              0.107006,
+              0.066844,
+              0.04927,
+              0.033168
+            ]
+          },
+          {
+            "question_id": "sv22",
+            "question_type": "single_text_fact",
+            "answer": "123",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.25,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00007",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00006",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00005",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00011",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00016"
+            ],
+            "retrieved_scores": [
+              0.174328,
+              0.130423,
+              0.12758,
+              0.123392,
+              0.101698
+            ]
+          },
+          {
+            "question_id": "sv23",
+            "question_type": "table_cell",
+            "answer": "16.2M",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00013",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00012",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00014",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00008",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00009"
+            ],
+            "retrieved_scores": [
+              0.218195,
+              0.212109,
+              0.157394,
+              0.15463,
+              0.104257
+            ]
+          },
+          {
+            "question_id": "sv24",
+            "question_type": "cross_page",
+            "answer": "164",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00011",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00007",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00006",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00005",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00010"
+            ],
+            "retrieved_scores": [
+              0.171652,
+              0.128269,
+              0.098963,
+              0.096806,
+              0.093206
+            ]
+          },
+          {
+            "question_id": "sv25",
+            "question_type": "single_text_fact",
+            "answer": "數位遊戲",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00016",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00003",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00005",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00006",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00004"
+            ],
+            "retrieved_scores": [
+              0.257927,
+              0.227612,
+              0.216368,
+              0.187676,
+              0.165678
+            ]
+          },
+          {
+            "question_id": "sv26",
+            "question_type": "unanswerable",
+            "answer": null,
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00002",
+              "moda_digital_content_yearbook_111:targeted-vlm-router:c00003",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00005"
+            ],
+            "retrieved_scores": [
+              0.16334,
+              0.140112,
+              0.119394,
+              0.106107,
+              0.10055
+            ]
+          },
+          {
+            "question_id": "sv27",
+            "question_type": "table_cell",
+            "answer": "58.6",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00000",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00001",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00002",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00003"
+            ],
+            "retrieved_scores": [
+              0.184111,
+              0.178296,
+              0.177544,
+              0.177273,
+              0.176983
+            ]
+          },
+          {
+            "question_id": "sv28",
+            "question_type": "table_cell",
+            "answer": "18.2",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00000",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00001",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00002",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00003"
+            ],
+            "retrieved_scores": [
+              0.200078,
+              0.186234,
+              0.185003,
+              0.18472,
+              0.184419
+            ]
+          },
+          {
+            "question_id": "sv29",
+            "question_type": "table_aggregation",
+            "answer": "131.9",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00001",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00002",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00003",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00000"
+            ],
+            "retrieved_scores": [
+              0.186345,
+              0.18606,
+              0.185757,
+              0.185645,
+              0.184468
+            ]
+          },
+          {
+            "question_id": "sv30",
+            "question_type": "chart_value",
+            "answer": "448",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00005",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00000",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00002"
+            ],
+            "retrieved_scores": [
+              0.242199,
+              0.205555,
+              0.195344,
+              0.168774,
+              0.167669
+            ]
+          },
+          {
+            "question_id": "sv31",
+            "question_type": "chart_value",
+            "answer": "658",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00005",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00001",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00002"
+            ],
+            "retrieved_scores": [
+              0.195817,
+              0.191511,
+              0.179124,
+              0.156766,
+              0.156527
+            ]
+          },
+          {
+            "question_id": "sv32",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00005",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00000",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00002"
+            ],
+            "retrieved_scores": [
+              0.279006,
+              0.201989,
+              0.184428,
+              0.163093,
+              0.159279
+            ]
+          },
+          {
+            "question_id": "sv33",
+            "question_type": "table_cell",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00057",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00005",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00035"
+            ],
+            "retrieved_scores": [
+              0.214315,
+              0.16601,
+              0.153555,
+              0.148112,
+              0.146561
+            ]
+          },
+          {
+            "question_id": "sv34",
+            "question_type": "table_cell",
+            "answer": "30.0",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.25,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00057",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00035",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00036"
+            ],
+            "retrieved_scores": [
+              0.198853,
+              0.17706,
+              0.165496,
+              0.146539,
+              0.146448
+            ]
+          },
+          {
+            "question_id": "sv35",
+            "question_type": "chart_value",
+            "answer": "701",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.2,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00005",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00000",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00058"
+            ],
+            "retrieved_scores": [
+              0.190872,
+              0.179017,
+              0.175235,
+              0.160045,
+              0.157172
+            ]
+          },
+          {
+            "question_id": "sv36",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00005",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00000",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00002"
+            ],
+            "retrieved_scores": [
+              0.222324,
+              0.213866,
+              0.203108,
+              0.194308,
+              0.186973
+            ]
+          },
+          {
+            "question_id": "sv37",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00005",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00000",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00002"
+            ],
+            "retrieved_scores": [
+              0.228618,
+              0.195979,
+              0.185716,
+              0.174082,
+              0.17001
+            ]
+          },
+          {
+            "question_id": "sv38",
+            "question_type": "cross_page",
+            "answer": "1164",
+            "correct": true,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00005",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00001",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00002"
+            ],
+            "retrieved_scores": [
+              0.175327,
+              0.17411,
+              0.166241,
+              0.149021,
+              0.148793
+            ]
+          },
+          {
+            "question_id": "sv39",
+            "question_type": "unanswerable",
+            "answer": null,
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:targeted-vlm-router:c00007",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00006",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00005",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00000",
+              "namr_ocean_wind_2023:targeted-vlm-router:c00002"
+            ],
+            "retrieved_scores": [
+              0.230716,
+              0.192015,
+              0.172719,
+              0.163093,
+              0.159279
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "decision": {
+    "recommendation": "NOT-PROMOTION-EVIDENCE",
+    "promotion_eligible": false,
+    "scale_finding": "SUPPORTS-CANDIDATE",
+    "rule": "Apply the frozen no-regression gates descriptively, but do not promote from this source-assisted scale-validation set.",
+    "deltas_vs_baseline": {
+      "retrieval_recall_at_k": 0.076923,
+      "mrr": 0.090598,
+      "answer_correctness": 0.102564,
+      "citation_validity": 0.076923
+    },
+    "gates": {
+      "retrieval_recall_at_k_at_least_baseline": true,
+      "mrr_at_least_baseline": true,
+      "answer_correctness_at_least_baseline": true,
+      "citation_validity_at_least_baseline": true,
+      "one_primary_metric_strictly_improves": true,
+      "minimum_question_count_evaluated": true
+    }
+  },
+  "receipt_benchmark_untouched": true
+}

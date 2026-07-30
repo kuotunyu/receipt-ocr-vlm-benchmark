@@ -30,6 +30,11 @@
    crop、7 題評估 caption-and-index：generic caption 可把 Recall/answer/citation 提到 0.857，
    但 structured caption 沒有改善 retrieval，original-crop 的 crop Recall 也只有 0.857，
    caption promotion 同樣為 NO-GO。
+   v0.9 再加入 3 份全新 OGDL 官方文件、24 個 layout-stratified pages 與 39 題人工 QA 的
+   scale-validation。這批 gold 曾參考 source PDF text layer，因此只量測規模穩定性，
+   不能覆蓋 v0.8 untouched promotion 結論。Targeted VLM 的 Recall/MRR/answer/citation
+   全部改善，屬支持性證據；8 個圖表／9 題的 structured caption 卻沒有改善 retrieval，
+   original-crop answer/citation 只有 0.667，因此 caption 仍不支持。
    因此全域替換、正式 structure routing、VLM parser 與 caption promotion 都維持 NO-GO；設計與限制見
    [docs/COMPLEX_DOCUMENT_BENCHMARK.md](docs/COMPLEX_DOCUMENT_BENCHMARK.md)。
 
@@ -219,6 +224,8 @@ copy .env.example .env
 
 LlamaParse 是隔離的 optional extra：`.venv\Scripts\python -m pip install -e ".[llamaparse]"`。
 沒有 `LLAMA_CLOUD_API_KEY` 時 adapter 會明確 skip，不會讓測試或本地可重現路徑失敗。
+真正的商業 comparator 另有 `--allow-cloud` 雙重保護，操作與 key 清除方式見
+[docs/OPTIONAL_COMPLETION_RUNBOOK.md](docs/OPTIONAL_COMPLETION_RUNBOOK.md)。
 
 Qwen parser / caption 呼叫固定 `think=false`、temperature 0 與 JSON Schema output，避免文件轉錄
 浪費 thinking tokens。每頁及每次 caption 呼叫前也會檢查 Ollama：若其他模型正在 GPU 執行，
@@ -240,6 +247,7 @@ Pipeline A 的 OCR 引擎（PaddleOCR）與品項補漏 LLM（`ollama pull qwen3
 - [DESIGN.md](DESIGN.md) — 前處理/模型選型理由、結構化輸出穩定性處理
 - [EVAL_REPORT.md](EVAL_REPORT.md) — 完整對比表、錯誤類型分析、場景結論
 - [docs/DATA_COLLECTION_GUIDE.md](docs/DATA_COLLECTION_GUIDE.md) — 拍攝指引與 diversity matrix
+- [docs/OPTIONAL_COMPLETION_RUNBOOK.md](docs/OPTIONAL_COMPLETION_RUNBOOK.md) — 5–10 張真實繁中收據與 LlamaParse 安全交付流程
 - [results/official/README.md](results/official/README.md) — 去識別化正式評估摘要與重建方式
 - [docs/COMPLEX_DOCUMENT_BENCHMARK.md](docs/COMPLEX_DOCUMENT_BENCHMARK.md) — 複雜文件 IR、人工 gold、normalization audit、parser/chunk/RAG 評估與凍結門檻
 - [results/complex_document/README.md](results/complex_document/README.md) — factor-at-a-time、外部 holdouts v0.4/v0.6/v0.7 與 artifact 重建方式
@@ -260,3 +268,4 @@ Pipeline A 的 OCR 引擎（PaddleOCR）與品項補漏 LLM（`ollama pull qwen3
 - [x] Complex-document v0.7 GPU stage：外部 full/targeted Qwen、3 張圖 4 題 caption 與 post-hoc fixed diagnostic 完成；正式 promotion 仍為 NO-GO
 - [x] Complex-document v0.8 CPU prep：2 份全新文件、14 頁、26 題與 promotion protocol 已在 prediction 前凍結；CPU baseline 完成
 - [x] Complex-document v0.8 GPU stage：frozen targeted-VLM + fixed 與 5 個新 caption crops 已完成；兩項均依事前 gate 自動判定 NO-GO
+- [x] Complex-document v0.9 scale-validation：3 份文件、24 頁、39 題 targeted-VLM 與 8 個 caption crops 完成；parser 有支持性改善、caption 不支持，兩者均非 promotion evidence

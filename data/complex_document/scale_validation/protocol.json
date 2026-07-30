@@ -1,0 +1,44 @@
+{
+  "protocol_version": "1.0.0",
+  "benchmark_version": "0.9.0",
+  "role": "targeted-vlm-fixed-scale-validation",
+  "freeze_status": "frozen-before-scoring",
+  "frozen_at": "2026-07-30",
+  "selection_disclosure": "Layout-stratified page selection and exact gold transcription used source-PDF pixels and the embedded source text layer. No parser score, retrieval result, candidate output, or LLM judge was inspected.",
+  "baseline": {
+    "parser": "pymupdf",
+    "chunking": "fixed"
+  },
+  "candidate": {
+    "parser": "targeted-vlm",
+    "chunking": "fixed",
+    "router_version": "native-visual-router-1"
+  },
+  "retrieval_k": 5,
+  "primary_metrics": [
+    "retrieval_recall_at_k",
+    "mrr",
+    "answer_correctness",
+    "citation_validity"
+  ],
+  "minimum_question_count": 36,
+  "required_question_types": [
+    "single_text_fact",
+    "table_cell",
+    "table_aggregation",
+    "chart_value",
+    "cross_page",
+    "unanswerable"
+  ],
+  "promotion_rule": {
+    "all_primary_metrics_at_least_baseline": true,
+    "at_least_one_primary_metric_strictly_improves": true
+  },
+  "anti_leakage": [
+    "Do not change questions, answers, evidence, selected pages, parser configuration, chunking, retrieval K, or gates after scoring starts.",
+    "Do not tune native-visual-router-1 thresholds on this set.",
+    "Report all factors, including regressions.",
+    "Do not use this source-assisted scale set to override the untouched v0.8 promotion decision.",
+    "Report parser and end-to-end wall-clock latency separately from cached verification time."
+  ]
+}

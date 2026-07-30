@@ -67,6 +67,13 @@ def _adapter(name: str):
         return QwenVLMParserAdapter()
     if name == "targeted-vlm":
         return TargetedVLMRouterAdapter()
+    if name == "llamaparse":
+        # Keep the commercial SDK outside the default import path.
+        from src.complex_document.parsers.llamaparse_parser import (
+            LlamaParseAdapter,
+        )
+
+        return LlamaParseAdapter()
     raise ValueError(name)
 
 

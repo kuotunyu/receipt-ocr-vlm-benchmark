@@ -39,10 +39,19 @@ def definition_sha256(manifest: dict, questions: dict) -> str:
 
 
 def validate_qa_holdout(manifest: dict, questions_payload: dict) -> None:
-    if manifest.get("role") != "external-end-to-end-qa-holdout":
-        raise QAHoldoutDefinitionError("manifest role is not an external QA holdout")
-    if manifest.get("annotation_status") != "frozen-before-downstream-evaluation":
-        raise QAHoldoutDefinitionError("QA annotations must be frozen before evaluation")
+    role = manifest.get("role")
+    expected_statuses = {
+        "external-end-to-end-qa-holdout": "frozen-before-downstream-evaluation",
+        "external-scale-validation": "frozen-before-parser-scoring",
+    }
+    if role not in expected_statuses:
+        raise QAHoldoutDefinitionError(
+            "manifest role is not a supported external QA evaluation"
+        )
+    if manifest.get("annotation_status") != expected_statuses[role]:
+        raise QAHoldoutDefinitionError(
+            f"{role} requires annotation_status={expected_statuses[role]}"
+        )
     if manifest.get("benchmark_version") != questions_payload.get(
         "benchmark_version"
     ):

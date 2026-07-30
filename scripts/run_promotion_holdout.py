@@ -77,6 +77,14 @@ def main() -> None:
         help="Run the frozen targeted-VLM factor; this normally requires GPU.",
     )
     parser.add_argument("--reuse-ir", action="store_true")
+    parser.add_argument(
+        "--reparse-baseline",
+        action="store_true",
+        help=(
+            "Measure a fresh CPU baseline while reusing candidate IR; useful "
+            "because PyMuPDF raw artifacts do not store page latencies."
+        ),
+    )
     args = parser.parse_args()
 
     manifest = read_json(args.manifest)
@@ -99,7 +107,12 @@ def main() -> None:
                 manifest,
                 args.raw_dir,
                 store,
-                reuse_ir=args.reuse_ir,
+                reuse_ir=(
+                    args.reuse_ir
+                    and not (
+                        args.reparse_baseline and parser_key == "pymupdf"
+                    )
+                ),
             )
             if parser_key == "targeted-vlm":
                 expected_router = protocol["candidate"]["router_version"]

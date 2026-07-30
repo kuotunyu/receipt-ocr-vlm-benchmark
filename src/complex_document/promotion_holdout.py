@@ -14,6 +14,8 @@ PRIMARY_METRICS = (
     "answer_correctness",
     "citation_validity",
 )
+PROMOTION_ROLE = "targeted-vlm-fixed-promotion"
+SCALE_VALIDATION_ROLE = "targeted-vlm-fixed-scale-validation"
 
 
 class PromotionProtocolError(QAHoldoutDefinitionError):
@@ -43,11 +45,23 @@ def validate_promotion_protocol(
     manifest: dict[str, Any],
     questions_payload: dict[str, Any],
 ) -> None:
-    if protocol.get("role") != "targeted-vlm-fixed-promotion":
+    role = protocol.get("role")
+    if role not in {PROMOTION_ROLE, SCALE_VALIDATION_ROLE}:
         raise PromotionProtocolError("unexpected promotion protocol role")
-    if protocol.get("freeze_status") != "frozen-before-predictions":
+    expected_freeze_status = (
+        "frozen-before-predictions"
+        if role == PROMOTION_ROLE
+        else "frozen-before-scoring"
+    )
+    if protocol.get("freeze_status") != expected_freeze_status:
         raise PromotionProtocolError(
-            "promotion protocol must be frozen before parser predictions"
+            f"{role} requires freeze_status={expected_freeze_status}"
+        )
+    if role == SCALE_VALIDATION_ROLE and not protocol.get(
+        "selection_disclosure"
+    ):
+        raise PromotionProtocolError(
+            "scale validation must disclose how pages and gold were selected"
         )
     if protocol.get("benchmark_version") != manifest.get(
         "benchmark_version"
@@ -107,6 +121,7 @@ def promotion_decision(
     protocol: dict[str, Any],
 ) -> dict[str, Any]:
     """Apply only the gates frozen before the candidate predictions."""
+    promotion_eligible = protocol.get("role") == PROMOTION_ROLE
     if baseline is None or candidate is None:
         return {
             "recommendation": "PENDING",
@@ -136,9 +151,23 @@ def promotion_decision(
         ),
     }
     go = all(gates.values())
+    if not promotion_eligible:
+        return {
+            "recommendation": "NOT-PROMOTION-EVIDENCE",
+            "promotion_eligible": False,
+            "scale_finding": (
+                "SUPPORTS-CANDIDATE" if go else "DOES-NOT-SUPPORT-CANDIDATE"
+            ),
+            "rule": (
+                "Apply the frozen no-regression gates descriptively, but do "
+                "not promote from this source-assisted scale-validation set."
+            ),
+            "deltas_vs_baseline": deltas,
+            "gates": gates,
+        }
     return {
         "recommendation": "GO" if go else "NO-GO",
-        "promotion_eligible": True,
+        "promotion_eligible": promotion_eligible,
         "rule": (
             "Promote targeted VLM + fixed chunks only if every primary metric "
             "matches or exceeds PyMuPDF + fixed chunks, at least one primary "

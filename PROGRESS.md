@@ -107,11 +107,27 @@
 - [x] GPU 完成後卸載 Qwen3-VL，Ollama 無載入模型；RTX 4090 交棒給「④ RAG Attribution」。
 - [x] 210 tests；既有 17 個主 benchmark blocks、三組舊 verifier、receipt results 與 v0.8 promotion/caption results 全部通過。
 
+## Complex-document track v0.9 scale-validation（2026-07-30）
+
+- [x] 新增中央氣象署、數位發展部、國家海洋研究院三份 OGDL v1 官方文件；24 個 layout-stratified pages、39 題，與既有資料完全不重疊。
+- [x] Annotation 使用 source pixels + embedded text layer 輔助 exact transcription，protocol 明確標為 source-assisted，永遠不可覆蓋 v0.8 untouched promotion。
+- [x] PyMuPDF + fixed：Recall@5 0.744、MRR 0.513、answer 0.744、citation 0.718；error attribution parsing/retrieval/generation = 7/2/1。
+- [x] Targeted VLM + fixed：Recall@5 0.821、MRR 0.603、answer 0.846、citation 0.795；error attribution = 1/4/1。
+- [x] Router 只送 6/24 頁進 Qwen；fresh observed wall 115.814 秒，artifact-reconstructed latency 110.282 秒，PyMuPDF CPU baseline 11.055 秒，本地 API cost $0；四項全改善，scale finding 為 SUPPORTS-CANDIDATE，但 recommendation 固定 NOT-PROMOTION-EVIDENCE。
+- [x] 新增 8 個圖表／政策圖 crop、9 題。Structured caption 未提升 Recall（0.333）；original crop answer/citation/crop Recall 0.667，未通過 0.8/0.8/0.9 gates，DOES-NOT-SUPPORT-CAPTION-AND-INDEX。
+- [x] Caption generator 新增 durable per-target checkpoint；一次 1,024-token length-stop 的 52.325 秒 discarded batch 明確揭露。保存的 28 calls 為 73.105 秒、GPU 63.067 秒。
+- [x] LlamaParse adapter 依 SDK 2.13.0 native page items 正規化 bbox／table／heading／figure／caption，新增 `--allow-cloud` comparator；無 key、SDK 或明確授權均自動 skip。
+- [x] 真實繁中收據新增 5–10 張 local-only manifest、隱私／schema／手寫與印章 coverage verifier，以及人工操作 runbook；實際影像仍待資料擁有者提供。
+- [x] GPU 完成後卸載 Qwen3-VL，確認 `ollama ps` 空白並通知 RAG Attribution task 恢復。
+- [x] 226 tests；receipt official summaries、17 個主 benchmark blocks、router/QA/MRR、v0.8 與 v0.9 parser/caption verifiers 全部通過。
+
 ## 明確限制
 
-- LlamaParse 未呼叫；沒有讀取 API key 或其他 secrets。
+- LlamaParse 未呼叫；沒有讀取 API key 或其他 secrets。商業 comparator 的程式與 no-key skip 已驗證，實際結果仍為 optional。
 - PaddleOCR 只做一頁 CPU smoke，不把慢速 smoke 當 25 頁正式效能數字。
 - v0.4 holdout 只驗證 vector-grid page routing，不代表 borderless/raster table、cell extraction 或 downstream QA 已泛化。
 - Caption QA 已擴為 3 張圖／4 題人工 gold，仍不足以宣稱圖表 QA 已泛化。
 - v0.6 外部 QA 的 15 題與 evidence 在 GPU run 前凍結且未修改。targeted-fixed 是看過 structure MRR 退步後才補的 post-hoc diagnostic，不得冒充 untouched holdout GO。
 - v0.8 已完成，但只有 2 份文件、26 題與 5 個 visual targets；兩項 promotion 均為 NO-GO，不可外推成所有繁中複雜文件或圖表 QA 的一般結論。
+- v0.9 擴到 3 份文件、39 題與 8 個 visual targets，但 source-assisted annotation 不是 blind；只能支持研究方向，不能當新 promotion GO。
+- 真實繁中手寫／印章收據尚未由資料擁有者提供，因此不能宣稱已補足 receipt benchmark 的真實繁中 external validity。

@@ -85,7 +85,11 @@ def main() -> None:
     if actual != report["factor"]:
         raise SystemExit("promotion caption factor mismatch")
     if _decision(
-        actual, targets["evaluation_protocol"]
+        actual,
+        targets["evaluation_protocol"],
+        promotion_eligible=(
+            manifest.get("role") != "external-scale-validation"
+        ),
     ) != report["decision"]:
         raise SystemExit("promotion caption decision mismatch")
     if report.get("receipt_benchmark_untouched") is not True:

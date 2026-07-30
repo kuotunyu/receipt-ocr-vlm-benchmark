@@ -1,0 +1,339 @@
+{
+  "benchmark_version": "0.9.0",
+  "annotation_method": "Manual visual verification against source-PDF pixels, with the embedded source text layer used only to transcribe exact strings and numbers. No parser score, retrieval result, candidate output, or LLM judge was inspected before freezing.",
+  "annotated_at": "2026-07-30",
+  "question_count": 39,
+  "questions": [
+    {
+      "question_id": "sv01",
+      "type": "single_text_fact",
+      "question": "氣象業務白皮書所述FX-1000可提供多少PFlops的CPU運算效能？",
+      "answers": ["10PFlops"],
+      "answer_regex": "FX-1000[\\s\\S]{0,120}?(?P<answer>10\\s*PFlops)",
+      "evidence": [{"document_id": "cwa_weather_whitepaper", "page": 13, "text_contains": ["FX-1000", "10 PFlops"]}]
+    },
+    {
+      "question_id": "sv02",
+      "type": "single_text_fact",
+      "question": "同一部FX-1000高速運算電腦的總儲存空間是多少？",
+      "answers": ["10PBytes"],
+      "answer_regex": "總儲存空間[\\s\\S]{0,30}?(?P<answer>10\\s*PBytes)",
+      "evidence": [{"document_id": "cwa_weather_whitepaper", "page": 13, "text_contains": ["總儲存空間", "10 PBytes"]}]
+    },
+    {
+      "question_id": "sv03",
+      "type": "table_cell",
+      "question": "表2中，臺灣中央氣象局全球模式的水平解析度是多少公里？",
+      "answers": ["18"],
+      "answer_regex": "臺灣中央氣象局[\\s\\S]{0,80}?(?P<answer>18)",
+      "evidence": [{"document_id": "cwa_weather_whitepaper", "page": 13, "text_contains": ["臺灣中央氣象局", "18", "72", "16"]}]
+    },
+    {
+      "question_id": "sv04",
+      "type": "table_cell",
+      "question": "表2中，日本氣象廳全球模式的垂直層數是多少層？",
+      "answers": ["128"],
+      "answer_regex": "日本氣象廳[\\s\\S]{0,100}?(?P<answer>128)",
+      "evidence": [{"document_id": "cwa_weather_whitepaper", "page": 13, "text_contains": ["日本氣象廳", "128"]}]
+    },
+    {
+      "question_id": "sv05",
+      "type": "single_text_fact",
+      "question": "氣象業務發展的25項策略之下，共規劃多少項行動方案？",
+      "answers": ["70"],
+      "answer_regex": "共\\s*計(?P<answer>70)\\s*項行動方案",
+      "evidence": [{"document_id": "cwa_weather_whitepaper", "page": 33, "text_contains": ["25 項策略", "70 項行動方案"]}]
+    },
+    {
+      "question_id": "sv06",
+      "type": "single_text_fact",
+      "question": "策略1.6的第二項行動方案要建置什麼預報系統？",
+      "answers": ["建置大氣與電離層耦合預報系統"],
+      "answer_regex": "(?P<answer>建置大氣與電離層耦合預報系統)",
+      "evidence": [{"document_id": "cwa_weather_whitepaper", "page": 37, "text_contains": ["策略1.6", "建置大氣與電離層耦合預報系統"]}]
+    },
+    {
+      "question_id": "sv07",
+      "type": "single_text_fact",
+      "question": "策略2.7舉例的新興展示技術中，除了擴增實境外還列出什麼體驗？",
+      "answers": ["沉浸式體驗"],
+      "answer_regex": "(?P<answer>沉浸式體驗)",
+      "evidence": [{"document_id": "cwa_weather_whitepaper", "page": 41, "text_contains": ["沉浸式體驗", "擴增實境"]}]
+    },
+    {
+      "question_id": "sv08",
+      "type": "single_text_fact",
+      "question": "策略4.3第四項行動方案要建置哪一種國家級實驗場？",
+      "answers": ["建置國家氣象實驗場"],
+      "answer_regex": "(?P<answer>建置國家氣象實驗場)",
+      "evidence": [{"document_id": "cwa_weather_whitepaper", "page": 45, "text_contains": ["建置國家氣象實驗場", "儀器履歷管理"]}]
+    },
+    {
+      "question_id": "sv09",
+      "type": "table_cell",
+      "question": "110年度氣象業務發展工作坊啟動會議共有多少名桌長？",
+      "answers": ["28"],
+      "answer_regex": "桌長群\\s*[(（](?P<answer>28)\\s*名",
+      "evidence": [{"document_id": "cwa_weather_whitepaper", "page": 53, "text_contains": ["桌長群", "28 名"]}]
+    },
+    {
+      "question_id": "sv10",
+      "type": "table_aggregation",
+      "question": "工作坊量化成果中的36個子議題與332項意見或構想合計多少項？",
+      "answers": ["368"],
+      "answer_regex": "(?P<answer>36|332)",
+      "operation": "sum",
+      "evidence": [{"document_id": "cwa_weather_whitepaper", "page": 53, "text_contains": ["36 個子議題", "332 項"]}]
+    },
+    {
+      "question_id": "sv11",
+      "type": "cross_page",
+      "question": "將政策架構的70項行動方案與工作坊的332項意見或構想相加，合計多少項？",
+      "answers": ["402"],
+      "answer_regex": "(?P<answer>70|332)",
+      "operation": "sum",
+      "evidence_mode": "all",
+      "evidence": [
+        {"document_id": "cwa_weather_whitepaper", "page": 33, "text_contains": ["70 項行動方案"]},
+        {"document_id": "cwa_weather_whitepaper", "page": 53, "text_contains": ["332 項"]}
+      ]
+    },
+    {
+      "question_id": "sv12",
+      "type": "unanswerable",
+      "question": "氣象業務白皮書是否公布122年度各項策略的執行成果？",
+      "answers": [],
+      "unanswerable": true,
+      "evidence": []
+    },
+    {
+      "question_id": "sv13",
+      "type": "table_cell",
+      "question": "數位內容產業年鑑表1-1-6中，2021年亞太市場整體規模是多少百萬美元？",
+      "answers": ["777453"],
+      "answer_regex": "(?P<answer>777[,]?453)",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 41, "text_contains": ["整體", "777,453"]}]
+    },
+    {
+      "question_id": "sv14",
+      "type": "table_cell",
+      "question": "表1-1-6中，2021年北美網路廣告市場規模是多少百萬美元？",
+      "answers": ["159718"],
+      "answer_regex": "(?P<answer>159[,]?718)",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 41, "text_contains": ["網路廣告", "159,718"]}]
+    },
+    {
+      "question_id": "sv15",
+      "type": "table_aggregation",
+      "question": "將亞太市場遊戲與電競及虛擬實境的市場規模相加，共多少百萬美元？",
+      "answers": ["79839"],
+      "answer_regex": "(?P<answer>78[,]?771|1[,]?068)",
+      "operation": "sum",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 41, "text_contains": ["遊戲與電競", "78,771", "虛擬實境", "1,068"]}]
+    },
+    {
+      "question_id": "sv16",
+      "type": "single_text_fact",
+      "question": "字節跳動2021年營收約為多少億美元？",
+      "answers": ["580億美元"],
+      "answer_regex": "(?P<answer>580\\s*億美元)",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 93, "text_contains": ["字節跳動", "580 億美元"]}]
+    },
+    {
+      "question_id": "sv17",
+      "type": "single_text_fact",
+      "question": "騰訊與網易合計占中國大陸遊戲市場多少市占率？",
+      "answers": ["80"],
+      "answer_regex": "遊戲市場(?P<answer>80)\\s*[%％]",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 93, "text_contains": ["騰訊", "網易", "80%"]}]
+    },
+    {
+      "question_id": "sv18",
+      "type": "single_text_fact",
+      "question": "圖2-1-1顯示107年數位內容產業年鑑納入哪一類產業？",
+      "answers": ["體感型產業"],
+      "answer_regex": "107年[\\s\\S]{0,40}?(?P<answer>體感型產業)",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 100, "text_contains": ["107年", "納入體感型產業"]}]
+    },
+    {
+      "question_id": "sv19",
+      "type": "single_text_fact",
+      "question": "圖3-2-1的線上虛擬畢典使用哪一款遊戲進行臺大建造計畫？",
+      "answers": ["Minecraft"],
+      "answer_regex": "(?P<answer>Minecraft)",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 150, "text_contains": ["Minecraft", "臺大建造計畫"]}]
+    },
+    {
+      "question_id": "sv20",
+      "type": "table_cell",
+      "question": "表3-2-9中，走向國際化的件數是多少？",
+      "answers": ["41"],
+      "answer_regex": "走向國際化[\\s\\S]{0,40}?(?P<answer>41)",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 181, "text_contains": ["走向國際化", "41"]}]
+    },
+    {
+      "question_id": "sv21",
+      "type": "table_aggregation",
+      "question": "表3-2-9六個企業營運貢獻大類的件數相加，合計多少件？",
+      "answers": ["171"],
+      "answer_regex": "(?P<answer>48|41|29|28|25|0)",
+      "operation": "sum",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 181, "text_contains": ["提升能力", "48", "走向國際化", "41", "人力資源", "29", "財務", "28", "營運模式", "25", "其他", "0"]}]
+    },
+    {
+      "question_id": "sv22",
+      "type": "single_text_fact",
+      "question": "中小學數位學習深耕計畫共發展多少套課程？",
+      "answers": ["123"],
+      "answer_regex": "發展(?P<answer>123)\\s*套課程",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 226, "text_contains": ["123 套課程", "450 個課程模組"]}]
+    },
+    {
+      "question_id": "sv23",
+      "type": "table_cell",
+      "question": "表4-2-2中，Astronomical的直播觀看時間是多少？",
+      "answers": ["16.2M"],
+      "answer_regex": "(?P<answer>16[.]2M)",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 298, "text_contains": ["Astronomical", "16.2M"]}]
+    },
+    {
+      "question_id": "sv24",
+      "type": "cross_page",
+      "question": "將走向國際化的41件與數位學習深耕計畫的123套課程相加，合計多少？",
+      "answers": ["164"],
+      "answer_regex": "(?P<answer>41|123)",
+      "operation": "sum",
+      "evidence_mode": "all",
+      "evidence": [
+        {"document_id": "moda_digital_content_yearbook_111", "page": 181, "text_contains": ["走向國際化", "41"]},
+        {"document_id": "moda_digital_content_yearbook_111", "page": 226, "text_contains": ["123 套課程"]}
+      ]
+    },
+    {
+      "question_id": "sv25",
+      "type": "single_text_fact",
+      "question": "圖4-3-1第一層次列出的第一個核心數位內容產業是什麼？",
+      "answers": ["數位遊戲"],
+      "answer_regex": "第一層次[\\s\\S]{0,40}?(?P<answer>數位遊戲)",
+      "evidence": [{"document_id": "moda_digital_content_yearbook_111", "page": 341, "text_contains": ["第一層次", "數位遊戲"]}]
+    },
+    {
+      "question_id": "sv26",
+      "type": "unanswerable",
+      "question": "這些選定頁面是否公布字節跳動2022年的營收金額？",
+      "answers": [],
+      "unanswerable": true,
+      "evidence": []
+    },
+    {
+      "question_id": "sv27",
+      "type": "table_cell",
+      "question": "海域風力年報表1-6中，2023年5月金門浮標的風力蒐集率是多少？",
+      "answers": ["58.6"],
+      "answer_regex": "2023/05[\\s\\S]{0,30}?(?P<answer>58[.]6)\\s*[%％]",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 13, "text_contains": ["2023/05", "58.6%"]}]
+    },
+    {
+      "question_id": "sv28",
+      "type": "table_cell",
+      "question": "表1-6中，2023年9月連江東引港的風力蒐集率是多少？",
+      "answers": ["18.2"],
+      "answer_regex": "2023/09[\\s\\S]{0,100}?(?P<answer>18[.]2)\\s*[%％]",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 13, "text_contains": ["2023/09", "18.2%"]}]
+    },
+    {
+      "question_id": "sv29",
+      "type": "table_aggregation",
+      "question": "金門浮標2023年5月與6月的風力蒐集率相加是多少？",
+      "answers": ["131.9"],
+      "answer_regex": "(?P<answer>58[.]6|73[.]3)\\s*[%％]",
+      "operation": "sum",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 13, "text_contains": ["2023/05", "58.6%", "2023/06", "73.3%"]}]
+    },
+    {
+      "question_id": "sv30",
+      "type": "chart_value",
+      "question": "富貴角浮標測站2023年1月風速圖標示的資料筆數是多少？",
+      "answers": ["448"],
+      "answer_regex": "FuguiCape in 2023/01[\\s\\S]{0,30}?(?:Number\\s*=\\s*)?(?P<answer>448)",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 37, "text_contains": ["FuguiCape", "2023/01", "448"]}]
+    },
+    {
+      "question_id": "sv31",
+      "type": "chart_value",
+      "question": "同一頁中，富貴角浮標2023年6月的資料筆數是多少？",
+      "answers": ["658"],
+      "answer_regex": "FuguiCape in 2023/06[\\s\\S]{0,30}?(?:Number\\s*=\\s*)?(?P<answer>658)",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 37, "text_contains": ["FuguiCape", "2023/06", "658"]}]
+    },
+    {
+      "question_id": "sv32",
+      "type": "chart_value",
+      "question": "澎南測站2023年3月平均風速圖標示的資料筆數是多少？",
+      "answers": ["34"],
+      "answer_regex": "Ponnan in 2023/03[\\s\\S]{0,30}?(?:Number\\s*=\\s*)?(?P<answer>34)",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 97, "text_contains": ["Ponnan", "2023/03", "34"]}]
+    },
+    {
+      "question_id": "sv33",
+      "type": "table_cell",
+      "question": "表3-8中，潮境測站2023年7月的陣風風速當月最大值是多少m/s？",
+      "answers": ["24.8"],
+      "answer_regex": "2023/07[\\s\\S]{0,100}?(?P<answer>24[.]8)",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 121, "text_contains": ["2023/07", "24.8", "07/28 03:00"]}]
+    },
+    {
+      "question_id": "sv34",
+      "type": "table_cell",
+      "question": "表3-32中，東吉嶼測站2023年7月的陣風風速當月最大值是多少m/s？",
+      "answers": ["30.0"],
+      "answer_regex": "2023/07[\\s\\S]{0,100}?(?P<answer>30[.]0)",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 145, "text_contains": ["2023/07", "30.0", "07/28 03:00"]}]
+    },
+    {
+      "question_id": "sv35",
+      "type": "chart_value",
+      "question": "富貴角浮標2023年8月風力玫瑰圖標示的資料筆數是多少？",
+      "answers": ["701"],
+      "answer_regex": "FuguiCape in 2023/08[\\s\\S]{0,30}?(?:Number\\s*=\\s*)?(?P<answer>701)",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 157, "text_contains": ["FuguiCape", "2023/08", "701"]}]
+    },
+    {
+      "question_id": "sv36",
+      "type": "chart_value",
+      "question": "花蓮港測站2023年10月風力玫瑰圖標示的資料筆數是多少？",
+      "answers": ["728"],
+      "answer_regex": "HualienTTRC in 2023/10[\\s\\S]{0,30}?(?:Number\\s*=\\s*)?(?P<answer>728)",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 169, "text_contains": ["HualienTTRC", "2023/10", "728"]}]
+    },
+    {
+      "question_id": "sv37",
+      "type": "chart_value",
+      "question": "臺中浮標測站2023年12月風力玫瑰圖標示的資料筆數是多少？",
+      "answers": ["720"],
+      "answer_regex": "Taichung in 2023/12[\\s\\S]{0,30}?(?:Number\\s*=\\s*)?(?P<answer>720)",
+      "evidence": [{"document_id": "namr_ocean_wind_2023", "page": 181, "text_contains": ["Taichung", "2023/12", "720"]}]
+    },
+    {
+      "question_id": "sv38",
+      "type": "cross_page",
+      "question": "將富貴角浮標與臺中浮標2023年1月的資料筆數相加，合計多少？",
+      "answers": ["1164"],
+      "answer_regex": "(?P<answer>448|716)",
+      "operation": "sum",
+      "evidence_mode": "all",
+      "evidence": [
+        {"document_id": "namr_ocean_wind_2023", "page": 157, "text_contains": ["FuguiCape", "2023/01", "448"]},
+        {"document_id": "namr_ocean_wind_2023", "page": 181, "text_contains": ["Taichung", "2023/01", "716"]}
+      ]
+    },
+    {
+      "question_id": "sv39",
+      "type": "unanswerable",
+      "question": "這些選定頁面是否提供澎南測站2023年7月的資料筆數？",
+      "answers": [],
+      "unanswerable": true,
+      "evidence": []
+    }
+  ]
+}

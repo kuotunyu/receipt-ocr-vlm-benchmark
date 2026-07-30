@@ -1,0 +1,80 @@
+{
+  "benchmark_version": "0.9.0",
+  "annotation_method": "Manually verified crop boxes in normalized page coordinates, frozen from source pixels before caption generation.",
+  "freeze_status": "frozen-before-caption-generation",
+  "evaluation_protocol": {
+    "retrieval_k": 5,
+    "minimum_question_count": 9,
+    "minimum_crop_recall_at_k": 0.9,
+    "minimum_answer_correctness": 0.8,
+    "minimum_citation_validity": 0.8,
+    "structured_retrieval_must_not_regress": true,
+    "pixel_synthesis_must_execute": true
+  },
+  "targets": [
+    {
+      "figure_id": "cwa-policy-core-p33",
+      "document_id": "cwa_weather_whitepaper",
+      "page": 33,
+      "bbox_normalized": [0.25, 0.13, 0.96, 0.86],
+      "generic_prompt": "用一句繁體中文描述這張氣象業務政策核心架構圖，不要抄錄所有細節。",
+      "question_ids": ["sv05"]
+    },
+    {
+      "figure_id": "moda-scope-evolution-p100",
+      "document_id": "moda_digital_content_yearbook_111",
+      "page": 100,
+      "bbox_normalized": [0.04, 0.08, 0.97, 0.70],
+      "generic_prompt": "用一句繁體中文描述這張數位內容產業範疇演進圖，不要抄錄所有細節。",
+      "question_ids": ["sv18"]
+    },
+    {
+      "figure_id": "moda-industry-pyramid-p341",
+      "document_id": "moda_digital_content_yearbook_111",
+      "page": 341,
+      "bbox_normalized": [0.21, 0.46, 0.82, 0.92],
+      "generic_prompt": "用一句繁體中文描述這張數位內容產業三層次金字塔圖。",
+      "question_ids": ["sv25"]
+    },
+    {
+      "figure_id": "namr-fugui-timeseries-p37",
+      "document_id": "namr_ocean_wind_2023",
+      "page": 37,
+      "bbox_normalized": [0.08, 0.04, 0.93, 0.89],
+      "generic_prompt": "用一句繁體中文描述這張富貴角浮標月平均風速時序圖，不要抄錄所有數值。",
+      "question_ids": ["sv30", "sv31"]
+    },
+    {
+      "figure_id": "namr-ponnan-timeseries-p97",
+      "document_id": "namr_ocean_wind_2023",
+      "page": 97,
+      "bbox_normalized": [0.08, 0.04, 0.93, 0.89],
+      "generic_prompt": "用一句繁體中文描述這張澎南測站月平均風速時序圖，特別注意缺測月份。",
+      "question_ids": ["sv32"]
+    },
+    {
+      "figure_id": "namr-fugui-windrose-p157",
+      "document_id": "namr_ocean_wind_2023",
+      "page": 157,
+      "bbox_normalized": [0.10, 0.03, 0.91, 0.93],
+      "generic_prompt": "用一句繁體中文描述這組富貴角浮標月風力玫瑰圖，不要抄錄所有數值。",
+      "question_ids": ["sv35"]
+    },
+    {
+      "figure_id": "namr-hualien-windrose-p169",
+      "document_id": "namr_ocean_wind_2023",
+      "page": 169,
+      "bbox_normalized": [0.10, 0.03, 0.91, 0.93],
+      "generic_prompt": "用一句繁體中文描述這組花蓮港月風力玫瑰圖，不要抄錄所有數值。",
+      "question_ids": ["sv36"]
+    },
+    {
+      "figure_id": "namr-taichung-windrose-p181",
+      "document_id": "namr_ocean_wind_2023",
+      "page": 181,
+      "bbox_normalized": [0.10, 0.03, 0.91, 0.93],
+      "generic_prompt": "用一句繁體中文描述這組臺中浮標月風力玫瑰圖，不要抄錄所有數值。",
+      "question_ids": ["sv37"]
+    }
+  ]
+}

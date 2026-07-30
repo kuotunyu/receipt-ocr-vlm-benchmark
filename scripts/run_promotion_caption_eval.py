@@ -36,7 +36,12 @@ def _definition_sha256(
     return hashlib.sha256(payload).hexdigest()
 
 
-def _decision(result: dict, protocol: dict) -> dict:
+def _decision(
+    result: dict,
+    protocol: dict,
+    *,
+    promotion_eligible: bool = True,
+) -> dict:
     if result.get("status") != "completed":
         return {
             "recommendation": "PENDING",
@@ -73,9 +78,10 @@ def _decision(result: dict, protocol: dict) -> dict:
             >= protocol["minimum_question_count"]
         ),
     }
-    return {
-        "recommendation": "GO" if all(gates.values()) else "NO-GO",
-        "promotion_eligible": True,
+    go = all(gates.values())
+    decision = {
+        "recommendation": "GO" if go else "NO-GO",
+        "promotion_eligible": promotion_eligible,
         "retrieval_recall_delta_vs_no_image": round(
             candidate["retrieval_recall_at_k"]
             - baseline["retrieval_recall_at_k"],
@@ -83,6 +89,22 @@ def _decision(result: dict, protocol: dict) -> dict:
         ),
         "gates": gates,
     }
+    if not promotion_eligible:
+        decision.update(
+            {
+                "recommendation": "NOT-PROMOTION-EVIDENCE",
+                "scale_finding": (
+                    "SUPPORTS-CAPTION-AND-INDEX"
+                    if go
+                    else "DOES-NOT-SUPPORT-CAPTION-AND-INDEX"
+                ),
+                "reason": (
+                    "This source-assisted scale-validation set cannot override "
+                    "the untouched caption promotion holdout."
+                ),
+            }
+        )
+    return decision
 
 
 def main() -> None:
@@ -165,7 +187,11 @@ def main() -> None:
         },
         "factor": result,
         "decision": _decision(
-            result, targets["evaluation_protocol"]
+            result,
+            targets["evaluation_protocol"],
+            promotion_eligible=(
+                manifest.get("role") != "external-scale-validation"
+            ),
         ),
         "receipt_benchmark_untouched": True,
     }

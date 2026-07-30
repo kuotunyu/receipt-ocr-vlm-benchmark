@@ -1,0 +1,986 @@
+{
+  "benchmark_version": "0.9.0",
+  "generated_at": "2026-07-30T04:08:37.635216+00:00",
+  "definition_sha256": "9126320fe11e5b4810d6f0f4fa65547bde122fafbd70ca93f63512628cce0a14",
+  "dataset": {
+    "documents": 3,
+    "visual_targets": 8,
+    "question_links": 9
+  },
+  "factor": {
+    "status": "completed",
+    "caption_model": "qwen3-vl:8b",
+    "caption_generation": {
+      "call_count": 28,
+      "latency_seconds_total": 73.105177,
+      "gpu_seconds_total": 63.067198,
+      "prompt_tokens_total": 61194,
+      "output_tokens_total": 7647,
+      "thinking_chars_total": 10404,
+      "discarded_run_wall_seconds": 52.325
+    },
+    "modes": {
+      "no_image_indexing": {
+        "question_count": 9,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 0.333333,
+        "mrr": 0.277778,
+        "answer_correctness": 0.222222,
+        "citation_validity": 0.222222,
+        "error_attribution": {
+          "parsing": 6,
+          "retrieval": 0,
+          "generation": 1
+        },
+        "questions": [
+          {
+            "question_id": "sv05",
+            "question_type": "single_text_fact",
+            "answer": "70",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00009",
+              "cwa_weather_whitepaper:pymupdf:c00021",
+              "cwa_weather_whitepaper:pymupdf:c00024",
+              "cwa_weather_whitepaper:pymupdf:c00027",
+              "cwa_weather_whitepaper:pymupdf:c00020"
+            ],
+            "retrieved_scores": [
+              0.282139,
+              0.257685,
+              0.246208,
+              0.245677,
+              0.245447
+            ]
+          },
+          {
+            "question_id": "sv18",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.5,
+            "citation_valid": false,
+            "error_source": "generation",
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00016",
+              "moda_digital_content_yearbook_111:pymupdf:c00004",
+              "moda_digital_content_yearbook_111:pymupdf:c00006"
+            ],
+            "retrieved_scores": [
+              0.33769,
+              0.308206,
+              0.233544,
+              0.232736,
+              0.207047
+            ]
+          },
+          {
+            "question_id": "sv25",
+            "question_type": "single_text_fact",
+            "answer": "數位遊戲",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00016",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00006",
+              "moda_digital_content_yearbook_111:pymupdf:c00004"
+            ],
+            "retrieved_scores": [
+              0.257927,
+              0.227612,
+              0.216368,
+              0.187676,
+              0.165678
+            ]
+          },
+          {
+            "question_id": "sv30",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.452824,
+              0.209622,
+              0.19517,
+              0.168774,
+              0.167669
+            ]
+          },
+          {
+            "question_id": "sv31",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00001",
+              "namr_ocean_wind_2023:pymupdf:c00002",
+              "namr_ocean_wind_2023:pymupdf:c00003"
+            ],
+            "retrieved_scores": [
+              0.320401,
+              0.178965,
+              0.156766,
+              0.156527,
+              0.156271
+            ]
+          },
+          {
+            "question_id": "sv32",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.451632,
+              0.192943,
+              0.184264,
+              0.163093,
+              0.159279
+            ]
+          },
+          {
+            "question_id": "sv35",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00001"
+            ],
+            "retrieved_scores": [
+              0.31794,
+              0.216384,
+              0.175079,
+              0.160045,
+              0.156541
+            ]
+          },
+          {
+            "question_id": "sv36",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.39736,
+              0.239046,
+              0.202927,
+              0.194308,
+              0.186973
+            ]
+          },
+          {
+            "question_id": "sv37",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00000",
+              "namr_ocean_wind_2023:pymupdf:c00002"
+            ],
+            "retrieved_scores": [
+              0.418338,
+              0.254462,
+              0.185551,
+              0.174082,
+              0.17001
+            ]
+          }
+        ],
+        "pixel_synthesis_required": false,
+        "pixel_synthesis_executed": false,
+        "note": "Caption text is retrieval-only. The original-crop mode uses the saved answer generated from crop pixels without caption text."
+      },
+      "generic_caption": {
+        "question_count": 9,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 0.333333,
+        "mrr": 0.259259,
+        "answer_correctness": 0.222222,
+        "citation_validity": 0.222222,
+        "error_attribution": {
+          "parsing": 6,
+          "retrieval": 0,
+          "generation": 1
+        },
+        "questions": [
+          {
+            "question_id": "sv05",
+            "question_type": "single_text_fact",
+            "answer": "70",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00009",
+              "cwa_weather_whitepaper:pymupdf:c00021",
+              "cwa_weather_whitepaper:pymupdf:c00024",
+              "cwa_weather_whitepaper:pymupdf:c00027",
+              "cwa_weather_whitepaper:pymupdf:c00020"
+            ],
+            "retrieved_scores": [
+              0.282139,
+              0.257685,
+              0.246208,
+              0.245677,
+              0.245447
+            ]
+          },
+          {
+            "question_id": "sv18",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": false,
+            "error_source": "generation",
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00015:caption:generic_caption",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00016",
+              "moda_digital_content_yearbook_111:pymupdf:c00004"
+            ],
+            "retrieved_scores": [
+              0.33769,
+              0.314378,
+              0.308206,
+              0.233544,
+              0.232736
+            ]
+          },
+          {
+            "question_id": "sv25",
+            "question_type": "single_text_fact",
+            "answer": "數位遊戲",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00015:caption:generic_caption",
+              "moda_digital_content_yearbook_111:pymupdf:c00016",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00006"
+            ],
+            "retrieved_scores": [
+              0.365667,
+              0.257927,
+              0.227612,
+              0.216368,
+              0.187676
+            ]
+          },
+          {
+            "question_id": "sv30",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00005:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056"
+            ],
+            "retrieved_scores": [
+              0.452824,
+              0.256718,
+              0.238176,
+              0.21148,
+              0.209622
+            ]
+          },
+          {
+            "question_id": "sv31",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00005:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00001"
+            ],
+            "retrieved_scores": [
+              0.320401,
+              0.202516,
+              0.194029,
+              0.178965,
+              0.156766
+            ]
+          },
+          {
+            "question_id": "sv32",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00005:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00005:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.451632,
+              0.222752,
+              0.220648,
+              0.192943,
+              0.184264
+            ]
+          },
+          {
+            "question_id": "sv35",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005:caption:generic_caption"
+            ],
+            "retrieved_scores": [
+              0.31794,
+              0.290786,
+              0.280056,
+              0.216384,
+              0.194871
+            ]
+          },
+          {
+            "question_id": "sv36",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:generic_caption"
+            ],
+            "retrieved_scores": [
+              0.39736,
+              0.311504,
+              0.241656,
+              0.239046,
+              0.229175
+            ]
+          },
+          {
+            "question_id": "sv37",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:generic_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.418338,
+              0.408115,
+              0.270226,
+              0.254462,
+              0.185551
+            ]
+          }
+        ],
+        "pixel_synthesis_required": false,
+        "pixel_synthesis_executed": false,
+        "note": "Caption text is retrieval-only. The original-crop mode uses the saved answer generated from crop pixels without caption text."
+      },
+      "structured_caption": {
+        "question_count": 9,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "gold-regex-extractive-v1",
+        "k": 5,
+        "retrieval_recall_at_k": 0.333333,
+        "mrr": 0.259259,
+        "answer_correctness": 0.222222,
+        "citation_validity": 0.222222,
+        "error_attribution": {
+          "parsing": 5,
+          "retrieval": 1,
+          "generation": 1
+        },
+        "questions": [
+          {
+            "question_id": "sv05",
+            "question_type": "single_text_fact",
+            "answer": "70",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00009",
+              "cwa_weather_whitepaper:pymupdf:c00021",
+              "cwa_weather_whitepaper:pymupdf:c00024",
+              "cwa_weather_whitepaper:pymupdf:c00027",
+              "cwa_weather_whitepaper:pymupdf:c00020"
+            ],
+            "retrieved_scores": [
+              0.282139,
+              0.257685,
+              0.246208,
+              0.245677,
+              0.245447
+            ]
+          },
+          {
+            "question_id": "sv18",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": false,
+            "error_source": "generation",
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00003:caption:structured_caption",
+              "moda_digital_content_yearbook_111:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00015:caption:structured_caption",
+              "moda_digital_content_yearbook_111:pymupdf:c00016"
+            ],
+            "retrieved_scores": [
+              0.519904,
+              0.33769,
+              0.308206,
+              0.302321,
+              0.233544
+            ]
+          },
+          {
+            "question_id": "sv25",
+            "question_type": "single_text_fact",
+            "answer": "數位遊戲",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00015:caption:structured_caption",
+              "moda_digital_content_yearbook_111:pymupdf:c00003:caption:structured_caption",
+              "moda_digital_content_yearbook_111:pymupdf:c00016",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.395311,
+              0.320785,
+              0.257927,
+              0.227612,
+              0.216368
+            ]
+          },
+          {
+            "question_id": "sv30",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption"
+            ],
+            "retrieved_scores": [
+              0.452824,
+              0.209622,
+              0.199837,
+              0.19517,
+              0.185932
+            ]
+          },
+          {
+            "question_id": "sv31",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption",
+              "namr_ocean_wind_2023:pymupdf:c00001"
+            ],
+            "retrieved_scores": [
+              0.320401,
+              0.1799,
+              0.178965,
+              0.178009,
+              0.156766
+            ]
+          },
+          {
+            "question_id": "sv32",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005:caption:structured_caption",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption"
+            ],
+            "retrieved_scores": [
+              0.451632,
+              0.192943,
+              0.186636,
+              0.184264,
+              0.18294
+            ]
+          },
+          {
+            "question_id": "sv35",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption"
+            ],
+            "retrieved_scores": [
+              0.31794,
+              0.228385,
+              0.216384,
+              0.198755,
+              0.178075
+            ]
+          },
+          {
+            "question_id": "sv36",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption",
+              "namr_ocean_wind_2023:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.39736,
+              0.239245,
+              0.239046,
+              0.233614,
+              0.202927
+            ]
+          },
+          {
+            "question_id": "sv37",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "parsing",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption"
+            ],
+            "retrieved_scores": [
+              0.418338,
+              0.268476,
+              0.254462,
+              0.24127,
+              0.238733
+            ]
+          }
+        ],
+        "pixel_synthesis_required": false,
+        "pixel_synthesis_executed": false,
+        "note": "Caption text is retrieval-only. The original-crop mode uses the saved answer generated from crop pixels without caption text."
+      },
+      "structured_caption_original_crop": {
+        "question_count": 9,
+        "retriever": "char-bigram-cosine-v1",
+        "answerer": "qwen3-vl-original-crop-no-caption",
+        "k": 5,
+        "retrieval_recall_at_k": 0.333333,
+        "mrr": 0.259259,
+        "answer_correctness": 0.666667,
+        "citation_validity": 0.666667,
+        "error_attribution": {
+          "parsing": 0,
+          "retrieval": 3,
+          "generation": 0
+        },
+        "questions": [
+          {
+            "question_id": "sv05",
+            "question_type": "single_text_fact",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "cwa_weather_whitepaper:pymupdf:c00009",
+              "cwa_weather_whitepaper:pymupdf:c00021",
+              "cwa_weather_whitepaper:pymupdf:c00024",
+              "cwa_weather_whitepaper:pymupdf:c00027",
+              "cwa_weather_whitepaper:pymupdf:c00020"
+            ],
+            "retrieved_scores": [
+              0.282139,
+              0.257685,
+              0.246208,
+              0.245677,
+              0.245447
+            ]
+          },
+          {
+            "question_id": "sv18",
+            "question_type": "single_text_fact",
+            "answer": "體感型產業",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00003:caption:structured_caption_original_crop",
+              "moda_digital_content_yearbook_111:pymupdf:c00005",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00015:caption:structured_caption_original_crop",
+              "moda_digital_content_yearbook_111:pymupdf:c00016"
+            ],
+            "retrieved_scores": [
+              0.519904,
+              0.33769,
+              0.308206,
+              0.302321,
+              0.233544
+            ]
+          },
+          {
+            "question_id": "sv25",
+            "question_type": "single_text_fact",
+            "answer": "數位遊戲",
+            "correct": true,
+            "retrieval_recall_at_k": 1.0,
+            "reciprocal_rank": 1.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "moda_digital_content_yearbook_111:pymupdf:c00015:caption:structured_caption_original_crop",
+              "moda_digital_content_yearbook_111:pymupdf:c00003:caption:structured_caption_original_crop",
+              "moda_digital_content_yearbook_111:pymupdf:c00016",
+              "moda_digital_content_yearbook_111:pymupdf:c00003",
+              "moda_digital_content_yearbook_111:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.395311,
+              0.320785,
+              0.257927,
+              0.227612,
+              0.216368
+            ]
+          },
+          {
+            "question_id": "sv30",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop"
+            ],
+            "retrieved_scores": [
+              0.452824,
+              0.209622,
+              0.199837,
+              0.19517,
+              0.185932
+            ]
+          },
+          {
+            "question_id": "sv31",
+            "question_type": "chart_value",
+            "answer": null,
+            "correct": false,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": false,
+            "error_source": "retrieval",
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop",
+              "namr_ocean_wind_2023:pymupdf:c00001"
+            ],
+            "retrieved_scores": [
+              0.320401,
+              0.1799,
+              0.178965,
+              0.178009,
+              0.156766
+            ]
+          },
+          {
+            "question_id": "sv32",
+            "question_type": "chart_value",
+            "answer": "34",
+            "correct": true,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00005:caption:structured_caption_original_crop",
+              "namr_ocean_wind_2023:pymupdf:c00005",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop"
+            ],
+            "retrieved_scores": [
+              0.451632,
+              0.192943,
+              0.186636,
+              0.184264,
+              0.18294
+            ]
+          },
+          {
+            "question_id": "sv35",
+            "question_type": "chart_value",
+            "answer": "701",
+            "correct": true,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop"
+            ],
+            "retrieved_scores": [
+              0.31794,
+              0.228385,
+              0.216384,
+              0.198755,
+              0.178075
+            ]
+          },
+          {
+            "question_id": "sv36",
+            "question_type": "chart_value",
+            "answer": "728",
+            "correct": true,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop",
+              "namr_ocean_wind_2023:pymupdf:c00005"
+            ],
+            "retrieved_scores": [
+              0.39736,
+              0.239245,
+              0.239046,
+              0.233614,
+              0.202927
+            ]
+          },
+          {
+            "question_id": "sv37",
+            "question_type": "chart_value",
+            "answer": "720",
+            "correct": true,
+            "retrieval_recall_at_k": 0.0,
+            "reciprocal_rank": 0.0,
+            "citation_valid": true,
+            "error_source": null,
+            "retrieved_chunk_ids": [
+              "namr_ocean_wind_2023:pymupdf:c00006",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop",
+              "namr_ocean_wind_2023:pymupdf:c00056",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop",
+              "namr_ocean_wind_2023:pymupdf:c00056:caption:structured_caption_original_crop"
+            ],
+            "retrieved_scores": [
+              0.418338,
+              0.268476,
+              0.254462,
+              0.24127,
+              0.238733
+            ]
+          }
+        ],
+        "crop_recall_at_k": 0.666667,
+        "pixel_synthesis_required": true,
+        "pixel_synthesis_executed": true,
+        "note": "Caption text is retrieval-only. The original-crop mode uses the saved answer generated from crop pixels without caption text."
+      }
+    }
+  },
+  "decision": {
+    "recommendation": "NOT-PROMOTION-EVIDENCE",
+    "promotion_eligible": false,
+    "retrieval_recall_delta_vs_no_image": 0.0,
+    "gates": {
+      "structured_retrieval_at_least_no_image": true,
+      "pixel_synthesis_executed": true,
+      "crop_recall_at_k": false,
+      "answer_correctness": false,
+      "citation_validity": false,
+      "frozen_question_count": true
+    },
+    "scale_finding": "DOES-NOT-SUPPORT-CAPTION-AND-INDEX",
+    "reason": "This source-assisted scale-validation set cannot override the untouched caption promotion holdout."
+  },
+  "receipt_benchmark_untouched": true
+}

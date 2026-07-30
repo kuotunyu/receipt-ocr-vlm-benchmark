@@ -108,6 +108,29 @@ Candidate 的 MRR 下降 0.038，且沒有任一 primary metric 嚴格改善，�
 Generic caption 有實際增益，但 structured caption 沒提升 retrieval，原圖 synthesis 也因 crop
 Recall 未達事前 1.0 gate 而判定 **NO-GO**。Caption 仍只供檢索，答案來自原始 crop pixels。
 
+## v0.9 source-assisted scale-validation
+
+`scale_validation_summary.json` 使用三份全新 OGDL v1 官方文件、24 頁與 39 題。Annotation
+曾參考 PDF embedded text layer，所以這是 scale stability evidence，不是 untouched promotion
+evidence。
+
+| Factor | Recall@5 | MRR | Answer | Citation | Parsing / retrieval / generation errors |
+|---|---:|---:|---:|---:|---|
+| PyMuPDF + fixed | 0.744 | 0.513 | 0.744 | 0.718 | 7 / 2 / 1 |
+| targeted VLM + fixed | **0.821** | **0.603** | **0.846** | **0.795** | 1 / 4 / 1 |
+
+Targeted router 路由 6/24 頁，fresh observed wall-clock 115.814 秒；保存 artifact 重建的
+parser + baseline latency 為 110.282 秒，另重測 PyMuPDF CPU baseline 11.055 秒，本地 API
+cost $0。四項皆改善，因此
+`scale_finding=SUPPORTS-CANDIDATE`，但 recommendation 是 `NOT-PROMOTION-EVIDENCE`，不可改寫
+v0.8 的 NO-GO。
+
+`scale_validation_caption_summary.json` 使用 8 crops／9 題。No-image、generic 與 structured
+Recall@5 都是 0.333；structured + original crop 的 answer/citation/crop Recall 為 0.667，
+未達 frozen gates，scale finding 為 `DOES-NOT-SUPPORT-CAPTION-AND-INDEX`。保存成功／重試
+artifact 的 28 calls 為 73.105 秒、GPU 63.067 秒；另誠實揭露 checkpoint 上線前一次
+52.325 秒的 JSON length-stop batch。
+
 2026-07-30 已在無競爭 RTX 4090 window 完成 production `think=false` A/B、26 頁 parser、
 外部 full/targeted Qwen 與三張圖／流程圖的 caption/original-crop synthesis。`benchmark_summary.json` 的 factor 4/5
 由 raw artifacts 與 normalized IR 自動產生；不是手動補寫。

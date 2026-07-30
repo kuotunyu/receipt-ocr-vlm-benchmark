@@ -274,6 +274,44 @@ Recall/answer/citation 為 0.714；generic caption 提升至 0.857；structured 
 retrieval，維持 0.714；structured + original crop 的 answer/citation 為 0.857，但 crop
 Recall 只有 0.857，未通過事前 1.0 gate，因此 caption-and-index 同樣判定 **NO-GO**。
 
+## v0.9 source-assisted scale-validation
+
+為檢查 v0.8 是否只是兩份文件的小樣本偶然，v0.9 另選中央氣象署、數位發展部與國家海洋
+研究院三份 OGDL v1 官方文件，涵蓋 24 個 layout-stratified pages 與 39 題。文件、頁面與既有
+開發／holdout 完全不重疊，題型仍包含文字、表格單格、聚合、圖表、跨頁與不可回答。
+
+本批 exact transcription 曾參考 source PDF pixels 與 embedded text layer，所以 protocol 在
+首次 scoring 前即標明 `external-scale-validation`：結果只能檢查規模穩定性，不能覆蓋 v0.8
+untouched promotion decision。
+
+| Factor | Recall@5 | MRR | Answer | Citation | Error attribution |
+|---|---:|---:|---:|---:|---|
+| PyMuPDF + fixed | 0.744 | 0.513 | 0.744 | 0.718 | parsing 7 / retrieval 2 / generation 1 |
+| targeted VLM + fixed | **0.821** | **0.603** | **0.846** | **0.795** | parsing 1 / retrieval 4 / generation 1 |
+
+Router 只送 6/24 個 native-visual pages 進 Qwen；fresh observed wall-clock 115.814 秒，
+artifact-reconstructed parser + baseline latency 110.282 秒，PyMuPDF CPU baseline 11.055 秒，
+API cost $0。
+四項 primary metrics 分別增加 0.077 / 0.091 / 0.103 / 0.077，且 parsing-attributed failures
+由 7 降到 1，因此自動 `scale_finding=SUPPORTS-CANDIDATE`。但 recommendation 固定為
+`NOT-PROMOTION-EVIDENCE`，正式預設仍服從 v0.8 NO-GO。
+
+同批另凍結 8 個 source-pixel crops、9 題：
+
+| Caption mode | Recall@5 | MRR | Answer | Citation | Crop Recall@5 |
+|---|---:|---:|---:|---:|---:|
+| no image indexing | 0.333 | 0.278 | 0.222 | 0.222 | - |
+| generic caption | 0.333 | 0.259 | 0.222 | 0.222 | - |
+| structured caption | 0.333 | 0.259 | 0.222 | 0.222 | - |
+| structured + original crop | 0.333 | 0.259 | **0.667** | **0.667** | 0.667 |
+
+Structured caption 沒改善 retrieval；pixel synthesis 雖改善答案，仍未達 0.8 answer/citation 與
+0.9 crop-recall gates，故 `DOES-NOT-SUPPORT-CAPTION-AND-INDEX`。一次 pre-checkpoint batch 因
+風玫瑰 structured JSON 連續兩次打滿 1,024 tokens 而停止，額外 wall time 52.325 秒；新增 durable
+per-target checkpoint 後，保存的 28 次呼叫為 73.105 秒／GPU 63.067 秒。只對剩餘兩個
+structured calls 將 cap 提到 2,048，prompt、pixels、questions 與 gates 均未修改，artifact
+逐 target 保存實際 cap 與所有後續失敗／成功 attempts。
+
 ## Failure visualization
 
 `visualize_parsing_failure.py` 可重現 `arc-05`：綠框是人工標註表格；原 LiteParse IR 沒有任何
@@ -285,7 +323,8 @@ PyMuPDF 吞入第二張表的巨大尾列並裁切，IoU 由 0.423 升至 0.682�
 
 **全域替換、Paddle global replacement、限定 table-region routing、Qwen VLM parser、
 targeted VLM + structure、caption-and-index：全部 NO-GO。Late-max ranker 僅對 Hybrid
-research branch 為 GO；targeted + fixed 只列 promising post-hoc diagnostic。**
+research branch 為 GO；v0.9 支持 targeted + fixed 的研究價值，但因 source-assisted annotation
+仍不構成 promotion evidence。**
 
 全域 promotion 使用事前凍結的五個 gates。table structure +0.429、answer +0.083、citation +0.083，
 且 table-cell/cross-page 兩種題型改善；但 parser mean 只 +0.027，未達 +0.050，因此不把現有

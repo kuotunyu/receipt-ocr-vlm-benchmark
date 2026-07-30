@@ -1,0 +1,88 @@
+{
+  "benchmark_version": "0.9.0",
+  "language": "zh-Hant",
+  "role": "external-scale-validation",
+  "holdout_name": "source-assisted-layout-stratified-scale-validation",
+  "distribution_policy": "download-only",
+  "annotation_status": "frozen-before-parser-scoring",
+  "development_document_overlap": 0,
+  "notes": [
+    "All three PDFs are official data.gov.tw resources licensed under OGDL v1.",
+    "Documents and pages are disjoint from the development, router, QA, and v0.8 promotion sets.",
+    "Pages were selected by source-PDF visual review and layout statistics. Gold was manually verified against source pixels and the source PDF text layer.",
+    "Because source text assisted exact transcription, this set measures scale stability but is not eligible to override the untouched v0.8 promotion decision.",
+    "No parser score, retrieval result, candidate output, or LLM judge was inspected before this definition was frozen.",
+    "The repository stores URLs, checksums, selected pages, protocol, and annotations only. Downloaded PDFs remain git-ignored."
+  ],
+  "documents": [
+    {
+      "document_id": "cwa_weather_whitepaper",
+      "title": "氣象業務白皮書",
+      "publisher": "交通部中央氣象署",
+      "catalog_dataset_id": "174272",
+      "source_page": "https://data.gov.tw/dataset/174272",
+      "url": "https://nidwedemon.cwa.gov.tw/ai_data/download/%E6%B0%A3%E8%B1%A1%E6%A5%AD%E5%8B%99%E7%99%BD%E7%9A%AE%E6%9B%B8.pdf/",
+      "license_url": "https://data.gov.tw/license",
+      "license_note": "政府資料開放授權條款－第1版（OGDL v1）。",
+      "sha256": "1ff09156c938aa83281e9c9d5d691fbd9ea36915614818627f46aabdf3ae726b",
+      "filename": "cwa_weather_whitepaper.pdf",
+      "bytes": 36887193,
+      "page_count": 57,
+      "selected_pages": [13, 21, 33, 37, 41, 45, 49, 53],
+      "challenges": [
+        "multi-column",
+        "dense-table",
+        "policy-hierarchy",
+        "figure-text",
+        "reading-order",
+        "header-footer"
+      ]
+    },
+    {
+      "document_id": "moda_digital_content_yearbook_111",
+      "title": "111 Taiwan數位內容產業年鑑",
+      "publisher": "數位發展部數位產業署",
+      "catalog_dataset_id": "175312",
+      "source_page": "https://data.gov.tw/dataset/175312",
+      "url": "https://www-api.moda.gov.tw/OpenData/Files/17168",
+      "license_url": "https://data.gov.tw/license",
+      "license_note": "政府資料開放授權條款－第1版（OGDL v1）。",
+      "sha256": "7b3fdb5715b8ae2200274b78cdee1adf36ecfd59c2ab23e2ca8b19636f2ccc61",
+      "filename": "moda_digital_content_yearbook_111.pdf",
+      "bytes": 74635110,
+      "page_count": 377,
+      "selected_pages": [41, 93, 100, 150, 181, 226, 298, 341],
+      "challenges": [
+        "dense-table",
+        "industry-chart",
+        "figure-caption",
+        "mixed-chinese-english",
+        "diagram-hierarchy",
+        "header-footer"
+      ]
+    },
+    {
+      "document_id": "namr_ocean_wind_2023",
+      "title": "2023年臺灣海域風力觀測資料月統計年報",
+      "publisher": "國家海洋研究院",
+      "catalog_dataset_id": "176484",
+      "source_page": "https://data.gov.tw/dataset/176484",
+      "url": "https://www.namr.gov.tw/filedownload?file=namrebook/202512160944470.pdf&filedisplay=2023%E9%A2%A8%E5%8A%9B%E5%B9%B4%E5%A0%B1_v4-s.pdf&flag=namrebook&dsid=namrebook",
+      "license_url": "https://data.gov.tw/license",
+      "license_note": "政府資料開放授權條款－第1版（OGDL v1）。",
+      "sha256": "dc489b3712b71b89927ca53185477a6ee1686db22a988b2ea62806f8955bb408",
+      "filename": "namr_ocean_wind_2023.pdf",
+      "bytes": 27684599,
+      "page_count": 195,
+      "selected_pages": [13, 37, 97, 121, 145, 157, 169, 181],
+      "challenges": [
+        "dense-table",
+        "missing-data",
+        "small-chart-labels",
+        "repeated-time-series",
+        "wind-rose",
+        "header-footer"
+      ]
+    }
+  ]
+}

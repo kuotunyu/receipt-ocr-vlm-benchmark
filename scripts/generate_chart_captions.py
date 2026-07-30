@@ -58,6 +58,22 @@ _STRUCTURED_SCHEMA = {
 _JSON_RE = re.compile(r"\{.*\}", re.DOTALL)
 
 
+class JsonModelCallError(ValueError):
+    def __init__(
+        self,
+        errors: list[str],
+        usages: list[dict],
+        raw_attempts: list[str],
+    ):
+        super().__init__(
+            f"caption JSON failed after {len(usages)} attempts: "
+            + " | ".join(errors)
+        )
+        self.usages = usages
+        self.raw_attempts = raw_attempts
+        self.errors = errors
+
+
 def _model_call(
     model: str,
     image_bytes: bytes,
@@ -161,9 +177,62 @@ def _json_model_call(
             return _json_object(raw), raw, usages, raw_attempts
         except (ValueError, json.JSONDecodeError) as exc:
             errors.append(str(exc))
-    raise ValueError(
-        f"caption JSON failed after {max_attempts} attempts: "
-        + " | ".join(errors)
+    raise JsonModelCallError(errors, usages, raw_attempts)
+
+
+def _generation_summary(
+    usages: list[dict], discarded_run_wall_seconds: float
+) -> dict:
+    return {
+        "call_count": len(usages),
+        "latency_seconds_total": round(
+            sum(item["latency_seconds"] for item in usages), 6
+        ),
+        "gpu_seconds_total": round(
+            sum(item["gpu_seconds"] for item in usages), 6
+        ),
+        "prompt_tokens_total": sum(
+            int(item["prompt_tokens"] or 0) for item in usages
+        ),
+        "output_tokens_total": sum(
+            int(item["output_tokens"] or 0) for item in usages
+        ),
+        "thinking_chars_total": sum(
+            int(item["thinking_chars"] or 0) for item in usages
+        ),
+        "discarded_run_wall_seconds": round(
+            discarded_run_wall_seconds, 6
+        ),
+    }
+
+
+def _write_checkpoint(
+    path: Path,
+    *,
+    model: str,
+    records: list[dict],
+    raw_records: list[dict],
+    usages: list[dict],
+    discarded_run_wall_seconds: float,
+    status: str,
+) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "status": status,
+                "model": model,
+                "generation_summary": _generation_summary(
+                    usages, discarded_run_wall_seconds
+                ),
+                "captions": records,
+                "raw_records": raw_records,
+                "usages": usages,
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
     )
 
 
@@ -171,6 +240,23 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default="qwen3-vl:8b")
     parser.add_argument("--smoke", action="store_true", help="process one chart only")
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="resume completed targets from the durable partial artifact",
+    )
+    parser.add_argument(
+        "--discarded-run-wall-seconds",
+        type=float,
+        default=0.0,
+        help="Disclose overhead from an earlier run that predates checkpoints.",
+    )
+    parser.add_argument(
+        "--structured-num-predict",
+        type=int,
+        default=1024,
+        help="Structured JSON output cap; raise only after a recorded length stop.",
+    )
     parser.add_argument(
         "--manifest", type=Path, default=Path("data/complex_document/manifest.json")
     )
@@ -223,10 +309,30 @@ def main() -> None:
     if args.smoke:
         targets = targets[:1]
     store = ArtifactStore(args.artifact_root)
-    records = []
-    raw_records = []
-    all_usage = []
+    checkpoint_path = args.output.with_suffix(".partial.json")
+    if args.resume and checkpoint_path.is_file():
+        checkpoint = json.loads(
+            checkpoint_path.read_text(encoding="utf-8")
+        )
+        if checkpoint.get("model") != args.model:
+            raise ValueError("checkpoint model does not match requested model")
+        records = list(checkpoint.get("captions", []))
+        raw_records = list(checkpoint.get("raw_records", []))
+        all_usage = list(checkpoint.get("usages", []))
+        for record in records:
+            record.setdefault("generation_usage", {}).setdefault(
+                "structured_caption", {}
+            ).setdefault("num_predict", 1024)
+    else:
+        records = []
+        raw_records = []
+        all_usage = []
+    completed_figure_ids = {
+        record["figure_id"] for record in records
+    }
     for target in targets:
+        if target["figure_id"] in completed_figure_ids:
+            continue
         checker.ensure_gpu_available()
         document = documents[target["document_id"]]
         pdf_path = args.raw_dir / document["filename"]
@@ -251,68 +357,98 @@ def main() -> None:
             / f"{target['figure_id']}.png"
         )
         crop_path.write_bytes(image_bytes)
-        generic_value, generic_raw, generic_usages, generic_raw_attempts = (
-            _json_model_call(
-            args.model,
-            image_bytes,
-            (
-                target["generic_prompt"]
-                + '\n只回傳 JSON object：{"caption":"一句繁體中文描述"}。'
-            ),
-            output_format=GENERIC_CAPTION_SCHEMA,
-            num_predict=512,
+        stage = "generic_caption"
+        stage_num_predict = 512
+        try:
+            generic_value, generic_raw, generic_usages, generic_raw_attempts = (
+                _json_model_call(
+                    args.model,
+                    image_bytes,
+                    (
+                        target["generic_prompt"]
+                        + '\n只回傳 JSON object：{"caption":"一句繁體中文描述"}。'
+                    ),
+                    output_format=GENERIC_CAPTION_SCHEMA,
+                    num_predict=512,
+                )
             )
-        )
-        generic = generic_value.get("caption", "")
-        checker.ensure_gpu_available()
-        (
-            structured,
-            structured_raw,
-            structured_usages,
-            structured_raw_attempts,
-        ) = _json_model_call(
+            generic = generic_value.get("caption", "")
+            all_usage.extend(generic_usages)
+            checker.ensure_gpu_available()
+            stage = "structured_caption"
+            stage_num_predict = args.structured_num_predict
+            (
+                structured,
+                structured_raw,
+                structured_usages,
+                structured_raw_attempts,
+            ) = _json_model_call(
                 args.model,
                 image_bytes,
                 _STRUCTURED_PROMPT,
                 output_format=_STRUCTURED_SCHEMA,
-                num_predict=1024,
-        )
-        pixel_answers = []
-        for question_id in target["question_ids"]:
-            checker.ensure_gpu_available()
-            question = questions[question_id]
-            (
-                answer_value,
-                answer_raw,
-                answer_usages,
-                answer_raw_attempts,
-            ) = _json_model_call(
-                args.model,
-                image_bytes,
-                (
-                    "請只根據這張原始圖表 crop 的像素回答問題。"
-                    "若像素不足以回答，請回答「無法判讀」。"
-                    "不得參考任何 caption。\n問題："
-                    + question["question"]
-                ),
-                output_format=PIXEL_ANSWER_SCHEMA,
-                num_predict=512,
+                num_predict=args.structured_num_predict,
             )
-            answer = answer_value.get("answer", "")
-            pixel_answers.append(
+            all_usage.extend(structured_usages)
+            pixel_answers = []
+            for question_id in target["question_ids"]:
+                checker.ensure_gpu_available()
+                question = questions[question_id]
+                stage = f"pixel_answer:{question_id}"
+                stage_num_predict = 512
+                (
+                    answer_value,
+                    answer_raw,
+                    answer_usages,
+                    answer_raw_attempts,
+                ) = _json_model_call(
+                    args.model,
+                    image_bytes,
+                    (
+                        "請只根據這張原始圖表 crop 的像素回答問題。"
+                        "若像素不足以回答，請回答「無法判讀」。"
+                        "不得參考任何 caption。\n問題："
+                        + question["question"]
+                    ),
+                    output_format=PIXEL_ANSWER_SCHEMA,
+                    num_predict=512,
+                )
+                answer = answer_value.get("answer", "")
+                pixel_answers.append(
+                    {
+                        "question_id": question_id,
+                        "answer": answer.strip(),
+                        "usage": {
+                            "attempt_count": len(answer_usages),
+                            "attempts": answer_usages,
+                        },
+                        "raw_attempts": answer_raw_attempts,
+                    }
+                )
+                all_usage.extend(answer_usages)
+        except JsonModelCallError as exc:
+            all_usage.extend(exc.usages)
+            raw_records.append(
                 {
-                    "question_id": question_id,
-                    "answer": answer.strip(),
-                    "usage": {
-                        "attempt_count": len(answer_usages),
-                        "attempts": answer_usages,
-                    },
-                    "raw_attempts": answer_raw_attempts,
+                    "status": "failed",
+                    "figure_id": target["figure_id"],
+                    "stage": stage,
+                    "error": str(exc),
+                    "num_predict": stage_num_predict,
+                    "raw_attempts": exc.raw_attempts,
+                    "usage": exc.usages,
                 }
             )
-            all_usage.extend(answer_usages)
-        all_usage.extend(generic_usages)
-        all_usage.extend(structured_usages)
+            _write_checkpoint(
+                checkpoint_path,
+                model=args.model,
+                records=records,
+                raw_records=raw_records,
+                usages=all_usage,
+                discarded_run_wall_seconds=args.discarded_run_wall_seconds,
+                status="partial-failed",
+            )
+            raise
         records.append(
             {
                 **target,
@@ -334,12 +470,14 @@ def main() -> None:
                     "structured_caption": {
                         "attempt_count": len(structured_usages),
                         "attempts": structured_usages,
+                        "num_predict": args.structured_num_predict,
                     },
                 },
             }
         )
         raw_records.append(
             {
+                "status": "completed",
                 "figure_id": target["figure_id"],
                 "generic_response": generic_raw,
                 "structured_response": structured_raw,
@@ -350,24 +488,18 @@ def main() -> None:
                 "pixel_answers": pixel_answers,
             }
         )
-    generation_summary = {
-        "call_count": len(all_usage),
-        "latency_seconds_total": round(
-            sum(item["latency_seconds"] for item in all_usage), 6
-        ),
-        "gpu_seconds_total": round(
-            sum(item["gpu_seconds"] for item in all_usage), 6
-        ),
-        "prompt_tokens_total": sum(
-            int(item["prompt_tokens"] or 0) for item in all_usage
-        ),
-        "output_tokens_total": sum(
-            int(item["output_tokens"] or 0) for item in all_usage
-        ),
-        "thinking_chars_total": sum(
-            int(item["thinking_chars"] or 0) for item in all_usage
-        ),
-    }
+        _write_checkpoint(
+            checkpoint_path,
+            model=args.model,
+            records=records,
+            raw_records=raw_records,
+            usages=all_usage,
+            discarded_run_wall_seconds=args.discarded_run_wall_seconds,
+            status="partial-running",
+        )
+    generation_summary = _generation_summary(
+        all_usage, args.discarded_run_wall_seconds
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(
@@ -376,9 +508,18 @@ def main() -> None:
                 "config": {
                     "think": False,
                     "generic_num_predict": 512,
-                    "structured_num_predict": 1024,
+                    "structured_num_predict_values": sorted(
+                        {
+                            record["generation_usage"][
+                                "structured_caption"
+                            ].get("num_predict", 1024)
+                            for record in records
+                        }
+                    ),
                     "pixel_answer_num_predict": 512,
                     "temperature": 0,
+                    "json_max_attempts": 2,
+                    "checkpoint_resume": True,
                 },
                 "generation_summary": generation_summary,
                 "captions": records,
@@ -390,6 +531,15 @@ def main() -> None:
     )
     store.write_parser_raw(
         "chart-caption-batch", "qwen3-vl-caption", {"responses": raw_records}
+    )
+    _write_checkpoint(
+        checkpoint_path,
+        model=args.model,
+        records=records,
+        raw_records=raw_records,
+        usages=all_usage,
+        discarded_run_wall_seconds=args.discarded_run_wall_seconds,
+        status="completed",
     )
     print(f"wrote {len(records)} captions to {args.output}")
 

@@ -16,6 +16,7 @@ data/raw/*
 data/labels/*
 !data/labels/.gitkeep
 data/splits.json
+data/real_receipts_manifest.json
 # 合成資料集與 SROIE 皆可由腳本重新產生/下載（make_synthetic_dataset.py / download_sroie.py）
 data/synthetic/
 data/sroie/
@@ -40,6 +41,7 @@ Thumbs.db
 data/complex_document/raw/
 data/complex_document/holdout/raw/
 data/complex_document/promotion_holdout/raw/
+data/complex_document/scale_validation/raw/
 artifacts/complex_document/
 results/complex_document/runs/
 
@@ -57,7 +59,14 @@ results/complex_document/runs/
 !data/complex_document/promotion_holdout/questions.json
 !data/complex_document/promotion_holdout/protocol.json
 !data/complex_document/promotion_holdout/chart_targets.json
+!data/complex_document/scale_validation/
+!data/complex_document/scale_validation/manifest.json
+!data/complex_document/scale_validation/questions.json
+!data/complex_document/scale_validation/protocol.json
+!data/complex_document/scale_validation/chart_targets.json
 !results/complex_document/
 !results/complex_document/README.md
 !results/complex_document/benchmark_summary.json
 !results/complex_document/table_router_holdout.json
+!results/complex_document/scale_validation_summary.json
+!results/complex_document/scale_validation_caption_summary.json
