@@ -42,6 +42,8 @@ flowchart TD
     A6 -->|是| A8["Schema 正規化與校驗"]
     A7 --> A8
     A8 --> A9[("結構化 JSON 輸出")]
+
+    style A6 fill:#e7f5ff,stroke:#1971c2,stroke-width:2px
 ```
 
 ### Pipeline B：端到端 VLM 管線
@@ -60,6 +62,8 @@ flowchart TD
     B9 --> B2
     B8 -->|是| B10["Schema 正規化與用量統計"]
     B10 --> B11[("結構化 JSON 輸出")]
+
+    style B8 fill:#fff9db,stroke:#f59f00,stroke-width:2px
 ```
 
 ---
