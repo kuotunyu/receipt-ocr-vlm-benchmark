@@ -31,6 +31,7 @@
 ### Pipeline A：傳統 OCR 組合管線
 
 ```mermaid
+%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
 flowchart TD
     A1["原始發票/收據影像"] --> A2["OpenCV 前處理\n(Deskew / Denoise / Binarize)"]
     A2 --> A3["PaddleOCR PP-OCRv6\n(文字偵測與辨識)"]
@@ -46,6 +47,7 @@ flowchart TD
 ### Pipeline B：端到端 VLM 管線
 
 ```mermaid
+%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
 flowchart TD
     B1["原始發票/收據影像"] --> B2["Prompt 組裝\n(Schema 導引 + 影像)"]
     B3["PaddleOCR 辨識文字\n(--with-ocr-hint)"] -.->|選用輔助| B2
@@ -62,7 +64,7 @@ flowchart TD
 
 ---
 
-## 結果摘要
+## 評測矩陣與綜合結果
 
 數據採合成繁中發票 (45 張) 與 SROIE 真實收據 (45 張) 測試集。
 
@@ -88,7 +90,7 @@ flowchart TD
 
 ---
 
-## 快速開始 (Quickstart)
+## 快速開始
 
 ```powershell
 # 1. 安裝依賴與執行測試
@@ -107,23 +109,3 @@ python -m venv .venv
 .venv\Scripts\python scripts\run_pipeline.py --pipeline a --image data/synthetic/raw/syn_001.jpg
 .venv\Scripts\python scripts\run_pipeline.py --pipeline b --image data/synthetic/raw/syn_001.jpg --backend qwen3-vl
 ```
-
----
-
-## 專案結構與文件導覽
-
-```text
-├── configs/             # 評測矩陣與模型 API 配置
-├── data/                # 雙軌數據集與合成資料生成腳本
-├── results/             # 正式評測數據 (results/official/)
-├── scripts/             # 自動化評測、對照圖表與數據導出腳本
-├── src/                 # 核心 Pipeline A 與 Pipeline B 實作
-├── tests/               # 單元測試集
-├── DESIGN.md            # 管線設計規範與架構說明
-├── EVAL_REPORT.md       # 完整橫向評測與消融報告
-└── THIRD_PARTY_NOTICES.md # 第三方數據集與模型授權標示
-```
-
-## 授權與版權標示
-
-本專案原創程式碼基於 [MIT License](LICENSE) 開源。SROIE 數據集與範例影像遵循原作者授權條款，詳細第三方聲明見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
