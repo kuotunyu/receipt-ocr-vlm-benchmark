@@ -121,7 +121,6 @@ python -m venv .venv
 ├── tests/               # 單元測試集
 ├── DESIGN.md            # 管線設計規範與架構說明
 ├── EVAL_REPORT.md       # 完整橫向評測與消融報告
-├── INTERVIEW_PREP.md    # 面試與簡報技術問答指南
 └── THIRD_PARTY_NOTICES.md # 第三方數據集與模型授權標示
 ```
 
