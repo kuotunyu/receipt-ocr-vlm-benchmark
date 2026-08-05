@@ -1,7 +1,7 @@
 # receipt-ocr-vlm-benchmark
 
-[![CI](https://github.com/kuotunyu/receipt-ocr-vlm-benchmark/actions/workflows/ci.yml/badge.svg)](https://github.com/kuotunyu/receipt-ocr-vlm-benchmark/actions/workflows/ci.yml)
-![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+[![CI](https://github.com/kuotunyu/receipt-ocr-vlm-benchmark/actions/workflows/tests.yml/badge.svg)](https://github.com/kuotunyu/receipt-ocr-vlm-benchmark/actions/workflows/tests.yml)
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![Tests](https://img.shields.io/badge/Tests-passing-success)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -28,33 +28,36 @@
 
 ## 系統架構
 
-### 管線對比 (Pipeline A vs Pipeline B)
+### Pipeline A：傳統 OCR 組合管線
 
 ```mermaid
 flowchart TD
-    subgraph Pipeline_A ["Pipeline A · 傳統 OCR 組合管線"]
-        IMG1["原始收據影像"] --> PREP["前處理 (Deskew / Denoise / Binarize)"]
-        PREP --> OCR["PaddleOCR PP-OCRv6 (偵測與辨識)"]
-        OCR --> LAYOUT["Layout 分析與動態分行"]
-        LAYOUT --> RULES["正則與關鍵字特徵抽取"]
-        RULES --> CHECK{"欄位完整？"}
-        CHECK -->|否| LLM["Qwen3-4B 本地 LLM 補銷"]
-        CHECK -->|是| NORmA["Schema 正規化與校驗"]
-        LLM --> NORmA
-    end
+    A1["原始發票/收據影像"] --> A2["OpenCV 前處理\n(Deskew / Denoise / Binarize)"]
+    A2 --> A3["PaddleOCR PP-OCRv6\n(文字偵測與辨識)"]
+    A3 --> A4["Layout 分析\n(座標動態分行)"]
+    A4 --> A5["正則與關鍵字特徵抽取"]
+    A5 --> A6{"欄位完整？"}
+    A6 -->|否| A7["Qwen3-4B 本地 LLM 補銷"]
+    A6 -->|是| A8["Schema 正規化與校驗"]
+    A7 --> A8
+    A8 --> A9[("結構化 JSON 輸出")]
+```
 
-    subgraph Pipeline_B ["Pipeline B · 端到端 VLM 管線"]
-        IMG2["原始收據影像"] --> VPROMPT["Prompt 組裝 (Schema 導引 + 影像)"]
-        HINT["PaddleOCR 辨識文字 (--with-ocr-hint)"] -.-> VPROMPT
-        VPROMPT --> BACKEND{"VLM Backend"}
-        BACKEND -->|地端| QWEN["Qwen3-VL-8B (Ollama)"]
-        BACKEND -->|API| GPT["GPT-5.4-nano"]
-        QWEN & GPT --> PARSE["JSON 解析與 Schema 驗證"]
-        PARSE --> VALID{"格式合法？"}
-        VALID -->|否, ≤2次| RETRY["攜帶錯誤訊息發起 Reask"]
-        RETRY --> VPROMPT
-        VALID -->|是| NORmB["Schema 正規化與用量統計"]
-    end
+### Pipeline B：端到端 VLM 管線
+
+```mermaid
+flowchart TD
+    B1["原始發票/收據影像"] --> B2["Prompt 組裝\n(Schema 導引 + 影像)"]
+    B3["PaddleOCR 辨識文字\n(--with-ocr-hint)"] -.->|選用輔助| B2
+    B2 --> B4{"VLM 推理 Backend"}
+    B4 -->|地端| B5["Qwen3-VL-8B (Ollama)"]
+    B4 -->|雲端 API| B6["GPT-5.4-nano"]
+    B5 & B6 --> B7["JSON 解析與 Schema 驗證"]
+    B7 --> B8{"格式合法？"}
+    B8 -->|否, ≤2次| B9["攜帶錯誤訊息發起 Reask"]
+    B9 --> B2
+    B8 -->|是| B10["Schema 正規化與用量統計"]
+    B10 --> B11[("結構化 JSON 輸出")]
 ```
 
 ---
