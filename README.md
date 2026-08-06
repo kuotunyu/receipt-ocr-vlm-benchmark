@@ -28,26 +28,53 @@
 
 ## 系統架構與推論管線
 
-### 1. 雙軌並排架構對比 (Pipeline A vs Pipeline B)
+### 1. Pipeline A：傳統多步驟 OCR 組合管線
 
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '20px'}}}%%
 flowchart TD
-    subgraph TrackA ["Pipeline A：傳統多步驟 OCR 組合管線"]
-        direction LR
-        A1["發票影像"] --> A2["OpenCV 前處理<br/>(Deskew / Denoise)"] --> A3["PaddleOCR PP-OCRv6<br/>(文字偵測與辨識)"] --> A4["Layout 分析<br/>(座標動態分行)"] --> A5["正則特徵抽取"] --> A6["Qwen3-4B LLM 補銷"] --> A7[("結構化 JSON 輸出")]
-    end
-
-    subgraph TrackB ["Pipeline B：端到端 VLM 視覺語言管線"]
-        direction LR
-        B1["發票影像"] --> B2["Prompt 組裝<br/>(含 OCR Hint 選用)"] --> B3["端到端 VLM 推理<br/>(Qwen3-VL-8B / GPT-5.4)"] --> B4["JSON Schema 驗證 & Reask 重試"] --> B5[("結構化 JSON 輸出")]
+    subgraph TrackA ["Pipeline A：傳統多步驟 OCR 組合管線 (多步驟 / 格式相容性較低)"]
+        A1["發票/收據影像"] --> A2["OpenCV 前處理<br/>(Deskew / Denoise / Binarize)"]
+        A2 --> A3["PaddleOCR PP-OCRv6<br/>(文字偵測與辨識)"]
+        A3 --> A4["Layout 分析<br/>(座標動態分行)"]
+        A4 --> A5["正則與關鍵字特徵抽取"]
+        A5 --> A6{"欄位完整？"}
+        A6 -->|否| A7["Qwen3-4B 本地 LLM 補銷"]
+        A6 -->|是| A8["Schema 正規化與校驗"]
+        A7 --> A8
+        A8 --> A9[("結構化 JSON 輸出")]
     end
 
     style A6 fill:#e7f5ff,stroke:#1971c2,stroke-width:2px
-    style B4 fill:#fff9db,stroke:#f59f00,stroke-width:2px
+    classDef pipeA fill:#f8f9fa,stroke:#343a40,stroke-width:2px,color:#212529
+    class A1,A2,A3,A4,A5,A7,A8,A9 pipeA
 ```
 
-### 2. OCR Hint 輔助與 Reask 錯誤重試時序 (Sequence Diagram)
+### 2. Pipeline B：端到端 VLM 視覺語言管線
+
+```mermaid
+%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
+flowchart TD
+    subgraph TrackB ["Pipeline B：端到端 VLM 視覺語言管線 (一步到位 / 高跨語言泛化)"]
+        B1["發票/收據影像"] --> B2["Prompt 組裝<br/>(Schema 導引 + 影像)"]
+        B3["PaddleOCR 辨識文字<br/>(--with-ocr-hint)"] -.->|選用輔助| B2
+        B2 --> B4{"VLM 推理 Backend"}
+        B4 -->|地端| B5["Qwen3-VL-8B (Ollama)"]
+        B4 -->|雲端 API| B6["GPT-5.4-nano"]
+        B5 & B6 --> B7["JSON 解析與 Schema 驗證"]
+        B7 --> B8{"格式合法？"}
+        B8 -->|否, ≤2次| B9["攜帶錯誤訊息發起 Reask"]
+        B9 --> B2
+        B8 -->|是| B10["Schema 正規化與用量統計"]
+        B10 --> B11[("結構化 JSON 輸出")]
+    end
+
+    style B8 fill:#fff9db,stroke:#f59f00,stroke-width:2px
+    classDef pipeB fill:#f8f9fa,stroke:#343a40,stroke-width:2px,color:#212529
+    class B1,B2,B3,B5,B6,B7,B9,B10,B11 pipeB
+```
+
+### 3. OCR Hint 輔助與 Reask 錯誤重試時序 (Sequence Diagram)
 
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '20px'}}}%%
