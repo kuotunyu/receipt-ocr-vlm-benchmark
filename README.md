@@ -28,59 +28,38 @@
 
 ## 系統架構與推論管線
 
-### 1. Pipeline A：傳統多步驟 OCR 組合管線
+### 1. Pipeline A：傳統多步驟 OCR 組合管線 (橫項流向)
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '18px'}}}%%
-flowchart TD
-    A1["1. 發票 / 收據影像"] --> A2["2. OpenCV 前處理 (Deskew / Denoise / Binarize)"]
-    A2 --> A3["3. PaddleOCR PP-OCRv6 (文字辨識)"]
-    A3 --> A4["4. Layout 座標分行 & 正則特徵抽取"]
-    A4 --> A5{"5. 關鍵欄位完整？"}
-    A5 -->|否| A6["Qwen3-4B 本地 LLM 補銷"]
-    A5 -->|是| A7["6. Schema 正規化與校驗"]
-    A6 --> A7
-    A7 --> A8[("7. 結構化 JSON 輸出")]
+%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
+flowchart LR
+    A1["1. 影像輸入"] --> A2["2. OpenCV 前處理<br/>(Deskew/Denoise)"] --> A3["3. PaddleOCR PP-OCRv6<br/>(文字光學辨識)"] --> A4["4. Layout 分行<br/>& 正則特徵抽取"] --> A5["5. Qwen3-4B LLM<br/>(缺失欄位補銷)"] --> A6[("6. 結構化<br/>JSON 輸出")]
 
     classDef normStyle fill:#e7f5ff,stroke:#1971c2,stroke-width:2px,color:#0c8599
-    classDef condStyle fill:#fff9db,stroke:#f59f00,stroke-width:2px,color:#d9480f
     classDef outStyle fill:#e6fcf5,stroke:#0ca678,stroke-width:2px,color:#099268
 
-    class A1,A2,A3,A4,A6,A7 normStyle
-    class A5 condStyle
-    class A8 outStyle
+    class A1,A2,A3,A4,A5 normStyle
+    class A6 outStyle
 ```
 
-### 2. Pipeline B：端到端 VLM 視覺語言管線
+### 2. Pipeline B：端到端 VLM 視覺語言管線 (橫項流向)
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '18px'}}}%%
-flowchart TD
-    B1["1. 發票 / 收據影像"] --> B2["2. Prompt 組裝 (Schema 導引)"]
-    B3["PaddleOCR 文字 (選用)"] -.->|OCR Hint 輔助| B2
-    B2 --> B4{"3. VLM 推理 Backend"}
-    B4 -->|地端| B5["Qwen3-VL-8B (Ollama)"]
-    B4 -->|雲端 API| B6["GPT-5.4-nano"]
-    B5 & B6 --> B7["4. JSON 解析與 Schema 驗證"]
-    B7 --> B8{"5. JSON 格式合法？"}
-    B8 -->|否, ≤2次| B9["帶錯 Reask 自動重試"]
-    B9 --> B2
-    B8 -->|是| B10["6. Schema 正規化與用量統計"]
-    B10 --> B11[("7. 結構化 JSON 輸出")]
+%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
+flowchart LR
+    B1["1. 影像輸入"] --> B2["2. Prompt 組裝<br/>(含 OCR Hint 選用)"] --> B3["3. 端到端 VLM 推理<br/>(Qwen3-VL / GPT-5.4)"] --> B4["4. Schema 驗證<br/>& Reask 重試校正"] --> B5[("5. 結構化<br/>JSON 輸出")]
 
     classDef vlmStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
-    classDef condStyle fill:#fff9db,stroke:#f59f00,stroke-width:2px,color:#d9480f
     classDef outStyle fill:#e6fcf5,stroke:#0ca678,stroke-width:2px,color:#099268
 
-    class B1,B2,B3,B5,B6,B7,B9,B10 vlmStyle
-    class B4,B8 condStyle
-    class B11 outStyle
+    class B1,B2,B3,B4 vlmStyle
+    class B5 outStyle
 ```
 
 ### 3. OCR Hint 輔助與 Reask 錯誤重試時序 (Sequence Diagram)
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '18px'}}}%%
+%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
 sequenceDiagram
     autonumber
     actor User as 評測系統 / 使用者
