@@ -5,65 +5,76 @@
 ![Tests](https://img.shields.io/badge/Tests-passing-success)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-本專案為繁體中文文件理解 (Document AI) 評測框架，對台灣發票/收據關鍵欄位抽取（結構化 JSON 輸出）進行橫向對比：
-* **Pipeline A**：OpenCV 前處理 + PaddleOCR PP-OCRv6 + 規則/正則特徵抽取 + 本地 LLM 補銷。
-* **Pipeline B**：端到端 VLM（地端 Qwen3-VL-8B / API GPT-5.4-nano）+ 可選 OCR Hint 輔助。
+本專案為繁體中文文件理解 (Document AI) 評測框架，對台灣發票與收據關鍵欄位抽取 (結構化 JSON 輸出) 進行橫向對比：
+* **Pipeline A (傳統多步驟組合管線)**：OpenCV 前處理 + PaddleOCR PP-OCRv6 + 規則與正則特徵抽取 + 本地 LLM 補銷。
+* **Pipeline B (端到端 VLM 視覺語言管線)**：端到端 VLM (地端 Qwen3-VL-8B / API GPT-5.4-nano) + 可選 OCR Hint 輔助。
 
 評測維度涵蓋準確度 (Exact Match / Fuzzy F1)、延遲 (p50/p95 Latency) 與單位成本 (Cost per 100 images)，並包含消融實驗 (Ablation Study) 與複雜文件 (Complex Document) 評測分頁。
 
 ---
 
-## 核心發現
+## 關鍵發現
 
-1. **傳統規則管線之可移植性崩跌 (Portability Collapse)**
-   Pipeline A 在格式固定的合成繁中發票表現優異 (0.917 至 0.965 Exact Match)，但切換至真實英文收據 (SROIE) 時驟降至 0.390 至 0.416（固定正則與座標規則失效）。相較之下，端到端 VLM (Qwen3-VL-8B / GPT-5.4-nano) 展現極高跨語言與跨版面泛化能力 (0.971 保持至 0.800 至 0.857)。
+1. **傳統規則管線之可移植性崩跌 (Portability Collapse)**：
+   Pipeline A 在格式固定的合成繁中發票表現優異 (0.917 至 0.965 Exact Match)，但切換至真實英文收據 (SROIE) 時驟降至 0.390 至 0.416 (固定正則與座標規則失效)。相較之下，端到端 VLM (Qwen3-VL-8B / GPT-5.4-nano) 展現極高跨語言與跨版面泛化能力 (0.971 保持至 0.800 至 0.857)。
 
-2. **圖像前處理的雙面刃效應**
+2. **圖像前處理的雙面刃效應**：
    二值化 (Adaptive Binarization) 在模糊影像上會破壞字元邊緣導致 OCR 全滅 (1.00 降至 0.14 Exact Match)；但在角度傾斜 (Rotate) 影像上，傾斜校正 (Deskew) 為關鍵決定因素 (0.76 提升至 1.00)。
 
-3. **OCR Hint 與 VLM 的協同對比**
-   在真實繁中收據上，引入 OCR 辨識文字作為 VLM Prompt 之 Hint 輔助，可將 Exact Match 從 0.714 提升至 0.914，並修正因背景干擾引發之無效 JSON 格式；代價為額外執行 CPU PaddleOCR，使端到端 warm p50 延遲增加約 4.7 倍。
+3. **OCR Hint 與 VLM 的協同對比**：
+   在真實繁中收據上，引入 OCR 辨識文字作為 VLM Prompt 之 Hint 輔助，可將 Exact Match 從 0.714 提升至 0.914，並修正因背景干擾引發之無效 JSON 格式；代價為額外執行 CPU PaddleOCR，使端到端 Warm p50 延遲增加約 4.7 倍。
 
 ---
 
-## 系統架構
+## 系統架構與推論管線
 
-### Pipeline A：傳統 OCR 組合管線
+### 1. 雙軌並排架構對比 (Pipeline A vs Pipeline B)
 
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '20px'}}}%%
 flowchart TD
-    A1["原始發票/收據影像"] --> A2["OpenCV 前處理\n(Deskew / Denoise / Binarize)"]
-    A2 --> A3["PaddleOCR PP-OCRv6\n(文字偵測與辨識)"]
-    A3 --> A4["Layout 分析\n(座標動態分行)"]
-    A4 --> A5["正則與關鍵字特徵抽取"]
-    A5 --> A6{"欄位完整？"}
-    A6 -->|否| A7["Qwen3-4B 本地 LLM 補銷"]
-    A6 -->|是| A8["Schema 正規化與校驗"]
-    A7 --> A8
-    A8 --> A9[("結構化 JSON 輸出")]
+    subgraph TrackA ["Pipeline A：傳統多步驟 OCR 組合管線"]
+        direction LR
+        A1["發票影像"] --> A2["OpenCV 前處理<br/>(Deskew / Denoise)"] --> A3["PaddleOCR PP-OCRv6<br/>(文字偵測與辨識)"] --> A4["Layout 分析<br/>(座標動態分行)"] --> A5["正則特徵抽取"] --> A6["Qwen3-4B LLM 補銷"] --> A7[("結構化 JSON 輸出")]
+    end
+
+    subgraph TrackB ["Pipeline B：端到端 VLM 視覺語言管線"]
+        direction LR
+        B1["發票影像"] --> B2["Prompt 組裝<br/>(含 OCR Hint 選用)"] --> B3["端到端 VLM 推理<br/>(Qwen3-VL-8B / GPT-5.4)"] --> B4["JSON Schema 驗證 & Reask 重試"] --> B5[("結構化 JSON 輸出")]
+    end
 
     style A6 fill:#e7f5ff,stroke:#1971c2,stroke-width:2px
+    style B4 fill:#fff9db,stroke:#f59f00,stroke-width:2px
 ```
 
-### Pipeline B：端到端 VLM 管線
+### 2. OCR Hint 輔助與 Reask 錯誤重試時序 (Sequence Diagram)
 
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '20px'}}}%%
-flowchart TD
-    B1["原始發票/收據影像"] --> B2["Prompt 組裝\n(Schema 導引 + 影像)"]
-    B3["PaddleOCR 辨識文字\n(--with-ocr-hint)"] -.->|選用輔助| B2
-    B2 --> B4{"VLM 推理 Backend"}
-    B4 -->|地端| B5["Qwen3-VL-8B (Ollama)"]
-    B4 -->|雲端 API| B6["GPT-5.4-nano"]
-    B5 & B6 --> B7["JSON 解析與 Schema 驗證"]
-    B7 --> B8{"格式合法？"}
-    B8 -->|否, ≤2次| B9["攜帶錯誤訊息發起 Reask"]
-    B9 --> B2
-    B8 -->|是| B10["Schema 正規化與用量統計"]
-    B10 --> B11[("結構化 JSON 輸出")]
+sequenceDiagram
+    autonumber
+    actor User as 評測系統 / 使用者
+    participant Hint as PaddleOCR Engine<br/>(--with-ocr-hint)
+    participant Prompt as Prompt Assembler
+    participant VLM as VLM Backend<br/>(Qwen3-VL / GPT-5.4)
+    participant Val as JSON Schema Validator
 
-    style B8 fill:#fff9db,stroke:#f59f00,stroke-width:2px
+    User->>Prompt: 輸入發票影像
+    opt 啟用 OCR Hint 輔助
+        User->>Hint: 前置文字掃描
+        Hint-->>Prompt: 傳送原始辨識文字與座標
+    end
+    Prompt->>VLM: 傳送視覺 Prompt (影像 + 構造 Schema + Hint)
+    VLM-->>Val: 回傳原始文字輸出
+
+    alt 格式符合 JSON Schema
+        Val-->>User: 200 OK 傳送結構化 JSON 成果
+    else 格式非法 (Schema Violation)
+        Val->>Prompt: 發起自動校正 Reask (夾帶錯誤訊息, ≤2次)
+        Prompt->>VLM: 二次修正推理
+        VLM-->>Val: 回傳校正後 JSON
+        Val-->>User: 傳送結構化成果與用量統計
+    end
 ```
 
 ---
@@ -81,7 +92,7 @@ flowchart TD
 | **Pipeline A (有前處理)** | 0.917 | 0.390 | 19.7s / 19.9s | 近似免費 (CPU) | 適用於格式極度固定之單一發票樣式 |
 | **Pipeline A (無前處理)** | 0.965 | 0.416 | **5.6s / 19.3s** | 近似免費 (CPU) | 無 GPU 資源且無旋轉/模糊之輕量場景 |
 
-*註：詳細消融實驗、失敗案例與 5 張真實繁中收據 Add-on 評測見 [EVAL_REPORT.md](EVAL_REPORT.md)。*
+詳細消融實驗、失敗案例與 5 張真實繁中收據 Add-on 評測見 [EVAL_REPORT.md](EVAL_REPORT.md)。
 
 ---
 
@@ -96,20 +107,34 @@ flowchart TD
 
 ## 快速開始
 
+### 1. 環境設定與套件安裝
+
 ```powershell
-# 1. 安裝依賴與執行測試
 python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt
 .venv\Scripts\python -m pytest -q
+```
 
-# 2. 下載測試數據集 (合成繁中 45 張 + SROIE 45 張)
+### 2. 下載測試數據集 (合成繁中 45 張 + SROIE 45 張)
+
+```powershell
 .venv\Scripts\python scripts\make_synthetic_dataset.py
 .venv\Scripts\python scripts\download_sroie.py
+```
 
-# 3. 執行評測
+### 3. 執行評測與單張測試
+
+```powershell
+# 執行評測 (Ollama 地端 + OpenAI API)
 .venv\Scripts\python scripts\run_eval.py --images-dir data/synthetic/raw --labels-dir data/synthetic/labels --backends ollama,openai
 
-# 4. 單張影像試跑
+# 單張影像管道 A / 管道 B 試跑
 .venv\Scripts\python scripts\run_pipeline.py --pipeline a --image data/synthetic/raw/syn_001.jpg
 .venv\Scripts\python scripts\run_pipeline.py --pipeline b --image data/synthetic/raw/syn_001.jpg --backend qwen3-vl
 ```
+
+---
+
+## 授權與聲明
+
+本專案之程式碼採 [MIT License](LICENSE)。數據集包含 SROIE 數據集與合成繁中發票樣本。

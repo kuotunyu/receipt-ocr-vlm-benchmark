@@ -8,9 +8,16 @@ tmp/
 .claude/
 
 # 本機工作筆記（開發計畫、進度提示、私人準備文件），不進版本庫
+PROGRESS.md
 plan.md
+PLAN.md
+CLAUDE.md
 HOW_TO_RESUME.md
 NOTES_PRIVATE.md
+interview*.md
+INTERVIEW_PREP.md
+*.private.md
+.agents/
 
 # 資料（原始照片含個資，不進 repo；遮罩後示例圖放 docs/examples/）
 data/raw/*
