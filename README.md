@@ -28,12 +28,12 @@
 
 ## 系統架構與推論管線
 
-### 1. Pipeline A：傳統多步驟 OCR 組合管線 (橫項流向)
+### 1. Pipeline A：傳統多步驟 OCR 組合管線
 
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '20px'}}}%%
 flowchart LR
-    A1["1. 影像輸入"] --> A2["2. OpenCV 前處理<br/>(Deskew/Denoise)"] --> A3["3. PaddleOCR PP-OCRv6<br/>(文字光學辨識)"] --> A4["4. Layout 分行<br/>& 正則特徵抽取"] --> A5["5. Qwen3-4B LLM<br/>(缺失欄位補銷)"] --> A6[("6. 結構化<br/>JSON 輸出")]
+    A1["1. 影像輸入"] --> A2["2. OpenCV 前處理<br/>(Deskew/Denoise)"] --> A3["3. PaddleOCR 辨識<br/>(PP-OCRv6)"] --> A4["4. Layout & 特徵<br/>(座標動態分行)"] --> A5["5. LLM 補銷<br/>(Qwen3-4B)"] --> A6[("6. JSON 輸出")]
 
     classDef normStyle fill:#e7f5ff,stroke:#1971c2,stroke-width:2px,color:#0c8599
     classDef outStyle fill:#e6fcf5,stroke:#0ca678,stroke-width:2px,color:#099268
@@ -42,12 +42,12 @@ flowchart LR
     class A6 outStyle
 ```
 
-### 2. Pipeline B：端到端 VLM 視覺語言管線 (橫項流向)
+### 2. Pipeline B：端到端 VLM 視覺語言管線
 
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '20px'}}}%%
 flowchart LR
-    B1["1. 影像輸入"] --> B2["2. Prompt 組裝<br/>(含 OCR Hint 選用)"] --> B3["3. 端到端 VLM 推理<br/>(Qwen3-VL / GPT-5.4)"] --> B4["4. Schema 驗證<br/>& Reask 重試校正"] --> B5[("5. 結構化<br/>JSON 輸出")]
+    B1["1. 影像輸入"] --> B2["2. Prompt 組裝<br/>(含 OCR Hint 選用)"] --> B3["3. VLM 推理<br/>(Qwen3-VL/GPT-5.4)"] --> B4["4. Schema 驗證<br/>& Reask 重試"] --> B5[("5. JSON 輸出")]
 
     classDef vlmStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
     classDef outStyle fill:#e6fcf5,stroke:#0ca678,stroke-width:2px,color:#099268
