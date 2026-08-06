@@ -31,48 +31,55 @@
 ### 1. Pipeline A：傳統多步驟 OCR 組合管線
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '22px'}}}%%
-flowchart TD
-    A1["1. 發票/收據影像"] --> A2["2. OpenCV 前處理<br/>(Deskew / Denoise / Binarize)"]
-    A2 --> A3["3. PaddleOCR PP-OCRv6<br/>(文字偵測與辨識)"]
-    A3 --> A4["4. Layout 座標分行<br/>與正則特徵抽取"]
-    A4 --> A5{"欄位完整？"}
-    A5 -->|否| A6["Qwen3-4B 本地 LLM 補銷"]
-    A5 -->|是| A7["Schema 正規化與校驗"]
-    A6 --> A7
-    A7 --> A8[("結構化 JSON 輸出")]
+%%{init: {'themeVariables': {'fontSize': '16px'}}}%%
+flowchart LR
+    subgraph Row1 ["前處理與辨識階段"]
+        direction LR
+        A1["影像輸入"] --> A2["OpenCV 前處理<br/>(Deskew / Denoise)"] --> A3["PaddleOCR PP-OCRv6<br/>(文字偵測與辨識)"]
+    end
 
-    style A5 fill:#e7f5ff,stroke:#1971c2,stroke-width:2px
-    classDef pipeA fill:#f8f9fa,stroke:#343a40,stroke-width:2px,color:#212529
-    class A1,A2,A3,A4,A6,A7,A8 pipeA
+    subgraph Row2 ["解析、補銷與輸出階段"]
+        direction LR
+        A4["Layout 分行 & 特徵抽取"] --> A5{"欄位完整？"}
+        A5 -->|否| A6["Qwen3-4B LLM 補銷"]
+        A5 -->|是| A7["Schema 正規化"]
+        A6 --> A7 --> A8[("結構化 JSON 輸出")]
+    end
+
+    Row1 --> Row2
+
+    classDef pipeA fill:#e7f5ff,stroke:#1971c2,stroke-width:2px,color:#0c8599
+    class A1,A2,A3,A4,A5,A6,A7,A8 pipeA
 ```
 
 ### 2. Pipeline B：端到端 VLM 視覺語言管線
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '22px'}}}%%
-flowchart TD
-    B1["1. 發票/收據影像"] --> B2["2. Prompt 組裝 (Schema 導引)"]
-    B3["PaddleOCR 文字 (選用)"] -.->|OCR Hint 輔助| B2
-    B2 --> B4{"3. VLM 推理 Backend"}
-    B4 -->|地端| B5["Qwen3-VL-8B (Ollama)"]
-    B4 -->|雲端 API| B6["GPT-5.4-nano"]
-    B5 & B6 --> B7["4. JSON 解析與 Schema 驗證"]
-    B7 --> B8{"格式合法？"}
-    B8 -->|否, ≤2次| B9["攜帶錯誤訊息發起 Reask"]
-    B9 --> B2
-    B8 -->|是| B10["5. Schema 正規化與用量統計"]
-    B10 --> B11[("結構化 JSON 輸出")]
+%%{init: {'themeVariables': {'fontSize': '16px'}}}%%
+flowchart LR
+    subgraph BRow1 ["端到端推理階段"]
+        direction LR
+        B1["影像輸入"] --> B2["Prompt 組裝<br/>(含 OCR Hint 選用)"] --> B3["VLM 推理 Backend<br/>(Qwen3-VL / GPT-5.4)"]
+    end
 
-    style B8 fill:#fff9db,stroke:#f59f00,stroke-width:2px
-    classDef pipeB fill:#f8f9fa,stroke:#343a40,stroke-width:2px,color:#212529
-    class B1,B2,B3,B5,B6,B7,B9,B10,B11 pipeB
+    subgraph BRow2 ["驗證、重試與輸出階段"]
+        direction LR
+        B4["JSON 解析與 Schema 驗證"] --> B5{"格式合法？"}
+        B5 -->|否, ≤2次| B6["帶錯 Reask 校正"]
+        B6 --> B2
+        B5 -->|是| B7["Schema 正規化與統計"] --> B8[("結構化 JSON 輸出")]
+    end
+
+    BRow1 --> BRow2
+
+    classDef pipeB fill:#e6fcf5,stroke:#0ca678,stroke-width:2px,color:#099268
+    class B1,B2,B3,B4,B5,B6,B7,B8 pipeB
 ```
 
 ### 3. OCR Hint 輔助與 Reask 錯誤重試時序 (Sequence Diagram)
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
+%%{init: {'themeVariables': {'fontSize': '18px'}}}%%
 sequenceDiagram
     autonumber
     actor User as 評測系統 / 使用者
