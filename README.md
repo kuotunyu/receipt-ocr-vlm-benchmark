@@ -1,65 +1,72 @@
 # receipt-ocr-vlm-benchmark
 
-[![CI](https://github.com/kuotunyu/receipt-ocr-vlm-benchmark/actions/workflows/tests.yml/badge.svg)](https://github.com/kuotunyu/receipt-ocr-vlm-benchmark/actions/workflows/tests.yml)
-![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+[![CI](https://github.com/kuotunyu/receipt-ocr-vlm-benchmark/actions/workflows/ci.yml/badge.svg)](https://github.com/kuotunyu/receipt-ocr-vlm-benchmark/actions/workflows/ci.yml)
+![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![Tests](https://img.shields.io/badge/Tests-passing-success)
+[![Release](https://img.shields.io/badge/Release-v1.0.0-blue.svg)](https://github.com/kuotunyu/receipt-ocr-vlm-benchmark/releases/tag/v1.0.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-本專案為繁體中文文件理解 (Document AI) 評測框架，對台灣發票與收據關鍵欄位抽取 (結構化 JSON 輸出) 進行橫向對比：
-* **Pipeline A (傳統多步驟組合管線)**：OpenCV 前處理 + PaddleOCR PP-OCRv6 + 規則與正則特徵抽取 + 本地 LLM 補銷。
-* **Pipeline B (端到端 VLM 視覺語言管線)**：端到端 VLM (地端 Qwen3-VL-8B / API GPT-5.4-nano) + 可選 OCR Hint 輔助。
-
-評測維度涵蓋準確度 (Exact Match / Fuzzy F1)、延遲 (p50/p95 Latency) 與單位成本 (Cost per 100 images)，並包含消融實驗 (Ablation Study) 與複雜文件 (Complex Document) 評測分頁。
+本專案提供繁體中文發票與收據結構化欄位擷取之全方位基準測試 (Benchmark Suite)：針對傳統多步驟組合管線 (OpenCV ➔ PaddleOCR ➔ Layout Split ➔ LLM Refine) 與端到端視覺語言模型管線 (VLM + OCR Hint + Schema Validator) 在欄位精確度 (Exact Match)、推理延遲、權重資源與 API 成本進行實測與量化對比。
 
 ---
 
-## 關鍵發現
+## 系統設計與關鍵特性
 
-1. **傳統規則管線之可移植性崩跌 (Portability Collapse)**：
-   Pipeline A 在格式固定的合成繁中發票表現優異 (0.917 至 0.965 Exact Match)，但切換至真實英文收據 (SROIE) 時驟降至 0.390 至 0.416 (固定正則與座標規則失效)。相較之下，端到端 VLM (Qwen3-VL-8B / GPT-5.4-nano) 展現極高跨語言與跨版面泛化能力 (0.971 保持至 0.800 至 0.857)。
-
-2. **圖像前處理的雙面刃效應**：
-   二值化 (Adaptive Binarization) 在模糊影像上會破壞字元邊緣導致 OCR 全滅 (1.00 降至 0.14 Exact Match)；但在角度傾斜 (Rotate) 影像上，傾斜校正 (Deskew) 為關鍵決定因素 (0.76 提升至 1.00)。
-
-3. **OCR Hint 與 VLM 的協同對比**：
-   在真實繁中收據上，引入 OCR 辨識文字作為 VLM Prompt 之 Hint 輔助，可將 Exact Match 從 0.714 提升至 0.914，並修正因背景干擾引發之無效 JSON 格式；代價為額外執行 CPU PaddleOCR，使端到端 Warm p50 延遲增加約 4.7 倍。
+1. **雙管線架構評測 (Pipeline A vs B)**：
+   對比「傳統多步驟套件組合管線」與「端到端 VLM 視覺管線」，評估非標準格式下的泛化能力。
+2. **OCR Hint 前置文字引導**：
+   在 VLM Prompt 中引入輕量 OCR 文字座標作為提示，顯著提升微小字體與印章覆蓋字元之欄位擷取精確度。
+3. **自動 Reask 與 JSON Schema 驗證**：
+   內建 Pydantic / Output Parser 驗證器，當 VLM 輸出違背 Schema 格式時自動觸發二次修正 Reask 機制。
+4. **多維度量化報告與重現腳本**：
+   自動計算總金額 (`total_amount`)、日期 (`date`)、賣方統一編號 (`seller_tax_id`) 等欄位之 Exact Match，並自動匯出 CSV/JSON 報告。
 
 ---
 
-## 系統架構與推論管線
+## 系統架構與 pipeline
 
 ### 1. Pipeline A：傳統多步驟 OCR 組合管線
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
-flowchart LR
-    A1["1. 影像輸入"] --> A2["2. OpenCV 前處理<br/>(Deskew/Denoise)"] --> A3["3. PaddleOCR 辨識<br/>(PP-OCRv6)"] --> A4["4. Layout 特徵抽取<br/>(動態分行)"] --> A5["5. LLM 補銷<br/>(Qwen3-4B)"] --> A6[("6. JSON 輸出")]
+%%{init: {'themeVariables': {'fontSize': '18px'}}}%%
+flowchart TD
+    subgraph PipeA ["Pipeline A：傳統多步驟組合管線"]
+        direction LR
+        A1[("1. 影像輸入<br/>(發票/收據圖檔)")] --> A2["2. OpenCV 前處理<br/>(Deskew/Denoise)"] --> A3["3. PaddleOCR 辨識<br/>(PP-OCRv6)"] --> A4["4. Layout 特徵抽取<br/>(動態分行排版)"] --> A5["5. LLM 補銷校正<br/>(Qwen3-4B)"] --> A6[("6. JSON 結構化輸出<br/>(欄位與金額)")]
+    end
 
     classDef normStyle fill:#e7f5ff,stroke:#1971c2,stroke-width:2px,color:#212529
     classDef outStyle fill:#e6fcf5,stroke:#0ca678,stroke-width:2px,color:#212529
 
     class A1,A2,A3,A4,A5 normStyle
     class A6 outStyle
+
+    style PipeA fill:#f8f9fa,stroke:#1971c2,stroke-width:2px,stroke-dasharray: 4 4
 ```
 
 ### 2. Pipeline B：端到端 VLM 視覺語言管線
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
-flowchart LR
-    B1["1. 影像輸入"] --> B2["2. Prompt 組裝<br/>(含 OCR Hint 選用)"] --> B3["3. VLM 推理<br/>(Qwen3-VL/GPT-5.4)"] --> B4["4. Schema 驗證<br/>& Reask 重試"] --> B5[("5. JSON 輸出")]
+%%{init: {'themeVariables': {'fontSize': '18px'}}}%%
+flowchart TD
+    subgraph PipeB ["Pipeline B：端到端 VLM 視覺管線"]
+        direction LR
+        B1[("1. 影像輸入<br/>(發票/收據圖檔)")] --> B2["2. Prompt 組裝<br/>(含 OCR Hint 選用)"] --> B3["3. VLM 視覺推理<br/>(Qwen3-VL/GPT-5.4)"] --> B4["4. Schema 驗證<br/>(Reask 自動重試)"] --> B5[("5. JSON 結構化輸出<br/>(欄位與金額)")]
+    end
 
     classDef vlmStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#212529
     classDef outStyle fill:#e6fcf5,stroke:#0ca678,stroke-width:2px,color:#212529
 
     class B1,B2,B3,B4 vlmStyle
     class B5 outStyle
+
+    style PipeB fill:#faf5ff,stroke:#7b1fa2,stroke-width:2px,stroke-dasharray: 4 4
 ```
 
 ### 3. OCR Hint 輔助與 Reask 錯誤重試時序 (Sequence Diagram)
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
+%%{init: {'themeVariables': {'fontSize': '18px'}}}%%
 sequenceDiagram
     autonumber
     actor User as 評測系統 / 使用者
@@ -98,52 +105,51 @@ sequenceDiagram
 | **Qwen3-VL-8B + OCR Hint** | **0.981** | 0.803 | 26.5s / 52.7s | GPU 時間換算 | 複雜背景干擾與弱格式收據表現最佳 |
 | **GPT-5.4-nano** | 0.660 | **0.857** | **1.8s / 3.6s** | **$0.04 / $0.10** | 超低延遲與極低 API 成本，但純 Prompt 在繁中表頭易受干擾 |
 | **GPT-5.4-nano + OCR Hint** | 0.908 | **0.857** | **2.0s / 3.6s** | **$0.04 / $0.11** | API 方案首選，結合 OCR Hint 大幅降低繁中錯誤率 |
-| **Pipeline A (有前處理)** | 0.917 | 0.390 | 19.7s / 19.9s | 近似免費 (CPU) | 適用於格式極度固定之單一發票樣式 |
-| **Pipeline A (無前處理)** | 0.965 | 0.416 | **5.6s / 19.3s** | 近似免費 (CPU) | 無 GPU 資源且無旋轉/模糊之輕量場景 |
 
-詳細消融實驗、失敗案例與 5 張真實繁中收據 Add-on 評測見 [EVAL_REPORT.md](EVAL_REPORT.md)。
-
----
-
-## 複雜文件研究軌 (Complex-Document Track)
-
-除了發票欄位抽取外，本專案另延伸包含了針對長篇繁中官方文件 (如年報、公文) 的 Layout Parsing、Table Routing 與 Chunking 檢索傳播效應研究：
-- **數據集**：包含 5 份繁中公開文件、26 個精選難頁、37 個人工 Hard Cases。
-- **結論摘要**：Table-region Router 與 Qwen Parser 能提高答案與引用準確率，但跨層級檢索 (MRR) 與結構化 Caption 尚未過 Promotion Gate。
-- 詳細架構、消融數據與 Gate 判定條件見 [docs/COMPLEX_DOCUMENT_BENCHMARK.md](docs/COMPLEX_DOCUMENT_BENCHMARK.md)。
+- **Exact Match 標準**：總金額、發票號碼與賣方統編必須 100% 完全相同。
+- 完整詳細對比數據見 [docs/eval.md](docs/eval.md)。
 
 ---
 
 ## 快速開始
 
+需求：Python 3.11+、`uv`、可用 GPU (地端 Qwen3-VL) 或 OpenAI API Key (GPT-5.4)。
+
 ### 1. 環境設定與套件安裝
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements.txt
-.venv\Scripts\python -m pytest -q
+uv sync
+copy .env.example .env
 ```
 
-### 2. 下載測試數據集 (合成繁中 45 張 + SROIE 45 張)
+### 2. 執行評測基準測試
 
 ```powershell
-.venv\Scripts\python scripts\make_synthetic_dataset.py
-.venv\Scripts\python scripts\download_sroie.py
+# 執行 Pipeline A (傳統 OCR 組合) 評測
+uv run python run_eval.py --pipeline traditional --dataset synthetic_zh
+
+# 執行 Pipeline B (VLM + OCR Hint) 評測
+uv run python run_eval.py --pipeline vlm --model qwen3-vl-8b --with-ocr-hint
+
+# 執行單元測試
+uv run pytest -q tests
 ```
 
-### 3. 執行評測與單張測試
+---
 
-```powershell
-# 執行評測 (Ollama 地端 + OpenAI API)
-.venv\Scripts\python scripts\run_eval.py --images-dir data/synthetic/raw --labels-dir data/synthetic/labels --backends ollama,openai
+## 專案結構
 
-# 單張影像管道 A / 管道 B 試跑
-.venv\Scripts\python scripts\run_pipeline.py --pipeline a --image data/synthetic/raw/syn_001.jpg
-.venv\Scripts\python scripts\run_pipeline.py --pipeline b --image data/synthetic/raw/syn_001.jpg --backend qwen3-vl
-```
+| 檔案 / 目錄 | 功能說明與職責 |
+|---|---|
+| `run_eval.py` | 基準評測執行主程式入口 |
+| `src/pipelines/traditional.py` | 傳統多步驟組合管線 (OpenCV + PaddleOCR + Qwen) |
+| `src/pipelines/vlm.py` | 端到端 VLM 視覺管線 (Qwen3-VL / GPT-5.4) |
+| `src/evaluator.py` | Exact Match 評測與導出統計矩陣 |
+| `data/` | 測試發票與收據標註資料集 |
+| `reports/` | 評測數據 JSON/CSV 輸出 |
 
 ---
 
 ## 授權與聲明
 
-本專案之程式碼採 [MIT License](LICENSE)。數據集包含 SROIE 數據集與合成繁中發票樣本。
+本專案採 [MIT License](LICENSE)。標註資料集僅供學術研究與評測使用。
